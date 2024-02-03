@@ -1,0 +1,84 @@
+version: '3'
+
+services: 
+
+  build-backend:
+    image: backend-image
+    build: 
+      context: backend
+      dockerfile: Dockerfile
+
+  backend:
+    image: backend-image
+    container_name: backend
+    working_dir: /usr/src/app
+    networks: 
+      - node-network
+    volumes: 
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    ports: 
+      - "3000:3000"
+    command: yarn start:dev
+    depends_on:
+      - db
+      - migration
+
+  migration:
+    image: backend-image
+    command: yarn db:migration:run
+    networks: 
+      - node-network
+    depends_on:
+      - build-backend
+      - db
+
+  frontend:
+    build: 
+      context: frontend
+    container_name: frontend
+    working_dir: /usr/src/app
+    networks: 
+      - node-network
+    volumes: 
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    ports: 
+      - "5173:5173"
+    environment:
+      - REACT_APP_BASE_API=http://localhost:8000
+    command: yarn start
+
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    tty: true
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment: 
+      - POSTGRES_PASSWORD=1234
+    ports: 
+      - "5432:5432"
+    networks: 
+      - node-network
+
+  nginx:
+    build: 
+      context: nginx
+    container_name: nginx
+    restart: always
+    tty: true
+    ports: 
+      - "8000:80"
+    networks: 
+      - node-network
+    depends_on:
+       - backend
+       - frontend
+  
+networks: 
+  node-network:
+    driver: bridge
