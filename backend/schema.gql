@@ -16,14 +16,44 @@ type UserSession {
   token: String
 }
 
+type Book {
+  id: ID!
+
+  """ISBN 13"""
+  isbn: String
+
+  """Title of the book"""
+  title: String!
+
+  """Date as ISO string"""
+  publicationDate: String!
+
+  """Synopsis of the book"""
+  synopsis: String
+
+  """URL to the book cover"""
+  coverImage: String!
+
+  """URL to a free download of the book"""
+  downloadUrl: String
+
+  """URL to a page where the book can be purchased"""
+  purchaseUrl: String
+}
+
 type Query {
   getUserSession: UserSession!
   getAllEmails: [String!]!
+  listBooks: [Book!]!
+  getBook(id: String!): Book!
 }
 
 type Mutation {
   signInUser(email: String!, password: String!): UserSession!
   createUser(input: CreateUserInput!): User!
+  createBook(input: CreateBookInput!): Book!
+  updateBook(input: UpdateBookInput!): Book!
+  removeBook(id: Int!): Book!
 }
 
 input CreateUserInput {
@@ -31,4 +61,51 @@ input CreateUserInput {
   password: String!
   firstName: String!
   lastName: String!
+}
+
+input CreateBookInput {
+  """ISBN 13"""
+  isbn: String
+
+  """Title of the book"""
+  title: String!
+
+  """Date as ISO string"""
+  publicationDate: String!
+
+  """Synopsis of the book"""
+  synopsis: String
+
+  """URL to the book cover"""
+  coverImage: String!
+
+  """URL to a free download of the book"""
+  downloadUrl: String
+
+  """URL to a page where the book can be purchased"""
+  purchaseUrl: String
+}
+
+input UpdateBookInput {
+  """ISBN 13"""
+  isbn: String
+
+  """Title of the book"""
+  title: String
+
+  """Date as ISO string"""
+  publicationDate: String
+
+  """Synopsis of the book"""
+  synopsis: String
+
+  """URL to the book cover"""
+  coverImage: String
+
+  """URL to a free download of the book"""
+  downloadUrl: String
+
+  """URL to a page where the book can be purchased"""
+  purchaseUrl: String
+  id: Int!
 }

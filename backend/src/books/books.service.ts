@@ -1,22 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookInput } from './inputs/create-book.input';
 import { UpdateBookInput } from './inputs/update-book.input';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Book } from './book.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BooksService {
-    create(createBookInput: CreateBookInput) {
-        return 'This action adds a new book';
-    }
+    constructor(@InjectRepository(Book) private repo: Repository<Book>) {}
 
     findAll() {
         return `This action returns all books`;
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} book`;
+    findById(id: string) {
+        return this.repo.findOne({ where: { id } });
     }
 
-    update(id: number, updateBookInput: UpdateBookInput) {
+    create(input: CreateBookInput) {
+        const newBook = this.repo.create(input);
+        return this.repo.save(newBook);
+    }
+
+    update(id: number, input: UpdateBookInput) {
         return `This action updates a #${id} book`;
     }
 
