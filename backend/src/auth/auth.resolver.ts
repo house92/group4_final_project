@@ -20,7 +20,7 @@ class UserSession {
     @Field()
     lastName: string;
 
-    @Field( {nullable: true} )
+    @Field({ nullable: true })
     token?: string;
 }
 
