@@ -16,9 +16,9 @@ export class Book {
     @Field(() => String, { description: 'Title of the book' })
     title: string;
 
-    @Column({ name: 'publication_date', type: 'timestamptz' })
-    @Field(() => String, { description: 'Date as ISO string' })
-    publicationDate: Date;
+    @Column({ name: 'publication_date', type: 'timestamptz', nullable: true })
+    @Field(() => String, { description: 'Date as ISO string', nullable: true })
+    publicationDate?: Date;
 
     @Column({ nullable: true })
     @Field(() => String, { description: 'Synopsis of the book', nullable: true })
