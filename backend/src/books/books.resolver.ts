@@ -3,29 +3,40 @@ import { BooksService } from './books.service';
 import { Book } from './book.entity';
 import { CreateBookInput } from './inputs/create-book.input';
 import { UpdateBookInput } from './inputs/update-book.input';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Resolver(() => Book)
 export class BooksResolver {
     constructor(private readonly booksService: BooksService) {}
 
-    @Mutation(() => Book)
-    createBook(@Args('createBookInput') createBookInput: CreateBookInput) {
-        return this.booksService.create(createBookInput);
-    }
+    ////////////////////////////////
+    // QUERIES
+    ////////////////////////////////
 
-    @Query(() => [Book], { name: 'books' })
-    findAll() {
+    @Query(() => [Book])
+    listBooks() {
         return this.booksService.findAll();
     }
 
-    @Query(() => Book, { name: 'book' })
-    findOne(@Args('id', { type: () => Int }) id: number) {
-        return this.booksService.findOne(id);
+    @Public()
+    @Query(() => Book)
+    async getBook(@Args('id', { type: () => String }) id: string) {
+        return this.booksService.findById(id);
+    }
+
+    ////////////////////////////////
+    // MUTATIONS
+    ////////////////////////////////
+
+    @Public()
+    @Mutation(() => Book)
+    createBook(@Args('input') input: CreateBookInput) {
+        return this.booksService.create(input);
     }
 
     @Mutation(() => Book)
-    updateBook(@Args('updateBookInput') updateBookInput: UpdateBookInput) {
-        return this.booksService.update(updateBookInput.id, updateBookInput);
+    updateBook(@Args('input') input: UpdateBookInput) {
+        return this.booksService.update(input.id, input);
     }
 
     @Mutation(() => Book)
