@@ -13,9 +13,17 @@ export const Basic = (args) => {
         <Grid container>
             <Grid item xs={12} sm={9} lg={6}>
                 <Paper variant="outlined" sx={{ p: 4, background: '#ffffee' }}>
-                    <AuthorIndexItem authorID="12345" firstName="Herman" lastName="Melville"
-                    birthYear="1819" deathYear="1891" hometown="Nantucket"
-                    bio="Lorem Ipsum etc" canEdit={false} canDelete={false} />
+                    <AuthorIndexItem
+                        authorID="12345"
+                        firstName="Herman"
+                        lastName="Melville"
+                        birthYear="1819"
+                        deathYear="1891"
+                        hometown="Nantucket"
+                        bio="Lorem Ipsum etc"
+                        canEdit={false}
+                        canDelete={false}
+                    />
                 </Paper>
             </Grid>
         </Grid>

@@ -82,7 +82,7 @@ export default function AuthorIndexItem({
             birthYear,
             deathYear,
             hometown,
-            bio
+            bio,
         },
 
         validateOnChange: false,
@@ -95,7 +95,7 @@ export default function AuthorIndexItem({
             birthYear: string(),
             deathYear: string(),
             hometown: string(),
-            bio: string()
+            bio: string(),
         }),
 
         onSubmit: (values) => {
