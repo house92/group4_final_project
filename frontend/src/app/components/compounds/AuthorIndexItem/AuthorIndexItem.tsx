@@ -62,6 +62,7 @@ export default function AuthorIndexItem({
     birthYear,
     deathYear,
     hometown,
+    bio,
     canEdit,
     canDelete,
     onSave = () => undefined,
@@ -81,6 +82,7 @@ export default function AuthorIndexItem({
             birthYear,
             deathYear,
             hometown,
+            bio
         },
 
         validateOnChange: false,
@@ -93,6 +95,7 @@ export default function AuthorIndexItem({
             birthYear: string(),
             deathYear: string(),
             hometown: string(),
+            bio: string()
         }),
 
         onSubmit: (values) => {
@@ -128,7 +131,7 @@ export default function AuthorIndexItem({
 
                     {canDelete && !isInEditMode && (
                         <Button
-                            onClick={() => onDelete?.(scheduleID)}
+                            onClick={() => onDelete?.(authorID)}
                             sx={(theme) => ({
                                 borderWidth: 1,
                                 borderRadius: 2,
@@ -152,45 +155,24 @@ export default function AuthorIndexItem({
                 maxWidth={260}
             >
                 <Input
-                    label="Course Name"
-                    name="courseName"
-                    value={values.courseName}
+                    label="Author Name"
+                    name="authorName"
+                    value={values.firstName}
                     onChange={formik.handleChange}
                     readOnly={!isInEditMode}
                 />
                 <Input label="Student" value={values.userName} readOnly />
                 <Input
-                    label="Course ID"
-                    name="courseID"
-                    value={values.courseID}
+                    label="Birth Year"
+                    name="birthYear"
+                    value={values.birthYear}
                     onChange={formik.handleChange}
                     readOnly={!isInEditMode}
                 />
                 <Input
-                    label="Schedule ID"
-                    name="scheduleID"
-                    value={values.scheduleID}
-                    onChange={formik.handleChange}
-                    readOnly={!isInEditMode}
-                />
-                <Input
-                    label="Day of the Week"
-                    name="weekday"
-                    value={values.weekday}
-                    onChange={formik.handleChange}
-                    readOnly={!isInEditMode}
-                />
-                <Input
-                    label="Start Time"
-                    name="startTime"
-                    value={values.startTime}
-                    onChange={formik.handleChange}
-                    readOnly={!isInEditMode}
-                />
-                <Input
-                    label="End Time"
-                    name="endTime"
-                    value={values.endTime}
+                    label="Hometown"
+                    name="hometown"
+                    value={values.hometown}
                     onChange={formik.handleChange}
                     readOnly={!isInEditMode}
                 />
