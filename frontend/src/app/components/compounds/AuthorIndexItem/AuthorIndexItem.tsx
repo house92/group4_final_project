@@ -161,7 +161,6 @@ export default function AuthorIndexItem({
                     onChange={formik.handleChange}
                     readOnly={!isInEditMode}
                 />
-                <Input label="Student" value={values.userName} readOnly />
                 <Input
                     label="Birth Year"
                     name="birthYear"
