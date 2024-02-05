@@ -22,9 +22,8 @@ interface AuthorIndexItemInput {
      * @todo Implement admin role – otherwise userID shouldn't be editable
      */
     userID?: string;
-} 
+}
 interface AuthorIndexItemProps {
-
     authorID: string;
     firstName: string;
     lastName: string;
@@ -93,7 +92,7 @@ export default function AuthorIndexItem({
             lastName: string(),
             birthYear: string(),
             deathYear: string(),
-            hometown: string()
+            hometown: string(),
         }),
 
         onSubmit: (values) => {
