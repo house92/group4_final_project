@@ -97,12 +97,11 @@ export default function AuthorIndexItem({
     const { values, isValid, dirty } = formik;
 
     let fullName: string;
-    fullName = values.firstName + " " + values.lastName;
+    fullName = values.firstName + ' ' + values.lastName;
 
     return (
         <Stack gap={4}>
             <Box display="flex" justifyContent="space-between">
-
                 <Box>
                     {canEdit && !isInEditMode && (
                         <Button
