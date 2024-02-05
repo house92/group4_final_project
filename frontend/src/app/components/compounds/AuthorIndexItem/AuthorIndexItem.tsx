@@ -14,9 +14,7 @@ interface AuthorIndexItemInput {
     firstName: string;
     lastName: string;
     birthYear: string;
-    deathYear: string;
     hometown: string;
-    bio: string;
     /**
      * Identifier for user to whom course schedule belongs
      * @todo Implement admin role – otherwise userID shouldn't be editable
@@ -28,9 +26,7 @@ interface AuthorIndexItemProps {
     firstName: string;
     lastName: string;
     birthYear: string;
-    deathYear: string;
     hometown: string;
-    bio: string;
 
     /**
      * Whether the component can be put into edit mode
@@ -60,9 +56,7 @@ export default function AuthorIndexItem({
     firstName,
     lastName,
     birthYear,
-    deathYear,
     hometown,
-    bio,
     canEdit,
     canDelete,
     onSave = () => undefined,
@@ -80,9 +74,7 @@ export default function AuthorIndexItem({
             firstName,
             lastName,
             birthYear,
-            deathYear,
             hometown,
-            bio,
         },
 
         validateOnChange: false,
@@ -93,9 +85,7 @@ export default function AuthorIndexItem({
             firstName: string(),
             lastName: string(),
             birthYear: string(),
-            deathYear: string(),
             hometown: string(),
-            bio: string(),
         }),
 
         onSubmit: (values) => {
@@ -106,12 +96,12 @@ export default function AuthorIndexItem({
 
     const { values, isValid, dirty } = formik;
 
+    let fullName: string;
+    fullName = values.firstName + " " + values.lastName;
+
     return (
         <Stack gap={4}>
             <Box display="flex" justifyContent="space-between">
-                <Typography component="h1" variant="h4">
-                    Author Item Details
-                </Typography>
 
                 <Box>
                     {canEdit && !isInEditMode && (
@@ -157,7 +147,7 @@ export default function AuthorIndexItem({
                 <Input
                     label="Author Name"
                     name="authorName"
-                    value={values.firstName}
+                    value={fullName}
                     onChange={formik.handleChange}
                     readOnly={!isInEditMode}
                 />

@@ -18,9 +18,7 @@ export const Basic = (args) => {
                         firstName="Herman"
                         lastName="Melville"
                         birthYear="1819"
-                        deathYear="1891"
                         hometown="Nantucket"
-                        bio="Lorem Ipsum etc"
                         canEdit={false}
                         canDelete={false}
                     />
