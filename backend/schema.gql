@@ -16,6 +16,28 @@ type UserSession {
   token: String
 }
 
+type Author {
+  id: ID!
+
+  """Author first name"""
+  firstName: String!
+
+  """Author last name"""
+  lastName: String!
+
+  """Author year of death"""
+  dateOfBirth: String!
+
+  """Author year of death"""
+  dateOfDeath: String!
+
+  """Author hometown"""
+  hometown: String!
+
+  """Bio of author"""
+  bio: String!
+}
+
 type Book {
   id: ID!
 
@@ -46,6 +68,8 @@ type Query {
   getAllEmails: [String!]!
   listBooks: [Book!]!
   getBook(id: String!): Book!
+  listAuthors: [Author!]!
+  getAuthor(id: String!): Author!
 }
 
 type Mutation {
@@ -54,6 +78,7 @@ type Mutation {
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
+  createAuthor(input: CreateAuthorsInput!): Author!
 }
 
 input CreateUserInput {
@@ -108,4 +133,24 @@ input UpdateBookInput {
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
   id: Int!
+}
+
+input CreateAuthorsInput {
+  """Author first name"""
+  firstName: String!
+
+  """Author last name"""
+  lastName: String!
+
+  """Author year of death"""
+  dateOfBirth: String!
+
+  """Author year of death"""
+  dateOfDeath: String!
+
+  """Author hometown"""
+  hometown: String!
+
+  """Bio of author"""
+  bio: String!
 }

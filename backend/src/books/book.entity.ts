@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Author } from 'src/authors/authors.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -35,4 +36,7 @@ export class Book {
     @Column({ nullable: true })
     @Field(() => String, { description: 'URL to a page where the book can be purchased', nullable: true })
     purchaseUrl?: string;
+
+    @ManyToMany(() => Author, author => author.books)
+    authors: Author[];
 }
