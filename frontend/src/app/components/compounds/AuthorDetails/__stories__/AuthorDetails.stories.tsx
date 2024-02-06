@@ -8,9 +8,8 @@ export default {
 
 export const Default = () => (
     <AuthorDetails 
-        firstName="John"
-        lastName="Doe"
-        dateOfBirth="2002-11-11"
+        authorName="John Doe"
+        birthYear="2002"
         homeTown="Chicago"
         bio="This is the bio..."
     />
