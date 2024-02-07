@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper, Typography } from '@mui/material';
-import { DateTime} from 'luxon';
+import { DateTime } from 'luxon';
 
 interface BookDetailsProps {
     id: string;
