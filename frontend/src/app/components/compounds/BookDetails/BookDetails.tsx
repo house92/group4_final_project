@@ -6,7 +6,7 @@ interface BookDetailsProps {
     title: string;
     coverImage: string;
     authorName?: string;
-    publicationDate: string;
+    publicationDate: DateTime;
     synopsis: string;
 }
 
