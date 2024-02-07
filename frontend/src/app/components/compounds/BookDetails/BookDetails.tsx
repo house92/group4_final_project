@@ -2,6 +2,7 @@ import React from 'react';
 import { Paper, Typography } from '@mui/material';
 
 interface BookDetailsProps {
+    id: string;
     title: string;
     coverImage: string;
     authorName?: string;
