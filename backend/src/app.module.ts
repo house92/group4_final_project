@@ -6,6 +6,7 @@ import { generateTypeORMModuleOptions } from './db';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BooksModule } from './books/books.module';
+import { AuthorsModule } from './authors/authors.module';
 
 @Module({
     imports: [
@@ -18,8 +19,8 @@ import { BooksModule } from './books/books.module';
         }),
         TypeOrmModule.forRoot(generateTypeORMModuleOptions()),
         BooksModule,
+        AuthorsModule,
     ],
-    providers: [],
     exports: [],
 })
 export class AppModule {}

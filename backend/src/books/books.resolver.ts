@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { BooksService } from './books.service';
 import { Book } from './book.entity';
@@ -12,7 +13,7 @@ export class BooksResolver {
     ////////////////////////////////
     // QUERIES
     ////////////////////////////////
-
+    @Public()
     @Query(() => [Book])
     listBooks() {
         return this.booksService.findAll();
@@ -28,7 +29,6 @@ export class BooksResolver {
     // MUTATIONS
     ////////////////////////////////
 
-    @Public()
     @Mutation(() => Book)
     createBook(@Args('input') input: CreateBookInput) {
         return this.booksService.create(input);
