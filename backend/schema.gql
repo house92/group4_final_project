@@ -79,6 +79,8 @@ type Mutation {
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
   createAuthor(input: CreateAuthorsInput!): Author!
+  updateAuthor(input: UpdateAuthorInput!): Author!
+  removeAuthor(id: String!): Author!
 }
 
 input CreateUserInput {
@@ -153,4 +155,25 @@ input CreateAuthorsInput {
 
   """Bio of author"""
   bio: String!
+}
+
+input UpdateAuthorInput {
+  """Author first name"""
+  firstName: String
+
+  """Author last name"""
+  lastName: String
+
+  """Author year of death"""
+  dateOfBirth: String
+
+  """Author year of death"""
+  dateOfDeath: String
+
+  """Author hometown"""
+  hometown: String
+
+  """Bio of author"""
+  bio: String
+  id: String!
 }
