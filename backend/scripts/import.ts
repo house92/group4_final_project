@@ -3,16 +3,21 @@ import { NestFactory } from '@nestjs/core';
 import { getDataSourceToken, TypeOrmModule } from '@nestjs/typeorm';
 import * as commander from 'commander';
 import * as dotenv from 'dotenv';
-// import { DateTime } from 'luxon';
-// import hash from 'object-hash';
+import { DateTime } from 'luxon';
+import * as hash from 'object-hash';
+import { Author } from 'src/authors/author.entity';
+import { CreateAuthorInput } from 'src/authors/inputs/create-author.input';
 
 import { Book } from 'src/books/book.entity';
+import { BooksService } from 'src/books/books.service';
+import { CreateBookInput } from 'src/books/inputs/create-book.input';
 import { generateTypeORMModuleOptions } from 'src/db/index';
 
 dotenv.config();
 
 @Module({
-    imports: [TypeOrmModule.forRoot(generateTypeORMModuleOptions())],
+    imports: [TypeOrmModule.forRoot(generateTypeORMModuleOptions()), TypeOrmModule.forFeature([Book, Author])],
+    providers: [BooksService],
 })
 export class BookModule {}
 
@@ -58,21 +63,22 @@ interface AuthorMap {
     [key: string]: string;
 }
 
-// TODO: add back in once Author entity exists
-// function transformGutendexPersonToAuthor(gutendexPerson: GutendexPerson): Author {
-//     const names = gutendexPerson.name.split(',');
-//     const transformedAuthor: Author = {
-//         firstName: names[1],
-//         lastName: names[2],
-//         dateOfBirth: DateTime.fromObject({ year: gutendexPerson.birth_year }),
-//         dateOfDeath: DateTime.fromObject({ year: gutendexPerson.death_year }),
-//     };
-// }
+function transformGutendexPersonToAuthor(gutendexPerson: GutendexPerson): CreateAuthorInput {
+    const names = gutendexPerson.name.split(',');
+    const transformedAuthor: CreateAuthorInput = {
+        firstName: names[1],
+        lastName: names[0],
+        dateOfBirth: DateTime.fromObject({ year: gutendexPerson.birth_year }).toISODate(),
+        dateOfDeath: DateTime.fromObject({ year: gutendexPerson.death_year }).toISODate(),
+    };
 
-function transformGutendexBookToBook(gutendexBook: GutendexBook, authorMap: AuthorMap): Omit<Book, 'id'> {
-    const transformedBook: Omit<Book, 'id'> = {
+    return transformedAuthor;
+}
+
+function transformGutendexBookToBook(gutendexBook: GutendexBook, authorMap: AuthorMap): CreateBookInput {
+    const transformedBook: CreateBookInput = {
         title: gutendexBook.title,
-        // authorIds: gutendexBook.authors.map((author) => authorMap[hash(author)]),
+        authorIds: gutendexBook.authors.map((author) => authorMap[hash(author)]),
         coverImage: gutendexBook.formats['image/jpeg'],
         downloadUrl: gutendexBook.formats['application/epub+zip'] || gutendexBook.formats['text/html'],
     };
@@ -99,6 +105,8 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     // set up Nest app
     const app = await NestFactory.createApplicationContext(BookModule);
     const ds = app.get(getDataSourceToken());
+
+    const booksService = app.get(BooksService);
 
     console.log('Nest app initialized');
 
@@ -130,27 +138,29 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
 
     const authorMap: AuthorMap = {};
 
-    // TODO: add back in once Author entity exists
-    // console.log('creating authors..');
+    console.log('creating authors..');
 
-    // for (const book of gutendexBooks) {
-    //     for (const gutendexAuthor of book.authors) {
-    //         const hashId = hash(gutendexAuthor);
+    for (const book of gutendexBooks) {
+        for (const gutendexAuthor of book.authors) {
+            const hashId = hash(gutendexAuthor);
 
-    //         if (!authorMap[hashId]) {
-    //             const author = await ds.manager.create(Author, transformGutendexPersonToAuthor(gutendexAuthor));
-    //             authorMap[hashId] = author.id;
-    //         }
-    //     }
-    // }
+            if (!authorMap[hashId]) {
+                const author = await ds.manager.save(Author, transformGutendexPersonToAuthor(gutendexAuthor));
+                authorMap[hashId] = author.id;
+            }
+        }
+    }
 
-    // console.log('authors created');
+    console.log('authors created');
 
     console.log('creating books..');
 
     const books = gutendexBooks.map((book) => transformGutendexBookToBook(book, authorMap));
 
-    await ds.manager.save(Book, books);
+    // await ds.manager.save(Book, books);
+    for (const book of books) {
+        await booksService.create(book);
+    }
 
     console.log('books created');
 
