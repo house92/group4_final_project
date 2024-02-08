@@ -16,6 +16,29 @@ type UserSession {
   token: String
 }
 
+type Author {
+  id: ID!
+
+  """Author first name"""
+  firstName: String!
+
+  """Author last name"""
+  lastName: String!
+
+  """Author year of death"""
+  dateOfBirth: String!
+
+  """Author year of death"""
+  dateOfDeath: String!
+
+  """Author hometown"""
+  hometown: String!
+
+  """Bio of author"""
+  bio: String!
+  books: [Book!]!
+}
+
 type Book {
   id: ID!
 
@@ -26,7 +49,7 @@ type Book {
   title: String!
 
   """Date as ISO string"""
-  publicationDate: String!
+  publicationDate: String
 
   """Synopsis of the book"""
   synopsis: String
@@ -39,6 +62,7 @@ type Book {
 
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
+  authors: [Author!]!
 }
 
 type Query {
@@ -46,6 +70,8 @@ type Query {
   getAllEmails: [String!]!
   listBooks: [Book!]!
   getBook(id: String!): Book!
+  listAuthors: [Author!]!
+  getAuthor(id: String!): Author!
 }
 
 type Mutation {
@@ -54,6 +80,9 @@ type Mutation {
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
+  createAuthor(input: CreateAuthorInput!): Author!
+  updateAuthor(input: UpdateAuthorInput!): Author!
+  removeAuthor(id: String!): Author!
 }
 
 input CreateUserInput {
@@ -84,6 +113,7 @@ input CreateBookInput {
 
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
+  authorIds: [ID!]
 }
 
 input UpdateBookInput {
@@ -107,5 +137,49 @@ input UpdateBookInput {
 
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
+  authorIds: [ID!]
   id: Int!
+}
+
+input CreateAuthorInput {
+  """Author first name"""
+  firstName: String!
+
+  """Author last name"""
+  lastName: String!
+
+  """Author year of death"""
+  dateOfBirth: String!
+
+  """Author year of death"""
+  dateOfDeath: String
+
+  """Author hometown"""
+  hometown: String
+
+  """Biography of author"""
+  bio: String
+  bookIds: [ID!]
+}
+
+input UpdateAuthorInput {
+  """Author first name"""
+  firstName: String
+
+  """Author last name"""
+  lastName: String
+
+  """Author year of death"""
+  dateOfBirth: String
+
+  """Author year of death"""
+  dateOfDeath: String
+
+  """Author hometown"""
+  hometown: String
+
+  """Biography of author"""
+  bio: String
+  bookIds: [ID!]
+  id: String!
 }

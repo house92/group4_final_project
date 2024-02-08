@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql';
 
 @InputType()
 export class CreateBookInput {
@@ -22,4 +22,7 @@ export class CreateBookInput {
 
     @Field(() => String, { description: 'URL to a page where the book can be purchased', nullable: true })
     purchaseUrl?: string;
+
+    @Field(() => [ID], { nullable: true })
+    authorIds?: string[];
 }
