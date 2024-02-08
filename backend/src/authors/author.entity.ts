@@ -33,7 +33,12 @@ export class Author {
     @Field(() => String, { description: 'Bio of author' })
     bio: string;
 
-    @ManyToMany(() => Book, book => book.authors)
-    @JoinTable()
-    books: Book[];
+    @ManyToMany(() => Book, { cascade: true })
+    @JoinTable({
+        name: 'author_books',
+        joinColumn: { name: 'author_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'book_id', referencedColumnName: 'id' },
+    })
+    @Field(() => [Book])
+    books?: Book[];
 }

@@ -1,9 +1,9 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthorsService } from './authors.service';
-import { Author } from './authors.entity';
+import { Author } from './author.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
-import { CreateAuthorsInput } from './inputs/create-authors.input';
-import { UpdateAuthorInput } from './inputs/update-authors.input';
+import { CreateAuthorInput } from './inputs/create-author.input';
+import { UpdateAuthorInput } from './inputs/update-author.input';
 
 @Resolver()
 export class AuthorsResolver {
@@ -19,16 +19,16 @@ export class AuthorsResolver {
     async getAuthor(@Args('id', { type: () => String }) id: string) {
         return this.authorsService.findById(id);
     }
-    
+
     @Public()
     @Mutation(() => Author)
-    createAuthor(@Args('input') input: CreateAuthorsInput) {
+    createAuthor(@Args('input') input: CreateAuthorInput) {
         return this.authorsService.create(input);
     }
     @Public()
     @Mutation(() => Author)
     updateAuthor(@Args('input') input: UpdateAuthorInput) {
-        return this.authorsService.update(input.id, input);
+        return this.authorsService.update(input);
     }
     @Public()
     @Mutation(() => Author)

@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 
 import { User } from 'src/users/user.entity';
 import { Book } from 'src/books/book.entity';
-import { Author } from 'src/authors/authors.entity';
+import { Author } from 'src/authors/author.entity';
 
 dotenv.config();
 
@@ -18,6 +18,7 @@ export function generateTypeORMModuleOptions(): DataSourceOptions {
         entities: [Book, User, Author],
         synchronize: true,
         migrations: ['dist/migrations/*.js'],
+        logging: true,
     };
 }
 
