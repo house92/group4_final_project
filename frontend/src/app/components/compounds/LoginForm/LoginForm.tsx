@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Container, Button, TextField, Typography, Box, Stack } from '@mui/material';
 
@@ -11,12 +12,16 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onSubmit }: LoginFormProps) {
+    const history = useHistory();
     const formik = useFormik<LoginCreds>({
         initialValues: {
             email: '',
             password: '',
         },
-        onSubmit,
+        onSubmit: (values) => {
+            onSubmit(values);
+            history.push("/HomePage");
+        },
     });
 
     return (
