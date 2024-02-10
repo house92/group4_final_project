@@ -1,26 +1,16 @@
-import { AuthorIndexItem } from 'app/components';
+import { AuthorIndexItem } from 'app/components/compounds/AuthorIndexItem';
 import { useParams } from 'react-router-dom';
+import useListAuthors from './UseListAuthors';
+
 
 export default function AuthorIndexPage() {
-    const { courseScheduleId } = useParams();
-
-    const [updateCourseSchedule] = useUpdateCourseScheduleMutation();
-    const [deleteCourseSchedule] = useDeleteCourseScheduleMutation();
-
-    const { courseSchedule } = useCourseSchedule(courseScheduleId);
-
-    if (!courseScheduleId || !courseSchedule) {
-        // TODO:(sam) handle 404 case
-        return null;
-    }
+    const { authorArr } = useListAuthors();
 
     return (
-        <AuthorIndexItem
-            {...courseSchedule}
-            canEdit
-            canDelete
-            onSave={(values) => updateCourseSchedule({ variables: { input: { id: courseScheduleId, ...values } } })}
-            onDelete={(id) => deleteCourseSchedule({ variables: { id } })}
-        />
+        <div>
+            {authorArr.map((author) => (
+                <AuthorIndexItem authorId={author.id} authorName={author.firstName} birthYear={author.dateOfBirth} hometown={author.hometown} />
+            ))}
+        </div>
     );
 }
