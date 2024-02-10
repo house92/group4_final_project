@@ -29,7 +29,6 @@ export class BooksResolver {
     // MUTATIONS
     ////////////////////////////////
 
-    @Public()
     @Mutation(() => Book)
     createBook(@Args('input') input: CreateBookInput) {
         return this.booksService.create(input);

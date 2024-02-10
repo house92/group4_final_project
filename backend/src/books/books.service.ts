@@ -14,7 +14,7 @@ export class BooksService {
     ) {}
 
     findAll() {
-        return `This action returns all books`;
+        return this.repo.find();
     }
 
     findById(id: string) {

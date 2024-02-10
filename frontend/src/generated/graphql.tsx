@@ -10,74 +10,73 @@ export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' |
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
+    ID: { input: string; output: string };
+    String: { input: string; output: string };
+    Boolean: { input: boolean; output: boolean };
+    Int: { input: number; output: number };
+    Float: { input: number; output: number };
 };
 
 export type CreateUserInput = {
-  email: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+    email: Scalars['String']['input'];
+    firstName: Scalars['String']['input'];
+    lastName: Scalars['String']['input'];
+    password: Scalars['String']['input'];
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
-  createUser: User;
-  signInUser: UserSession;
+    __typename?: 'Mutation';
+    createUser: User;
+    signInUser: UserSession;
 };
-
 
 export type MutationCreateUserArgs = {
-  input: CreateUserInput;
+    input: CreateUserInput;
 };
 
-
 export type MutationSignInUserArgs = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+    email: Scalars['String']['input'];
+    password: Scalars['String']['input'];
 };
 
 export type Query = {
-  __typename?: 'Query';
-  getAllEmails: Array<Scalars['String']['output']>;
-  getUserSession: UserSession;
+    __typename?: 'Query';
+    getAllEmails: Array<Scalars['String']['output']>;
+    getUserSession: UserSession;
 };
 
 export type User = {
-  __typename?: 'User';
-  email: Scalars['String']['output'];
-  firstName: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  lastName: Scalars['String']['output'];
+    __typename?: 'User';
+    email: Scalars['String']['output'];
+    firstName: Scalars['String']['output'];
+    id: Scalars['ID']['output'];
+    lastName: Scalars['String']['output'];
 };
 
 export type UserSession = {
-  __typename?: 'UserSession';
-  firstName: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  lastName: Scalars['String']['output'];
-  token?: Maybe<Scalars['String']['output']>;
+    __typename?: 'UserSession';
+    firstName: Scalars['String']['output'];
+    id: Scalars['ID']['output'];
+    lastName: Scalars['String']['output'];
+    token?: Maybe<Scalars['String']['output']>;
 };
 
-export type GetUserSessionQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetUserSessionQueryVariables = Exact<{ [key: string]: never }>;
 
-
-export type GetUserSessionQuery = { __typename?: 'Query', getUserSession: { __typename?: 'UserSession', id: string, firstName: string, lastName: string } };
-
+export type GetUserSessionQuery = {
+    __typename?: 'Query';
+    getUserSession: { __typename?: 'UserSession'; id: string; firstName: string; lastName: string };
+};
 
 export const GetUserSessionDocument = gql`
     query GetUserSession {
-  getUserSession {
-    id
-    firstName
-    lastName
-  }
-}
-    `;
+        getUserSession {
+            id
+            firstName
+            lastName
+        }
+    }
+`;
 
 /**
  * __useGetUserSessionQuery__
@@ -94,18 +93,24 @@ export const GetUserSessionDocument = gql`
  *   },
  * });
  */
-export function useGetUserSessionQuery(baseOptions?: Apollo.QueryHookOptions<GetUserSessionQuery, GetUserSessionQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserSessionQuery, GetUserSessionQueryVariables>(GetUserSessionDocument, options);
-      }
-export function useGetUserSessionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserSessionQuery, GetUserSessionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserSessionQuery, GetUserSessionQueryVariables>(GetUserSessionDocument, options);
-        }
-export function useGetUserSessionSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserSessionQuery, GetUserSessionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserSessionQuery, GetUserSessionQueryVariables>(GetUserSessionDocument, options);
-        }
+export function useGetUserSessionQuery(
+    baseOptions?: Apollo.QueryHookOptions<GetUserSessionQuery, GetUserSessionQueryVariables>,
+) {
+    const options = { ...defaultOptions, ...baseOptions };
+    return Apollo.useQuery<GetUserSessionQuery, GetUserSessionQueryVariables>(GetUserSessionDocument, options);
+}
+export function useGetUserSessionLazyQuery(
+    baseOptions?: Apollo.LazyQueryHookOptions<GetUserSessionQuery, GetUserSessionQueryVariables>,
+) {
+    const options = { ...defaultOptions, ...baseOptions };
+    return Apollo.useLazyQuery<GetUserSessionQuery, GetUserSessionQueryVariables>(GetUserSessionDocument, options);
+}
+export function useGetUserSessionSuspenseQuery(
+    baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserSessionQuery, GetUserSessionQueryVariables>,
+) {
+    const options = { ...defaultOptions, ...baseOptions };
+    return Apollo.useSuspenseQuery<GetUserSessionQuery, GetUserSessionQueryVariables>(GetUserSessionDocument, options);
+}
 export type GetUserSessionQueryHookResult = ReturnType<typeof useGetUserSessionQuery>;
 export type GetUserSessionLazyQueryHookResult = ReturnType<typeof useGetUserSessionLazyQuery>;
 export type GetUserSessionSuspenseQueryHookResult = ReturnType<typeof useGetUserSessionSuspenseQuery>;
