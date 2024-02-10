@@ -1,0 +1,14 @@
+query GetAuthorsList() {
+    
+  listAuthors() {
+    id
+    firstName
+    lastName
+    dateOfBirth
+    dateOfDeath
+    hometown
+    bio
+
+  }
+
+}

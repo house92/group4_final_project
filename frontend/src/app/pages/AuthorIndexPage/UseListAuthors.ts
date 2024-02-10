@@ -1,0 +1,1 @@
+import { useGetCourseScheduleQuery } from 'generated/graphql';
