@@ -11,7 +11,7 @@ interface SigninFormProps {
     onSubmit: (values: SigninCreds) => void;
 }
 
-export default function LoginForm({ onSubmit }: SigninFormProps) {
+export default function SigninForm({ onSubmit }: SigninFormProps) {
 
     const formik = useFormik<SigninCreds>({
         enableReinitialize: true,
