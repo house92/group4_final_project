@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Args, Mutation } from '@nestjs/graphql';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { UserAuthService } from './user-auth.service';
 import { CreateUserAuthInput } from './inputs/create-user-auth-input';
@@ -10,14 +10,9 @@ import { UserAuth } from './user-auth.entity';
 export class UserAuthResolver {
     constructor(private readonly service: UserAuthService) {}
 
+    @Public()
     @Mutation(() => UserAuth)
-    async createUser(@Args('input') input: CreateUserAuthInput) {
+    async registerUser(@Args('input') input: CreateUserAuthInput) {
         return this.service.createUser(input);
-    }
-
-    @Query(() => [String])
-    async getAllEmails(): Promise<string[]> {
-        const users = await this.service.findAll();
-        return users.map((user) => user.email);
     }
 }

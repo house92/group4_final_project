@@ -21,8 +21,12 @@ export class AuthService {
             throw new UnauthorizedException('There is no user with that email and password');
         }
 
-        const token = await this.jwtService.signAsync({ userId: user.id });
+        const token = await this.generateToken(user.id);
 
         return { user, token };
+    }
+
+    async generateToken(userId: string) {
+        return this.jwtService.signAsync({ userId });
     }
 }

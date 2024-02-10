@@ -9,23 +9,23 @@ export class UserResolver {
     constructor(private readonly userService: UserService) {}
 
     @Mutation(() => User)
-    createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-        return this.userService.create(createUserInput);
+    createUser(@Args('input') input: CreateUserInput) {
+        return this.userService.create(input);
     }
 
-    @Query(() => [User], { name: 'user' })
-    findAll() {
+    @Query(() => [User])
+    listUsers() {
         return this.userService.findAll();
     }
 
-    @Query(() => User, { name: 'user' })
-    findOne(@Args('id', { type: () => Int }) id: number) {
+    @Query(() => User)
+    getUser(@Args('id', { type: () => String }) id: number) {
         return this.userService.findOne(id);
     }
 
     @Mutation(() => User)
-    updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-        return this.userService.update(updateUserInput);
+    updateUser(@Args('input') input: UpdateUserInput) {
+        return this.userService.update(input);
     }
 
     @Mutation(() => User)
