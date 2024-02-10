@@ -8,10 +8,10 @@ interface AuthorDetailsProps {
     bio: string;
 }
 
-const AuthorDetails = ({ firstName, lastName, dateOfBirth, homeTown, bio }) => {
+const AuthorDetails = ({ name, birthYear, homeTown, bio }) => {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
-            <Typography variant="h5">Author: {authorName}</Typography>
+            <Typography variant="h5">Author: {name}</Typography>
             <Typography variant="body1">Date Of Birth: {birthYear}</Typography>
             <Typography variant="body1">Home Town: {homeTown}</Typography>
             <Typography variant="body1">Bio: {bio}</Typography>
