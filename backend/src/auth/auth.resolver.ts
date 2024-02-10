@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { Response } from 'express';
 
 import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { UserAuthService } from '../user-auths/user-auth.service';
 import { Public } from './decorators/public.decorator';
 import { CurrentRequestContext, RequestContext } from './decorators/current_request_context.decorator';
 
@@ -15,10 +15,10 @@ class UserSession {
     id: string;
 
     @Field()
-    firstName: string;
+    firstName?: string;
 
     @Field()
-    lastName: string;
+    lastName?: string;
 
     @Field({ nullable: true })
     token?: string;
@@ -28,7 +28,7 @@ class UserSession {
 export class AuthResolver {
     constructor(
         private readonly authService: AuthService,
-        private readonly usersService: UsersService,
+        private readonly usersService: UserAuthService,
     ) {}
 
     @Public()
@@ -50,8 +50,6 @@ export class AuthResolver {
 
         return {
             id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
             token,
         };
     }
