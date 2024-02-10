@@ -8,7 +8,7 @@ export default {
 
 export const Default = () => (
     <AuthorDetails 
-        authorName="John Doe"
+        name="John Doe"
         birthYear="2002"
         homeTown="Chicago"
         bio="This is the bio..."
