@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import { Container, Button, TextField, Typography, Box, Stack } from '@mui/material';
+import { string } from 'yup';
 
 interface SigninCreds {
     email: string;
@@ -12,7 +13,7 @@ interface SigninFormProps {
 
 export default function LoginForm({ onSubmit }: SigninFormProps) {
 
-    const formik = useFormik<SignInFormProps>({
+    const formik = useFormik<SigninCreds>({
         enableReinitialize: true,
 
         initialValues: {
@@ -23,7 +24,7 @@ export default function LoginForm({ onSubmit }: SigninFormProps) {
         validateOnChange: false,
         validateOnBlur: false,
         validateOnMount: false,
-        validationSchema: object().shape({
+        validationSchema: Object().shape({
             email: string()
                 .email('some error message about being invalid')
                 .required('some error message about being required'),
