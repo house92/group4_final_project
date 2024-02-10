@@ -3,7 +3,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 interface AuthorIndexItemProps {
     authorId: string;
     authorName: string;
-    birthYear: number;
+    birthYear: string;
     hometown: string;
 }
 

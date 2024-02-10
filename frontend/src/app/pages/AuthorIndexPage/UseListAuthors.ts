@@ -2,19 +2,21 @@ import { useGetAuthorsListQuery } from 'generated/graphql';
 
 interface Author {
     id: string;
-    firstName: string;
-    lastName: string;
+    name: string;
     dateOfBirth: string;
     dateOfDeath: string;
     hometown: string;
     bio: string;
 }
 
-export default function useListAuthors(id: string = '') {
+export default function useAuthors() {
     const { data } = useGetAuthorsListQuery();
 
-    let authorTemp: Author | undefined;
-    let authorArr: Author[] = [];
+    let authors: Author[] = [];
+    console.log(data);
+    console.log('in useListAuthors');
+
+    console.log(data?.listAuthors.length);
 
     if (data?.listAuthors) {
         // let myArray: Author[] = [];
@@ -22,20 +24,18 @@ export default function useListAuthors(id: string = '') {
         // for (let element of data?.listAuthors) {
         //     myArray.push(element);
         // }
-        for (let i = 0; i < data?.listAuthors.length; i++) {
-            authorTemp = {
-                id: data?.listAuthors[i].id,
-                firstName: data?.listAuthors[i].firstName,
-                lastName: data?.listAuthors[i].lastName,
-                dateOfBirth: data?.listAuthors[i].dateOfBirth,
-                dateOfDeath: data?.listAuthors[i].dateOfDeath,
-                hometown: data?.listAuthors[i].hometown,
-                bio: data?.listAuthors[i].bio
-            }
-            authorArr.push(authorTemp);
-        }
-        
+        console.log('about to map');
+
+        authors = data.listAuthors.map((author) => ({
+            id: author.id,
+            name: `${author.firstName} ${author.lastName}`,
+            dateOfBirth: author.dateOfBirth,
+            dateOfDeath: author.dateOfDeath,
+            hometown: author.hometown,
+            bio: author.bio,
+        }));
+        console.log('just mapped');
     }
 
-    return { authorArr };
+    return { authors };
 }

@@ -9,7 +9,7 @@ export function generateRouter() {
                 {
                     path: 'authors',
                     element: <AuthorIndexPage />,
-                }
+                },
             ],
         },
     ]);
