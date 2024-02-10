@@ -1,6 +1,6 @@
-query GetAuthorsList() {
-    
-  listAuthors() {
+query GetAuthorsList {
+
+  listAuthors {
     id
     firstName
     lastName

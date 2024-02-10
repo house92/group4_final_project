@@ -1,1 +1,1 @@
-import { useGetCourseScheduleQuery } from 'generated/graphql';
+import { useGetAuthorsList } from 'generated/graphql';
