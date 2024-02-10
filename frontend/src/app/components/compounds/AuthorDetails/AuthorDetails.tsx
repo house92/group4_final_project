@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper, Typography } from '@mui/material';
 
 interface AuthorDetailsProps {
-    authorName: string;
+    name: string;
     birthYear: number;
     homeTown: string;
     bio: string;
