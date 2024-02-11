@@ -15,4 +15,3 @@ export const Default = () => (
         synopsis="This is the books synopsis... 123"
     />
 );
-
