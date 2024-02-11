@@ -14,7 +14,6 @@ export default function useAuthors() {
 
     let authors: Author[] = [];
     if (data?.listAuthors) {
-
         authors = data.listAuthors.map((author) => ({
             id: author.id,
             name: `${author.firstName} ${author.lastName}`,
