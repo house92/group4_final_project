@@ -8,8 +8,8 @@ export class CreateBookInput {
     @Field(() => String, { description: 'Title of the book' })
     title: string;
 
-    @Field(() => String, { description: 'Date as ISO string' })
-    publicationDate: Date;
+    @Field(() => String, { description: 'Date as ISO string', nullable: true })
+    publicationDate?: Date;
 
     @Field(() => String, { description: 'Synopsis of the book', nullable: true })
     synopsis?: string;

@@ -9,29 +9,29 @@ export class Author {
     @Field(() => ID)
     id: string;
 
-    @Column()
-    @Field(() => String, { description: 'Author first name' })
-    firstName: string;
+    @Column({ nullable: true })
+    @Field(() => String, { description: 'Author first name', nullable: true })
+    firstName?: string;
 
     @Column()
     @Field(() => String, { description: 'Author last name' })
     lastName: string;
 
-    @Column({ nullable: true })
+    @Column()
     @Field(() => String, { description: 'Author year of death' })
     dateOfBirth: string;
 
-    @Column()
-    @Field(() => String, { description: 'Author year of death' })
-    dateOfDeath: string;
-
-    @Column()
-    @Field(() => String, { description: 'Author hometown' })
-    hometown: string;
+    @Column({ nullable: true })
+    @Field(() => String, { description: 'Author year of death', nullable: true })
+    dateOfDeath?: string;
 
     @Column({ nullable: true })
-    @Field(() => String, { description: 'Bio of author' })
-    bio: string;
+    @Field(() => String, { description: 'Author hometown', nullable: true })
+    hometown?: string;
+
+    @Column({ nullable: true })
+    @Field(() => String, { description: 'Bio of author', nullable: true })
+    bio?: string;
 
     @ManyToMany(() => Book, { cascade: true })
     @JoinTable({
