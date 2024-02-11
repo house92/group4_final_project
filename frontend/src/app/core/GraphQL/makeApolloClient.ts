@@ -9,9 +9,6 @@ export default function makeApolloClient() {
         credentials: 'include',
     });
 
-    console.log(getGQLOrigin());
-    console.log(httpLink);
-
     const authLink = setContext((_, { headers }) => {
         return {
             headers: {

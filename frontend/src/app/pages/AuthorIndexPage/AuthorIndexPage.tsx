@@ -6,10 +6,10 @@ import useAuthors from './UseListAuthors';
 export default function AuthorIndexPage() {
     const { authors } = useAuthors();
 
-    console.log(authors.length);
-
     return (
         <div>
+            <h1>Authors Index</h1>
+            <div style={{ marginBottom: '20px' }}></div>
             {authors.map((author) => (
                 <AuthorIndexItem
                     authorId={author.id}

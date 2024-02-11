@@ -13,18 +13,7 @@ export default function useAuthors() {
     const { data } = useGetAuthorsListQuery();
 
     let authors: Author[] = [];
-    console.log(data);
-    console.log('in useListAuthors');
-
-    console.log(data?.listAuthors.length);
-
     if (data?.listAuthors) {
-        // let myArray: Author[] = [];
-
-        // for (let element of data?.listAuthors) {
-        //     myArray.push(element);
-        // }
-        console.log('about to map');
 
         authors = data.listAuthors.map((author) => ({
             id: author.id,
@@ -34,7 +23,6 @@ export default function useAuthors() {
             hometown: author.hometown,
             bio: author.bio,
         }));
-        console.log('just mapped');
     }
 
     return { authors };
