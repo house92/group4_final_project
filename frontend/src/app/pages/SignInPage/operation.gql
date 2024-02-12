@@ -1,11 +1,8 @@
-query GetSignInPage {
-
-  SignInDetails {
-    id
-    email
-    password
-    token
-
-  }
-
+mutation signInUser($email: String!,password: String!) {
+    signInUser(email: $email, password: $password) {
+        id
+        firstName
+        lastName
+        token
+    }
 }
