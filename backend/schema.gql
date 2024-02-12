@@ -20,7 +20,7 @@ type Author {
   id: ID!
 
   """Author first name"""
-  firstName: String!
+  firstName: String
 
   """Author last name"""
   lastName: String!
@@ -29,13 +29,13 @@ type Author {
   dateOfBirth: String!
 
   """Author year of death"""
-  dateOfDeath: String!
+  dateOfDeath: String
 
   """Author hometown"""
-  hometown: String!
+  hometown: String
 
   """Bio of author"""
-  bio: String!
+  bio: String
   books: [Book!]!
 }
 
@@ -100,7 +100,7 @@ input CreateBookInput {
   title: String!
 
   """Date as ISO string"""
-  publicationDate: String!
+  publicationDate: String
 
   """Synopsis of the book"""
   synopsis: String
