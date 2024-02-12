@@ -1,0 +1,11 @@
+query GetSignInPage {
+
+  SignInDetails {
+    id
+    userName
+    password
+    token
+    
+  }
+
+}
