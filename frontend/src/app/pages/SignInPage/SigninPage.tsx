@@ -1,18 +1,12 @@
-import React from 'react';
-import { Paper, Typography } from '@mui/material';
-import SigninForm from "./SigninForm";
-import { useMutation } from '@apollo/client';
-import { gql } from 'apollo-boost';
+import { useParams } from 'react-router-dom';
+import useSignIn from './useSignIn';
 
-const SIGN_IN_USER_MUTATION = gql`
-mutation SignInUser($email: String!, $password: String!) {
-    SignInUser(email: $email, password: $password) {
-        id
-        firstName
-        lastName
-        token
-    }
+export default function SignInPage() {
+    const { users } = useSignIn();
+
+    return (
+        <div>
+            <h1>Sign In Page</h1>
+        </div>
+    );
 }
-`;
-
-export default SignInPage;
