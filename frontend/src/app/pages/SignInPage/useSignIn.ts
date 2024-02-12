@@ -4,5 +4,5 @@ interface User {
 }
 
 export default function useSignIn() {
-    const { data } = useGetSignInPageQuery();
+    const { singInUser } = ();
 }
