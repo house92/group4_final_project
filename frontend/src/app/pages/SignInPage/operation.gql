@@ -2,10 +2,10 @@ query GetSignInPage {
 
   SignInDetails {
     id
-    userName
+    email
     password
     token
-    
+
   }
 
 }
