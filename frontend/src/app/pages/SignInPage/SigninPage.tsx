@@ -1,12 +1,8 @@
-import { useParams } from 'react-router-dom';
-import useSignIn from './useSignIn';
+import { SigninForm } from } 'app/components';;
+import { useSignInMutation } from 'geberated/graphql';
 
 export default function SignInPage() {
-    const { users } = useSignIn();
+    const [SignIn] = useSignInMutation();
 
-    return (
-        <div>
-            <h1>Sign In Page</h1>
-        </div>
-    );
+    return <SigninForm onSubmit={({ email, password }) => SignIn({ variable: { email, password } })} />
 }
