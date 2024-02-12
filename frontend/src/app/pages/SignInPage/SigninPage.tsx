@@ -1,8 +1,8 @@
-import { SigninForm } from } 'app/components';;
-import { useSignInMutation } from 'geberated/graphql';
+import SignInForm from "app/components/compounds/SignInForm";
+import useSignIn from "./useSignIn";
 
 export default function SignInPage() {
-    const [SignIn] = useSignInMutation();
+    const { user } = useSignIn();
 
-    return <SigninForm onSubmit={({ email, password }) => SignIn({ variable: { email, password } })} />
+    return <SignInForm onSubmit={({ email, password }) => SignIn({ variable: { email, password } })} />
 }
