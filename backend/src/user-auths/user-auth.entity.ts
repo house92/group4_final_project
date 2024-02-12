@@ -1,9 +1,10 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Index, Column } from 'typeorm';
+import { User } from 'src/user/user.entity';
+import { Entity, PrimaryGeneratedColumn, Index, Column, OneToOne } from 'typeorm';
 
 @ObjectType()
 @Entity()
-export class User {
+export class UserAuth {
     @Field(() => ID)
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -16,11 +17,7 @@ export class User {
     @Column()
     passwordhash: string;
 
-    @Column({ name: 'first_name' })
+    @OneToOne(() => User)
     @Field()
-    firstName: string;
-
-    @Column({ name: 'last_name' })
-    @Field()
-    lastName: string;
+    user: User;
 }

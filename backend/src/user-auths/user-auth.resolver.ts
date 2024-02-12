@@ -1,17 +1,17 @@
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { Public } from 'src/auth/decorators/public.decorator';
-import { UsersService } from './users.service';
-import { CreateUserInput } from './inputs/create-user-input';
-import { User } from './user.entity';
+import { UserAuthService } from './user-auth.service';
+import { CreateUserAuthInput } from './inputs/create-user-auth-input';
+import { UserAuth } from './user-auth.entity';
 //import { AuthGuard } from './auth.guard';
 
 @Public()
 @Resolver()
-export class UserResolver {
-    constructor(private readonly service: UsersService) {}
+export class UserAuthResolver {
+    constructor(private readonly service: UserAuthService) {}
 
-    @Mutation(() => User)
-    async createUser(@Args('input') input: CreateUserInput) {
+    @Mutation(() => UserAuth)
+    async createUser(@Args('input') input: CreateUserAuthInput) {
         return this.service.createUser(input);
     }
 
