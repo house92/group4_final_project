@@ -4,9 +4,17 @@
 
 type User {
   id: ID!
-  email: String!
   firstName: String!
   lastName: String!
+  bio: String!
+  dateOfBirth: String!
+  userAuth: UserAuth!
+}
+
+type UserAuth {
+  id: ID!
+  email: String!
+  user: User!
 }
 
 type UserSession {
@@ -72,24 +80,28 @@ type Query {
   getBook(id: String!): Book!
   listAuthors: [Author!]!
   getAuthor(id: String!): Author!
+  user(id: Int!): User!
 }
 
 type Mutation {
   signInUser(email: String!, password: String!): UserSession!
-  createUser(input: CreateUserInput!): User!
+  createUser(createUserInput: CreateUserInput!): User!
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
   createAuthor(input: CreateAuthorInput!): Author!
   updateAuthor(input: UpdateAuthorInput!): Author!
   removeAuthor(id: String!): Author!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
 }
 
 input CreateUserInput {
-  email: String!
-  password: String!
   firstName: String!
   lastName: String!
+  bio: String!
+  dateOfBirth: String!
+  userAuthId: ID!
 }
 
 input CreateBookInput {
@@ -182,4 +194,12 @@ input UpdateAuthorInput {
   bio: String
   bookIds: [ID!]
   id: String!
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  bio: String
+  dateOfBirth: String
+  id: ID!
 }
