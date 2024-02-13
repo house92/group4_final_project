@@ -6,7 +6,7 @@ type User {
   id: ID!
   firstName: String!
   lastName: String!
-  bio: String!
+  bio: String
   dateOfBirth: String!
   userAuth: UserAuth!
 }
@@ -84,7 +84,7 @@ type Query {
 }
 
 type Mutation {
-  registerUser(input: CreateUserAuthInput!): UserAuth!
+  registerUser(input: CreateUserAuthInput!): UserSession!
   signInUser(email: String!, password: String!): UserSession!
   createUser(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
@@ -100,7 +100,7 @@ type Mutation {
 input CreateUserAuthInput {
   firstName: String!
   lastName: String!
-  bio: String!
+  bio: String
   dateOfBirth: String!
   email: String!
   password: String!
@@ -109,7 +109,7 @@ input CreateUserAuthInput {
 input CreateUserInput {
   firstName: String!
   lastName: String!
-  bio: String!
+  bio: String
   dateOfBirth: String!
   userAuthId: ID!
 }

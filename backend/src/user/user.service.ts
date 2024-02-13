@@ -13,18 +13,24 @@ export class UserService {
         @InjectRepository(User) private userAuthRepo: Repository<UserAuth>,
     ) {}
 
-    async create(_input: CreateUserInput) {
+    async create(_input: CreateUserInput, _userAuth?: UserAuth) {
         const { userAuthId, ...input } = _input;
-        const userAuth = await this.userAuthRepo.findOne({ where: { id: userAuthId } });
+        let userAuth = _userAuth;
+
+        if (!userAuth) {
+            userAuth = await this.userAuthRepo.findOne({ where: { id: userAuthId } });
+        }
 
         if (!userAuth) {
             throw new Error(`UserService::create() - cannot find user auth with id: ${userAuthId}`);
         }
 
-        return this.repo.save({
+        const user = await this.repo.save({
             ...input,
             userAuth,
         });
+
+        return user;
     }
 
     findAll() {

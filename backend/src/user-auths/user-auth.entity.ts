@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { User } from 'src/user/user.entity';
-import { Entity, PrimaryGeneratedColumn, Index, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Index, Column, OneToOne, JoinColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -17,7 +17,8 @@ export class UserAuth {
     @Column()
     passwordhash: string;
 
-    @OneToOne(() => User)
-    @Field()
+    @OneToOne(() => User, (user) => user.userAuth, { cascade: true, onDelete: 'CASCADE' })
+    @Field(() => User)
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     user: User;
 }

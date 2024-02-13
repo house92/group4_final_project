@@ -1,6 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { UserAuth } from 'src/user-auths/user-auth.entity';
-import { PrimaryGeneratedColumn, Column, OneToOne, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, OneToOne, Entity, JoinColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -17,15 +17,15 @@ export class User {
     @Field()
     lastName: string;
 
-    @Column()
-    @Field()
+    @Column({ nullable: true })
+    @Field({ nullable: true })
     bio?: string;
 
     @Column({ name: 'date_of_birth', type: 'timestamptz' })
     @Field()
     dateOfBirth: string;
 
-    @OneToOne(() => UserAuth)
+    @OneToOne(() => UserAuth, (userAuth) => userAuth.user)
     @Field(() => UserAuth)
     userAuth: UserAuth;
 }

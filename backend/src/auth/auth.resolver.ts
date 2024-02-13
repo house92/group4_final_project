@@ -36,11 +36,13 @@ export class AuthResolver {
     ) {}
 
     @Public()
-    @Mutation(() => UserAuth)
+    @Mutation(() => UserSession)
     async registerUser(@Args('input') input: CreateUserAuthInput): Promise<UserSession> {
         const userAuth = await this.userAuthService.createUser(input);
 
-        await this.userService.create({ ...input, userAuthId: userAuth.id });
+        console.log({ userAuth });
+
+        await this.userService.create({ ...input, userAuthId: userAuth.id }, userAuth);
 
         const token = await this.service.generateToken(userAuth.id);
 
