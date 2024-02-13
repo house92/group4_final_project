@@ -4,7 +4,7 @@ interface AuthorIndexItemProps {
     authorId: string;
     authorName: string;
     birthYear: string;
-    hometown: string;
+    hometown: string | null | undefined;
 }
 
 export default function AuthorIndexItem({ authorId, authorName, birthYear, hometown }: AuthorIndexItemProps) {
