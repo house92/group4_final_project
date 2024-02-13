@@ -1,14 +1,10 @@
-query GetAuthorsList {
+query GetAuthor($authorID: ID!) {
 
-  listAuthors {
+  getAuthor(id: $authorID) {
     id
-    firstName
-    lastName
-    dateOfBirth
-    dateOfDeath
-    hometown
+    name
+    birthYear
+    homeTown
     bio
-
   }
-
 }
