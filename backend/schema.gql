@@ -4,9 +4,17 @@
 
 type User {
   id: ID!
-  email: String!
   firstName: String!
   lastName: String!
+  bio: String
+  dateOfBirth: String!
+  userAuth: UserAuth!
+}
+
+type UserAuth {
+  id: ID!
+  email: String!
+  user: User!
 }
 
 type UserSession {
@@ -20,7 +28,7 @@ type Author {
   id: ID!
 
   """Author first name"""
-  firstName: String!
+  firstName: String
 
   """Author last name"""
   lastName: String!
@@ -29,13 +37,13 @@ type Author {
   dateOfBirth: String!
 
   """Author year of death"""
-  dateOfDeath: String!
+  dateOfDeath: String
 
   """Author hometown"""
-  hometown: String!
+  hometown: String
 
   """Bio of author"""
-  bio: String!
+  bio: String
   books: [Book!]!
 }
 
@@ -67,7 +75,8 @@ type Book {
 
 type Query {
   getUserSession: UserSession!
-  getAllEmails: [String!]!
+  listUsers: [User!]!
+  getUser(id: String!): User!
   listBooks: [Book!]!
   getBook(id: String!): Book!
   listAuthors: [Author!]!
@@ -75,8 +84,11 @@ type Query {
 }
 
 type Mutation {
+  registerUser(input: CreateUserAuthInput!): UserSession!
   signInUser(email: String!, password: String!): UserSession!
   createUser(input: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
@@ -85,11 +97,29 @@ type Mutation {
   removeAuthor(id: String!): Author!
 }
 
-input CreateUserInput {
-  email: String!
-  password: String!
+input CreateUserAuthInput {
   firstName: String!
   lastName: String!
+  bio: String
+  dateOfBirth: String!
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  bio: String
+  dateOfBirth: String!
+  userAuthId: ID!
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  bio: String
+  dateOfBirth: String
+  id: ID!
 }
 
 input CreateBookInput {
@@ -100,7 +130,7 @@ input CreateBookInput {
   title: String!
 
   """Date as ISO string"""
-  publicationDate: String!
+  publicationDate: String
 
   """Synopsis of the book"""
   synopsis: String
