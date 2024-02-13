@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { Container, Button, TextField, Typography, Box, Stack } from '@mui/material';
-import { string } from 'yup';
+import { string, object } from 'yup';
 
 interface SigninCreds {
     email: string;
@@ -24,7 +24,7 @@ export default function SigninForm({ onSubmit }: SigninFormProps) {
         validateOnChange: false,
         validateOnBlur: false,
         validateOnMount: false,
-        validationSchema: Object().shape({
+        validationSchema: object().shape({
             email: string()
                 .email('some error message about being invalid')
                 .required('some error message about being required'),
