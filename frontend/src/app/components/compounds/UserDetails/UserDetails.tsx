@@ -11,7 +11,7 @@ interface UserDetailsProps {
 const UserDetails = ({ id, name, bio, age }) => {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
-            <Typography variant="h5">{id}</Typography>
+            <Typography variant="body1">{id}</Typography>
             <Typography variant="body1">Name: {name}</Typography>
             <Typography variant="body1">Bio: {bio}</Typography>
             <Typography variant="body1">Age: {age}</Typography>
