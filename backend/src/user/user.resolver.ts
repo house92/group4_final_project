@@ -3,29 +3,31 @@ import { UserService } from './user.service';
 import { User } from './user.entity';
 import { CreateUserInput } from './inputs/create-user.input';
 import { UpdateUserInput } from './inputs/update-user.input';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Resolver(() => User)
 export class UserResolver {
     constructor(private readonly userService: UserService) {}
 
     @Mutation(() => User)
-    createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-        return this.userService.create(createUserInput);
+    createUser(@Args('input') input: CreateUserInput) {
+        return this.userService.create(input);
     }
 
-    @Query(() => [User], { name: 'user' })
-    findAll() {
+    @Query(() => [User])
+    listUsers() {
         return this.userService.findAll();
     }
 
-    @Query(() => User, { name: 'user' })
-    findOne(@Args('id', { type: () => Int }) id: number) {
+    @Public()
+    @Query(() => User)
+    getUser(@Args('id', { type: () => String }) id: string) {
         return this.userService.findOne(id);
     }
 
     @Mutation(() => User)
-    updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-        return this.userService.update(updateUserInput);
+    updateUser(@Args('input') input: UpdateUserInput) {
+        return this.userService.update(input);
     }
 
     @Mutation(() => User)
