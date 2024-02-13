@@ -11,7 +11,7 @@ export default function AuthorPage() {
             <h1>Author</h1>
             <div style={{ marginBottom: '20px' }}></div>
             <AuthorDetails
-                name={author.name}
+                name={author.firstName}
                 birthYear={author.dateOfBirth}
                 homeTown={author.hometown}
                 bio={author.bio}
