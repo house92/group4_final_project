@@ -17,7 +17,7 @@ export class UserAuth {
     @Column()
     passwordhash: string;
 
-    @OneToOne(() => User, (user) => user.userAuth, { cascade: true, onDelete: 'CASCADE' })
+    @OneToOne(() => User, (user) => user.userAuth)
     @Field(() => User)
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     user: User;

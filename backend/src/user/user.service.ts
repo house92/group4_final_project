@@ -4,7 +4,7 @@ import { UpdateUserInput } from './inputs/update-user.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { UserAuth } from 'src/user-auths/user-auth.entity';
+import { UserAuth } from 'src/user-auth/user-auth.entity';
 
 @Injectable()
 export class UserService {

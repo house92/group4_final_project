@@ -1,6 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { UserAuth } from 'src/user-auths/user-auth.entity';
-import { PrimaryGeneratedColumn, Column, OneToOne, Entity, JoinColumn } from 'typeorm';
+import { UserAuth } from 'src/user-auth/user-auth.entity';
+import { PrimaryGeneratedColumn, Column, OneToOne, Entity } from 'typeorm';
 
 @ObjectType()
 @Entity()

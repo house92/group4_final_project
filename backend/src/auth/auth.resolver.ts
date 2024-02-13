@@ -3,12 +3,12 @@ import { DateTime } from 'luxon';
 import { Response } from 'express';
 
 import { AuthService } from './auth.service';
-import { UserAuthService } from '../user-auths/user-auth.service';
+import { UserAuthService } from '../user-auth/user-auth.service';
 import { Public } from './decorators/public.decorator';
 import { CurrentRequestContext, RequestContext } from './decorators/current_request_context.decorator';
 import { UserService } from 'src/user/user.service';
-import { UserAuth } from 'src/user-auths/user-auth.entity';
-import { CreateUserAuthInput } from 'src/user-auths/inputs/create-user-auth-input';
+import { UserAuth } from 'src/user-auth/user-auth.entity';
+import { CreateUserAuthInput } from 'src/user-auth/inputs/create-user-auth-input';
 
 const AUTHENTICATION_COOKIE_NAME = 'Authentication';
 
@@ -39,8 +39,6 @@ export class AuthResolver {
     @Mutation(() => UserSession)
     async registerUser(@Args('input') input: CreateUserAuthInput): Promise<UserSession> {
         const userAuth = await this.userAuthService.createUser(input);
-
-        console.log({ userAuth });
 
         await this.userService.create({ ...input, userAuthId: userAuth.id }, userAuth);
 

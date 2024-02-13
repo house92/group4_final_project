@@ -16,7 +16,7 @@ export const Basic = (args) => {
                     <AuthorIndexItem
                         authorId="12345"
                         authorName="Herman Melville"
-                        birthYear={1819}
+                        birthYear="1819"
                         hometown="Nantucket"
                     />
                 </Paper>
