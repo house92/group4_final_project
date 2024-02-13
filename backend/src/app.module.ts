@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { UserAuthModule } from './user-auths/user-auth.module';
+import { UserAuthModule } from './user-auth/user-auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { generateTypeORMModuleOptions } from './db';
 import { GraphQLModule } from '@nestjs/graphql';
