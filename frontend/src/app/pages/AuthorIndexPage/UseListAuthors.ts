@@ -23,6 +23,9 @@ export default function useAuthors() {
             hometown: author.hometown,
             bio: author.bio,
         }));
+        if (data.listAuthors) {
+            console.log(data.listAuthors.at(0)?.id);
+        }
     }
 
     return { authors };

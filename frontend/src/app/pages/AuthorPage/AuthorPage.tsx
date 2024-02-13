@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import useAuthor from './UseAuthor';
 
 export default function AuthorPage() {
-    
-    const { id } = useParams();
-    const { author } = useAuthor(id); 
 
+    const { authorId } = useParams();
+
+    const { author } = useAuthor(authorId); 
     return (
         <div>
             <h1>Author</h1>
