@@ -1,4 +1,5 @@
-import { Author } from 'generated/graphql';
+import { useQuery } from '@apollo/client';
+import { Query } from 'generated/graphql';}
 
 interface Author {
     id: string;
@@ -10,7 +11,7 @@ interface Author {
 }
 
 export default function useAuthor() {
-    const { data } = Author();
+    const { data } = Query;
 
     let author: Author[] = [];
 
@@ -22,7 +23,7 @@ export default function useAuthor() {
         dateOfDeath: author.dateOfDeath,
         hometown: author.hometown,
         bio: author.bio,
-    )};
+    });
 
     return { author };
 }
