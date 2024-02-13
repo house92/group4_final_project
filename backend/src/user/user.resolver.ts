@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { User } from './user.entity';
 import { CreateUserInput } from './inputs/create-user.input';
 import { UpdateUserInput } from './inputs/update-user.input';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -18,8 +19,9 @@ export class UserResolver {
         return this.userService.findAll();
     }
 
+    @Public()
     @Query(() => User)
-    getUser(@Args('id', { type: () => String }) id: number) {
+    getUser(@Args('id', { type: () => String }) id: string) {
         return this.userService.findOne(id);
     }
 
