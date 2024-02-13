@@ -1,4 +1,5 @@
-import { useGetUserSessionQuery } from "generated/graphql"
+import { useQuery } from '@apollo/client';
+import { useSignInUserMutation } from 'generated/graphql';
 
 interface User {
     userName: string;
@@ -6,10 +7,16 @@ interface User {
 }
 
 export default function useSignIn() {
-    const { data } = useGetUserSessionQuery();
+    const { data } = useSignInUserMutation({ variables: { email, password }});
 
-    let user = "";
-    user="";
-
-    return user;
+    let user: User | undefined;
+    if (data?.signInUser) {
+        user = {
+            id: data?.signInUser.id,
+            firstName: data?.signInUser.firstName,
+            lastName: data?.signInUser.lastName,
+            token: data?.signInUser.token,
+        };
+    }
+    return { user };
 }
