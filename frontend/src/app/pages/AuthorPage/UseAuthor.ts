@@ -1,29 +1,30 @@
 import { useQuery } from '@apollo/client';
-import { Query } from 'generated/graphql';}
+import { useGetAuthorByIdQuery } from 'generated/graphql';
 
 interface Author {
     id: string;
     name: string;
     dateOfBirth: string;
-    dateOfDeath: string;
-    hometown: string;
-    bio: string;
+    dateOfDeath?: string | null | undefined;
+    hometown: string | null | undefined;
+    bio: string | null | undefined;
 }
 
-export default function useAuthor() {
-    const { data } = Query;
+export default function useAuthor(authorId: string) {
+    const { data } = useGetAuthorByIdQuery({ variables: { authorId } });
 
-    let author: Author[] = [];
-
-    author = data.listAuthors(author) => ({
-        bio: author.bio
-        id: author.id,
-        name: `${author.firstName} ${author.lastName}`,
-        dateOfBirth: author.dateOfBirth,
-        dateOfDeath: author.dateOfDeath,
-        hometown: author.hometown,
-        bio: author.bio,
-    });
+    let author: Author | undefined;
+    if (data?.getAuthor) {
+        author = {
+            id: data?.getAuthor.id,
+            name: `${data?.getAuthor.firstName} ${data?.getAuthor.lastName}`,
+            dateOfBirth: data?.getAuthor.dateOfBirth,
+            dateOfDeath: data?.getAuthor.dateOfDeath,
+            hometown: data?.getAuthor.hometown,
+            bio: data?.getAuthor.bio,
+        };
+    }
+    
 
     return { author };
 }

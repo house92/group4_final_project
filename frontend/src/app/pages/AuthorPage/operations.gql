@@ -1,10 +1,14 @@
-query GetAuthor($authorID: ID!) {
+query GetAuthorById($authorId: String!) {
 
-  getAuthor(id: $authorID) {
+  getAuthor(id: $authorId) {
     id
-    name
-    birthYear
-    homeTown
+    firstName
+    lastName
+    dateOfBirth
+    dateOfDeath
+    hometown
     bio
+
   }
+
 }
