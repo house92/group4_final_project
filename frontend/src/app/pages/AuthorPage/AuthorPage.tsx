@@ -4,17 +4,19 @@ import { useParams } from 'react-router-dom';
 import useAuthor from './UseAuthor';
 
 export default function AuthorPage() {
-    const { author } = useAuthor();
+    
+    const { id } = useParams();
+    const { author } = useAuthor(id); 
 
     return (
         <div>
             <h1>Author</h1>
             <div style={{ marginBottom: '20px' }}></div>
             <AuthorDetails
-                name={author.firstName}
-                birthYear={author.dateOfBirth}
-                homeTown={author.hometown}
-                bio={author.bio}
+                name={author?.name}
+                birthYear={author?.dateOfBirth}
+                homeTown={author?.hometown}
+                bio={author?.bio}
             />
         </div>
     );

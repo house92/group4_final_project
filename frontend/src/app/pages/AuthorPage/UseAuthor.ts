@@ -10,7 +10,7 @@ interface Author {
     bio: string | null | undefined;
 }
 
-export default function useAuthor(authorId: string) {
+export default function useAuthor(authorId: string = '') {
     const { data } = useGetAuthorByIdQuery({ variables: { authorId } });
 
     let author: Author | undefined;
