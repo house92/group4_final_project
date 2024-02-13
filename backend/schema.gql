@@ -6,7 +6,7 @@ type User {
   id: ID!
   firstName: String!
   lastName: String!
-  bio: String!
+  bio: String
   dateOfBirth: String!
   userAuth: UserAuth!
 }
@@ -75,33 +75,51 @@ type Book {
 
 type Query {
   getUserSession: UserSession!
-  getAllEmails: [String!]!
+  listUsers: [User!]!
+  getUser(id: String!): User!
   listBooks: [Book!]!
   getBook(id: String!): Book!
   listAuthors: [Author!]!
   getAuthor(id: String!): Author!
-  user(id: Int!): User!
 }
 
 type Mutation {
+  registerUser(input: CreateUserAuthInput!): UserSession!
   signInUser(email: String!, password: String!): UserSession!
-  createUser(createUserInput: CreateUserInput!): User!
+  createUser(input: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
   createAuthor(input: CreateAuthorInput!): Author!
   updateAuthor(input: UpdateAuthorInput!): Author!
   removeAuthor(id: String!): Author!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+}
+
+input CreateUserAuthInput {
+  firstName: String!
+  lastName: String!
+  bio: String
+  dateOfBirth: String!
+  email: String!
+  password: String!
 }
 
 input CreateUserInput {
   firstName: String!
   lastName: String!
-  bio: String!
+  bio: String
   dateOfBirth: String!
   userAuthId: ID!
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  bio: String
+  dateOfBirth: String
+  id: ID!
 }
 
 input CreateBookInput {
@@ -194,12 +212,4 @@ input UpdateAuthorInput {
   bio: String
   bookIds: [ID!]
   id: String!
-}
-
-input UpdateUserInput {
-  firstName: String
-  lastName: String
-  bio: String
-  dateOfBirth: String
-  id: ID!
 }

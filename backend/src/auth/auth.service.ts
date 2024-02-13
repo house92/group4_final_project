@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { UserAuthService } from '../user-auths/user-auth.service';
+import { UserAuthService } from '../user-auth/user-auth.service';
 
 @Injectable()
 export class AuthService {
@@ -21,8 +21,12 @@ export class AuthService {
             throw new UnauthorizedException('There is no user with that email and password');
         }
 
-        const token = await this.jwtService.signAsync({ userId: user.id });
+        const token = await this.generateToken(user.id);
 
         return { user, token };
+    }
+
+    async generateToken(userId: string) {
+        return this.jwtService.signAsync({ userId });
     }
 }
