@@ -13,7 +13,7 @@ export default function useAuthors() {
     let books: Book[] = [];
     if (data?.listBooks) {
         books = data.listBooks.map((book) => ({
-            coverImage: book,
+            coverImage: book.coverImage,
             title: book.title,
             author: book.author,
             publicationYear: book.publicationYear,
@@ -21,3 +21,4 @@ export default function useAuthors() {
     }
 
     return { books };
+}
