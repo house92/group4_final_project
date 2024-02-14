@@ -8,7 +8,7 @@ interface UserDetailsProps {
     age: string;
 }
 
-const UserDetails = ({ id, name, bio, age }) => {
+export default function UserDetails({ id, name, bio, age }: UserDetailsProps) {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
             <Typography variant="body1">{id}</Typography>
@@ -18,5 +18,3 @@ const UserDetails = ({ id, name, bio, age }) => {
         </Paper>
     );
 };
-
-export default UserDetails;

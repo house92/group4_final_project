@@ -14,7 +14,7 @@ export class BooksService {
     ) {}
 
     findAll() {
-        return this.repo.find();
+        return this.repo.find({ relations: { authors: true } });
     }
 
     findById(id: string) {

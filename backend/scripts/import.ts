@@ -159,7 +159,9 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
 
     // await ds.manager.save(Book, books);
     for (const book of books) {
-        await booksService.create(book);
+        if (book.coverImage && book.authorIds.length > 0) {
+            await booksService.create(book);
+        }
     }
 
     console.log('books created');

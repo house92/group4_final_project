@@ -289,6 +289,11 @@ export type GetAuthorByIdQueryVariables = Exact<{
 
 export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
 
+export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBooksListQuery = { __typename?: 'Query', listBooks: Array<{ __typename?: 'Book', coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> }> };
+
 
 export const GetUserSessionDocument = gql`
     query GetUserSession {
@@ -422,3 +427,48 @@ export type GetAuthorByIdQueryHookResult = ReturnType<typeof useGetAuthorByIdQue
 export type GetAuthorByIdLazyQueryHookResult = ReturnType<typeof useGetAuthorByIdLazyQuery>;
 export type GetAuthorByIdSuspenseQueryHookResult = ReturnType<typeof useGetAuthorByIdSuspenseQuery>;
 export type GetAuthorByIdQueryResult = Apollo.QueryResult<GetAuthorByIdQuery, GetAuthorByIdQueryVariables>;
+export const GetBooksListDocument = gql`
+    query GetBooksList {
+  listBooks {
+    coverImage
+    title
+    authors {
+      firstName
+      lastName
+    }
+    publicationDate
+  }
+}
+    `;
+
+/**
+ * __useGetBooksListQuery__
+ *
+ * To run a query within a React component, call `useGetBooksListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBooksListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBooksListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetBooksListQuery(baseOptions?: Apollo.QueryHookOptions<GetBooksListQuery, GetBooksListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBooksListQuery, GetBooksListQueryVariables>(GetBooksListDocument, options);
+      }
+export function useGetBooksListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBooksListQuery, GetBooksListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBooksListQuery, GetBooksListQueryVariables>(GetBooksListDocument, options);
+        }
+export function useGetBooksListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetBooksListQuery, GetBooksListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetBooksListQuery, GetBooksListQueryVariables>(GetBooksListDocument, options);
+        }
+export type GetBooksListQueryHookResult = ReturnType<typeof useGetBooksListQuery>;
+export type GetBooksListLazyQueryHookResult = ReturnType<typeof useGetBooksListLazyQuery>;
+export type GetBooksListSuspenseQueryHookResult = ReturnType<typeof useGetBooksListSuspenseQuery>;
+export type GetBooksListQueryResult = Apollo.QueryResult<GetBooksListQuery, GetBooksListQueryVariables>;

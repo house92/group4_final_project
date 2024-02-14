@@ -1,11 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { AuthorIndexPage } from 'app/pages';
-import AuthorPage from 'app/pages/AuthorPage';
+import { AuthorIndexPage, AuthorPage, BookIndexPage } from 'app/pages';
+import { Layout } from 'app/components';
 
 export function generateRouter() {
     return createBrowserRouter([
         {
             path: '',
+            element: <Layout />,
             children: [
                 {
                     path: 'authors',
@@ -14,6 +15,10 @@ export function generateRouter() {
                 {
                     path: 'authors/:authorId',
                     element: <AuthorPage />,
+                },
+                {
+                    path: 'books',
+                    element: <BookIndexPage />,
                 },
             ],
         },

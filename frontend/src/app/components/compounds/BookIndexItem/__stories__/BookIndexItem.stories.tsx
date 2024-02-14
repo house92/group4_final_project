@@ -2,6 +2,7 @@ import Paper from '@mui/material/Paper';
 
 import BookIndexItem from '../BookIndexItem';
 import { Grid } from '@mui/material';
+import { DateTime } from 'luxon';
 
 export default {
     title: 'Compounds/BookIndexItem',
@@ -16,8 +17,8 @@ export const Basic = (args) => {
                     <BookIndexItem
                         coverImage="Cover Image URL"
                         title="Green Eggs and Ham"
-                        author="Dr.Seuss"
-                        publicationYear="2005t"
+                        authorNames={['Dr.Seuss']}
+                        publicationDate={DateTime.now().minus({ years: 10 })}
                     />
                 </Paper>
             </Grid>
