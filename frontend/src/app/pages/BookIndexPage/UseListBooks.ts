@@ -7,7 +7,7 @@ interface Book {
     publicationYear: string;
 }
 
-export default function useAuthors() {
+export default function useBooks() {
     const { data } = useGetBooksListQuery();
 
     let books: Book[] = [];
