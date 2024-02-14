@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
+import { User } from './user.entity';
 
 describe('UserResolver', () => {
     let resolver: UserResolver;
@@ -15,5 +16,14 @@ describe('UserResolver', () => {
 
     it('should be defined', () => {
         expect(resolver).toBeDefined();
+    });
+    it('should query for user by id', ()=> {
+        const result = resolver.findOne(1);
+        expect(result.id).toEqual(1);
+    });
+
+    it('should query for all authors', ()=> {
+        const result = resolver.findAll();
+        expect(Array.isArray(result)).toEqual(true);
     });
 });
