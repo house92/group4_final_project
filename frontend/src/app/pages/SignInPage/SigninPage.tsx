@@ -9,7 +9,7 @@ export default function SignInPage() {
 
     return (
         <div>
-            <h1>Sign In Page</h1>
+            <h1>Sign-in Page</h1>
             <div style={{ marginBottom: '20px' }}></div>
             <SignInForm
                 email={user?.email}
