@@ -1,0 +1,11 @@
+query GetBooksList {
+
+  listBooks {
+    coverImage
+    title
+    author
+    publicationYear
+
+  }
+
+}
