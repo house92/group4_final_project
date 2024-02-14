@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { UserAuthModule } from './user-auth/user-auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { generateTypeORMModuleOptions } from './db';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BooksModule } from './books/books.module';
 import { AuthorsModule } from './authors/authors.module';
+import { UserModule } from './user/user.module';
 
 @Module({
     imports: [
         AuthModule,
-        UsersModule,
+        UserAuthModule,
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
             autoSchemaFile: 'schema.gql',
@@ -20,6 +21,7 @@ import { AuthorsModule } from './authors/authors.module';
         TypeOrmModule.forRoot(generateTypeORMModuleOptions()),
         BooksModule,
         AuthorsModule,
+        UserModule,
     ],
     exports: [],
 })
