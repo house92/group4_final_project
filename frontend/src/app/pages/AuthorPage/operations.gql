@@ -1,0 +1,14 @@
+query GetAuthorById($authorId: String!) {
+
+  getAuthor(id: $authorId) {
+    id
+    firstName
+    lastName
+    dateOfBirth
+    dateOfDeath
+    hometown
+    bio
+
+  }
+
+}

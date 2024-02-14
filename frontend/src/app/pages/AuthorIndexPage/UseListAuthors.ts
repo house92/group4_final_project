@@ -4,15 +4,16 @@ interface Author {
     id: string;
     name: string;
     dateOfBirth: string;
-    dateOfDeath: string;
-    hometown: string;
-    bio: string;
+    dateOfDeath: string | null | undefined;
+    hometown: string | null | undefined;
+    bio: string | null | undefined;
 }
 
 export default function useAuthors() {
     const { data } = useGetAuthorsListQuery();
 
     let authors: Author[] = [];
+    
     if (data?.listAuthors) {
         authors = data.listAuthors.map((author) => ({
             id: author.id,
@@ -22,6 +23,9 @@ export default function useAuthors() {
             hometown: author.hometown,
             bio: author.bio,
         }));
+        if (data.listAuthors) {
+            console.log(data.listAuthors.at(0)?.id);
+        }
     }
 
     return { authors };
