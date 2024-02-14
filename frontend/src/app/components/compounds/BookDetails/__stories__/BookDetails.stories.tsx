@@ -1,6 +1,5 @@
-import React from 'react';
-import { Paper, Typography } from '@mui/material';
 import BookDetails from '../BookDetails';
+import { DateTime } from 'luxon';
 
 export default {
     title: 'Compounds/BookDetails',
@@ -8,10 +7,11 @@ export default {
 
 export const Default = () => (
     <BookDetails
+        id="abc-123"
         title="Book Title"
         coverImage="Cover Image URL"
         authorName="John Doe"
-        publicationDate="2024-01-01"
+        publicationDate={DateTime.now().minus({ years: 10 })}
         synopsis="This is the books synopsis... 123"
     />
 );

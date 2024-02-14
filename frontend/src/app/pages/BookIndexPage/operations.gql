@@ -1,11 +1,14 @@
 query GetBooksList {
 
-  listBooks {
-    coverImage
-    title
-    author
-    publicationYear
+    listBooks {
+        coverImage
+        title
+        authors {
+            firstName
+            lastName
+        }
+        publicationDate
 
-  }
+    }
 
 }

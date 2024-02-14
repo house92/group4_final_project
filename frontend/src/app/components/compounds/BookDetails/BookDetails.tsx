@@ -11,7 +11,7 @@ interface BookDetailsProps {
     synopsis: string;
 }
 
-const BookDetails = ({ title, coverImage, authorName, publicationDate, synopsis }) => {
+export default function BookDetails({ title, coverImage, authorName, publicationDate, synopsis }: BookDetailsProps) {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
             <Typography variant="h5">{title}</Typography>
@@ -23,6 +23,4 @@ const BookDetails = ({ title, coverImage, authorName, publicationDate, synopsis 
             <Typography variant="body1">Synopsis: {synopsis}</Typography>
         </Paper>
     );
-};
-
-export default BookDetails;
+}
