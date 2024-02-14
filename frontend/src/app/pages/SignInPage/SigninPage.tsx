@@ -5,7 +5,6 @@ import useSignIn from "./useSignIn";
 
 export default function SignInPage() {
 
-    const { userID } = useParams();
 
     const { user } = useSignIn(email, password);
 
