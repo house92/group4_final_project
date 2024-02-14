@@ -1,6 +1,5 @@
 import SignInForm from "app/components/compounds/SignInForm";
 
-import { useParams } from 'react-router-dom';
 import useSignIn from "./useSignIn";
 
 export default function SignInPage() {
