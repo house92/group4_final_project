@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { AuthorIndexPage } from 'app/pages';
+import { AuthorIndexPage, SignInPage } from 'app/pages';
 import AuthorPage from 'app/pages/AuthorPage';
+import SignInForm from 'app/components/compounds/SignInForm';
 
 export function generateRouter() {
     return createBrowserRouter([
@@ -14,6 +15,10 @@ export function generateRouter() {
                 {
                     path: 'authors/:authorId',
                     element: <AuthorPage />,
+                },
+                {
+                    path: 'signin',
+                    element: <SignInPage />,
                 },
             ],
         },
