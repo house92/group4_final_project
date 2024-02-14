@@ -1,2 +1,2 @@
 export { default as AuthorIndexPage } from './AuthorIndexPage';
-export { default } from './SigninPage';
+export { default  as SignInPage } from './SigninPage';
