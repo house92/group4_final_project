@@ -5,7 +5,7 @@ import { UserAuth } from 'src/user-auth/user-auth.entity';
 import { Book } from 'src/books/book.entity';
 import { Author } from 'src/authors/author.entity';
 import { User } from 'src/user/user.entity';
-import { BookReview } from 'src/bookreviews/bookreview.entity'
+import { BookReview } from 'src/bookreviews/bookreview.entity';
 
 dotenv.config();
 

@@ -33,5 +33,4 @@ export class BookReview {
     @Column({ name: 'rating' })
     @Field(() => Number, { description: 'Book Rating' })
     rating: number;
-
 }

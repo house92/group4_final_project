@@ -28,15 +28,11 @@ export class BookReviewsService {
         newBookReview.rating = input.rating;
         newBookReview.creationDate = new Date();
         newBookReview.lastUpdated = new Date();
-        
+
         return this.repo.save(newBookReview);
     }
 
     remove(id: string) {
         return `This action removes a #${id} bookreview`;
     }
-
-
-    
-
 }
