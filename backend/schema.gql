@@ -104,7 +104,7 @@ type Query {
   listAuthors: [Author!]!
   getAuthor(id: String!): Author!
   listReviewsByUser(userId: String!): [BookReview!]!
-  listReviewsByBook(bookId: String!): [BookReview!]!
+  listReviewsByBook(id: String!): [BookReview!]!
   getReviewByUser(userId: String!, bookId: String!): BookReview!
 }
 

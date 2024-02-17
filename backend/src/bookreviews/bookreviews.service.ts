@@ -11,13 +11,14 @@ export class BookReviewsService {
         private repo: Repository<BookReview>,
     ) {}
     findAllByUser(userId: string) {
-        return this.repo.find({ where: { userId } });
+        return this.repo.find({ where: { userId: userId } });
     }
     findOneByUser(userId: string, bookId: string) {
         return this.repo.findOne({ where: { userId, bookId } });
     }
-    findAllByBook(bookId: string) {
-        return this.repo.find({ where: { bookId } });
+    findAllByBook(id: string) {
+        console.log("in find all by book, bookId is " + id);
+        return this.repo.find({ where: { bookId: id } });
     }
     create(input: CreateBookReviewInput) {
         const newBookReview = this.repo.create(input);

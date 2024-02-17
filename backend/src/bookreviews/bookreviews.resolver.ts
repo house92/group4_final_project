@@ -20,11 +20,14 @@ export class BookReviewsResolver {
         return this.bookReviewsService.findAllByUser(userId);
     }
 
+
     @Public()
     @Query(() => [BookReview])
-    listReviewsByBook(@Args('bookId', { type: () => String }) bookId: string) {
-        return this.bookReviewsService.findAllByBook(bookId);
+    listReviewsByBook(@Args('id', { type: () => String }) bookId: string) {
+        return this.bookReviewsService.findAllByBook(bookId);        
     }
+    
+
     @Public()
     @Query(() => BookReview)
     getReviewByUser(@Args('userId', { type: () => String } )userId: string, 
