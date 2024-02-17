@@ -16,18 +16,19 @@ export class BookReviewsResolver {
 
     @Public()
     @Query(() => [BookReview])
-    listReviewsByUser(userId: string) {
+    listReviewsByUser(@Args('userId', { type: () => String }) userId: string) {
         return this.bookReviewsService.findAllByUser(userId);
     }
 
     @Public()
-    @Query(() => BookReview)
-    listReviewsByBook(bookId: string) {
+    @Query(() => [BookReview])
+    listReviewsByBook(@Args('bookId', { type: () => String }) bookId: string) {
         return this.bookReviewsService.findAllByBook(bookId);
     }
     @Public()
     @Query(() => BookReview)
-    getReviewByUser(userId: string, bookId: string) {
+    getReviewByUser(@Args('userId', { type: () => String } )userId: string, 
+    @Args('bookId', { type: () => String } )bookId: string) {
         return this.bookReviewsService.findOneByUser(userId, bookId);
     }
 
@@ -35,7 +36,7 @@ export class BookReviewsResolver {
     // MUTATIONS
     ////////////////////////////////
 
-    @Mutation(() => Book)
+    @Mutation(() => BookReview)
     createBookReview(@Args('input') input: CreateBookReviewInput) {
         return this.bookReviewsService.create(input);
     }
