@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { BookReviewsService } from './bookreview.service';
+import { BookReviewsService } from './bookreviews.service';
 import { BookReview } from './bookreview.entity';
 import { Book } from 'src/books/book.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
