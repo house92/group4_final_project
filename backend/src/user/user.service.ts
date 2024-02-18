@@ -13,7 +13,7 @@ export class UserService {
         @InjectRepository(User) private userAuthRepo: Repository<UserAuth>,
     ) {}
 
-    async create(_input: CreateUserInput, _userAuth?: UserAuth) {
+    async create(_input: CreateUserInput, _userAuth?: UserAuth): Promise<User> {
         const { userAuthId, ...input } = _input;
         let userAuth = _userAuth;
 
@@ -37,7 +37,7 @@ export class UserService {
         return `This action returns all user`;
     }
 
-    findOne(id: string) {
+    findById(id: string) {
         return this.repo.findOne({ where: { id } });
     }
 
