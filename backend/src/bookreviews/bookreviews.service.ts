@@ -6,7 +6,6 @@ import { CreateBookReviewInput } from './inputs/create-bookreview.input';
 import { Book } from 'src/books/book.entity';
 import { User } from 'src/user/user.entity';
 
-
 @Injectable()
 export class BookReviewsService {
     constructor(

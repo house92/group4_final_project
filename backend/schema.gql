@@ -2,28 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  bio: String
-  dateOfBirth: String!
-  userAuth: UserAuth!
-}
-
-type UserAuth {
-  id: ID!
-  email: String!
-  user: User!
-}
-
-type UserSession {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  token: String
-}
-
 type Author {
   id: ID!
 
@@ -93,6 +71,28 @@ type BookReview {
 
   """Book Rating"""
   rating: Float!
+}
+
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  bio: String
+  dateOfBirth: String!
+  userAuth: UserAuth!
+}
+
+type UserAuth {
+  id: ID!
+  email: String!
+  user: User!
+}
+
+type UserSession {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  token: String
 }
 
 type Query {

@@ -10,11 +10,11 @@ export class BookReview {
     @Field(() => ID)
     id: string;
 
-    @ManyToOne(() => Book)
+    @Column({ name: 'bookId' })
     @Field(() => String, { description: 'Book Id' })
     bookId: string;
 
-    @ManyToOne(() => User)
+    @Column({ name: 'userId' })
     @Field(() => String, { description: 'Reviewer Id' })
     userId: string;
 
