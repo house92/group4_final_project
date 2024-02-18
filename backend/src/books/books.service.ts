@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './book.entity';
 import { In, Repository } from 'typeorm';
 import { Author } from 'src/authors/author.entity';
+import { BookReview } from 'src/bookreviews/bookreview.entity';
 
 @Injectable()
 export class BooksService {
@@ -28,7 +29,7 @@ export class BooksService {
             const authors = await this.authorRepo.find({ where: { id: In(input.authorIds) } });
             newBook.authors = authors;
         }
-
+        
         return this.repo.save(newBook);
     }
 

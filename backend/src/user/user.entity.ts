@@ -31,5 +31,5 @@ export class User {
     userAuth: UserAuth;
 
     @OneToMany(() => BookReview, (bookReview) => bookReview.user)
-    reviews: BookReview[];
+    reviews?: BookReview[];
 }
