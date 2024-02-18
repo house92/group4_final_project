@@ -54,12 +54,6 @@ type Book {
 type BookReview {
   id: ID!
 
-  """Book Id"""
-  bookId: String!
-
-  """Reviewer Id"""
-  userId: String!
-
   """Date as ISO string"""
   creationDate: String!
 
@@ -71,6 +65,8 @@ type BookReview {
 
   """Book Rating"""
   rating: Float!
+  user: User!
+  book: Book!
 }
 
 type User {

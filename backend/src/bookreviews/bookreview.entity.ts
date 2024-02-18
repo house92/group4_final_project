@@ -1,7 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { User } from 'src/user/user.entity';
 import { Book } from 'src/books/book.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -9,14 +9,6 @@ export class BookReview {
     @PrimaryGeneratedColumn('uuid')
     @Field(() => ID)
     id: string;
-
-    @Column({ name: 'bookId' })
-    @Field(() => String, { description: 'Book Id' })
-    bookId: string;
-
-    @Column({ name: 'userId' })
-    @Field(() => String, { description: 'Reviewer Id' })
-    userId: string;
 
     @Column({ name: 'creation_date', type: 'timestamptz' })
     @Field(() => String, { description: 'Date as ISO string' })
@@ -34,10 +26,14 @@ export class BookReview {
     @Field(() => Number, { description: 'Book Rating' })
     rating: number;
 
-    @ManyToOne(() => User, (user) => user.reviews)
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id'})
+    @Field(() => User)
     user: User;
 
-    @ManyToOne(() => Book, (book) => book.reviews)
+    @ManyToOne(() => Book)
+    @JoinColumn({ name: 'book_id', referencedColumnName: 'id'})
+    @Field(() => Book)
     book: Book;
 
 }
