@@ -35,6 +35,12 @@ export class BookReviewsResolver {
         return this.bookReviewsService.findOneByUser(userId, bookId);
     }
 
+    @Public()
+    @Query(() => [BookReview])
+    listAllReviews() {
+        return this.bookReviewsService.findAll();
+    }
+
     ////////////////////////////////
     // MUTATIONS
     ////////////////////////////////

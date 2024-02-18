@@ -102,6 +102,7 @@ type Query {
   listReviewsByUser(userId: String!): [BookReview!]!
   listReviewsByBook(id: String!): [BookReview!]!
   getReviewByUser(userId: String!, bookId: String!): BookReview!
+  listAllReviews: [BookReview!]!
 }
 
 type Mutation {

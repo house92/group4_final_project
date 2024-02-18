@@ -23,6 +23,9 @@ export class BookReviewsService {
     findAllByBook(bookId: string) {
         return this.repo.find({ where: { book: { id: Equal(bookId) } }, relations: { user: true } });
     }
+    findAll() {
+        return this.repo.find({ relations: { book: true, user: true } });
+    }
     async create(input: CreateBookReviewInput) {
         const newBookReview = this.repo.create(input);
 
