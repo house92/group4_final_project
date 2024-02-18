@@ -33,4 +33,11 @@ export class BookReview {
     @Column({ name: 'rating' })
     @Field(() => Number, { description: 'Book Rating' })
     rating: number;
+
+    @ManyToOne(() => User, (user) => user.reviews)
+    user: User;
+
+    @ManyToOne(() => Book, (book) => book.reviews)
+    book: Book;
+
 }
