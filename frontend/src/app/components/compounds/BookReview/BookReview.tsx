@@ -1,25 +1,18 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-//import Typography from '@mui/material/Typography';
-
 import StarIcon from '@mui/icons-material/Star';
 
 const labels: { [index: string]: string } = {
-    0.5: 'Useless',
-    1: 'Useless+',
-    1.5: 'Poor',
-    2: 'Poor+',
-    2.5: 'Ok',
-    3: 'Ok+',
-    3.5: 'Good',
-    4: 'Good+',
-    4.5: 'Excellent',
+    1: 'Terrible',
+    2: 'Below Average',
+    3: 'Okay',
+    4: 'Good',
     5: 'Excellent+',
 };
 
 export default function BookReview() {
-    const value = 3.5;
+    const value = 4;
 
     return (
         <Box
@@ -33,8 +26,8 @@ export default function BookReview() {
                 name="text-feedback"
                 value={value}
                 readOnly
-                precision={0.5}
-                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                precision={1.0}
+                emptyIcon={<StarIcon style={{ opacity: 1.00 }} fontSize="inherit" />}
             />
             <Box sx={{ ml: 2 }}>{labels[value]}</Box>
         </Box>

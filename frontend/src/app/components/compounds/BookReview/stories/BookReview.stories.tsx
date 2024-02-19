@@ -11,7 +11,9 @@ export const Basic = (args) => {
     return (
         <Grid container>
             <Grid item xs={12} sm={9} lg={6}>
-                <Paper variant="outlined" sx={{ p: 4, background: '#ffffee' }}></Paper>
+                <Paper variant="outlined" sx={{ p: 4, background: '#ffffee' }}>
+                <BookReview />
+                </Paper>
             </Grid>
         </Grid>
     );
