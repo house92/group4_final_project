@@ -6,7 +6,7 @@ import useSignIn from "./useSignIn";
 export default function SignInPage() {
 
 
-    const { user } = useSignIn(email, password);
+    const { user } = useSignIn();
 
     return (
         <Box>
@@ -15,7 +15,7 @@ export default function SignInPage() {
             <SignInForm
                 email={user?.email}
                 password={user?.password}
-                onSubmit={({ email, password }) => useSignIn({ variable: { email, password } })} 
+                onSubmit={({ email, password }) => useSignIn()} 
             />
         </Box>
     )
