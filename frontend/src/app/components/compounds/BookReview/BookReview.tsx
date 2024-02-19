@@ -32,7 +32,7 @@ export default function BookReview({ title }: BookDetailsProps) {
                 alignItems: 'center',
             }}
         >
-            <Stack spacing={2}>
+            <Stack spacing={1}>
                 <Typography variant="h5">{title}</Typography>
 
                 <Box
@@ -50,7 +50,7 @@ export default function BookReview({ title }: BookDetailsProps) {
                         '& > legend': { mt: 2 },
                     }}
                 >
-                    {/* User will be able to set a rating */}
+                    <Button variant="contained">Save</Button>
                     <Typography component="legend"></Typography>
                     <Rating
                         name="simple-controlled"
@@ -73,8 +73,6 @@ export default function BookReview({ title }: BookDetailsProps) {
                     {value !== null && <Box sx={{ ml: 0.5 }}>{labels[hover !== -1 ? hover : value]}</Box>}
                 </Box>
             </Stack>
-            {/* <Button type="save" variant="contained" color="primary">
-            </Button> */}
         </Paper>
     );
 }
