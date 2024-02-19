@@ -12,7 +12,7 @@ export const Basic = (args) => {
         <Grid container>
             <Grid item xs={12} sm={9} lg={6}>
                 <Paper variant="outlined" sx={{ p: 4, background: '#ffffee' }}>
-                <BookReview />
+                <BookReview title={'Leave a Review'} />
                 </Paper>
             </Grid>
         </Grid>
