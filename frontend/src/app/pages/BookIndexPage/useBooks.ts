@@ -1,10 +1,11 @@
 import { useGetBooksListQuery } from 'generated/graphql';
+import { DateTime } from 'luxon';
 
 interface Book {
     coverImage: string;
     title: string;
-    author: string;
-    publicationYear: string;
+    authorNames: string[];
+    publicationDate: DateTime | undefined;
 }
 
 export default function useBooks() {
@@ -15,8 +16,8 @@ export default function useBooks() {
         books = data.listBooks.map((book) => ({
             coverImage: book.coverImage,
             title: book.title,
-            author: book.author,
-            publicationYear: book.publicationYear,
+            authorNames: book.authors.map((author) => `${author.firstName} ${author.lastName}`),
+            publicationDate: book.publicationDate ? DateTime.fromISO(book.publicationDate) : undefined,
         }));
     }
 
