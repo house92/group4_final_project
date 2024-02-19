@@ -12,11 +12,7 @@ export default function SignInPage() {
         <Box>
             <Typography variant="h1">Sign-in Page</Typography>
             <Box marginBottom="20px" />
-            <SignInForm
-                email={user?.email}
-                password={user?.password}
-                onSubmit={({ email, password }) => useSignIn()} 
-            />
+            <SignInForm email={user?.email} password={user?.password} onSubmit={({ email, password }) => useSignIn()} />
         </Box>
     )
 }
