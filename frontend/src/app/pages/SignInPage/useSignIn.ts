@@ -19,7 +19,7 @@ export default function useSignIn() {
 
             if (data?.signInUser) {
                 const { id, firstName, lastName, token } = data.signInUser;
-                const user: User = { id, firstName, lastName, token };
+                const user: User = { userName, password };
                 history.push('/homePage');
                 return { user: data.signInUser, error: '' };
             } else {
