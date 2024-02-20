@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import { useSignInUserMutation } from 'generated/graphql';
 
 interface User {
-    userName: string;
-    password: string;
+    id: string;
+    token: string;
 }
 
 export default function useSignIn() {
