@@ -17,7 +17,7 @@ export default function useSignIn() {
             const {data } = await signInUserMutation({ variables: { email, password }});
 
             if (data?.signInUser) {
-                navigate('/homePage');
+                navigate('/AuthorPage');
             } else {
                 const errorMessage = 'Invalid email or password.';
                 setError(errorMessage);
