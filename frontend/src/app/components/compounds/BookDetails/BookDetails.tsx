@@ -16,7 +16,7 @@ export default function BookDetails({ title, coverImage, authorNames, publicatio
         <Paper variant="outlined" style={{ padding: 20 }}>
             <Typography variant="h5">{title}</Typography>
             <img src={coverImage} alt="Book Cover" style={{ maxWidth: '100%', marginBottom: 10 }} />
-            <Typography variant="body1">Author: {authorNames?.join(', ')}</Typography>
+            <Typography variant="body1">Authors: {authorNames?.join(', ')}</Typography>
             <Typography variant="body1">
                 Publication Date: {publicationDate ? publicationDate.toLocaleString(DateTime.DATE_MED) : 'Unknown'}
             </Typography>
