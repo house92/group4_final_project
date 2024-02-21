@@ -19,7 +19,7 @@ export function generateRouter() {
                     element: <AuthorPage />,
                 },
                 {
-                    path: 'signin',
+                    path: 'sign-in',
                     element: <SignInPage />,
                 }
             ],
