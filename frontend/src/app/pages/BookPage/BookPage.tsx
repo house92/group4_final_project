@@ -17,7 +17,7 @@ export default function BookPage() {
                     id={book.id}
                     title={book.title}
                     coverImage={book.coverImage}
-                    authors={book.authors}
+                    authorNames={book.authorNames}
                     publicationDate={book.publicationDate}
                     synopsis={book.synopsis ?? ''}
                 />
