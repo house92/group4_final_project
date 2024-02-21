@@ -55,6 +55,21 @@ export type Book = {
   title: Scalars['String']['output'];
 };
 
+export type BookReview = {
+  __typename?: 'BookReview';
+  /** review body text */
+  body: Scalars['String']['output'];
+  book: Book;
+  /** Date as ISO string */
+  creationDate: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  /** Date as ISO string */
+  lastUpdated: Scalars['String']['output'];
+  /** Book Rating */
+  rating: Scalars['Float']['output'];
+  user: User;
+};
+
 export type CreateAuthorInput = {
   /** Biography of author */
   bio?: InputMaybe<Scalars['String']['input']>;
@@ -89,6 +104,17 @@ export type CreateBookInput = {
   title: Scalars['String']['input'];
 };
 
+export type CreateBookReviewInput = {
+  /** Body of the review */
+  body: Scalars['String']['input'];
+  /** Id of the book being reviewed */
+  bookId: Scalars['String']['input'];
+  /** Rating tied to review */
+  rating: Scalars['Float']['input'];
+  /** Id of the reviewer */
+  userId: Scalars['String']['input'];
+};
+
 export type CreateUserAuthInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   dateOfBirth: Scalars['String']['input'];
@@ -98,22 +124,15 @@ export type CreateUserAuthInput = {
   password: Scalars['String']['input'];
 };
 
-export type CreateUserInput = {
-  bio?: InputMaybe<Scalars['String']['input']>;
-  dateOfBirth: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  userAuthId: Scalars['ID']['input'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   createAuthor: Author;
   createBook: Book;
-  createUser: User;
+  createBookReview: BookReview;
   registerUser: UserSession;
   removeAuthor: Author;
   removeBook: Book;
+  removeBookReview: Book;
   removeUser: User;
   signInUser: UserSession;
   updateAuthor: Author;
@@ -132,8 +151,8 @@ export type MutationCreateBookArgs = {
 };
 
 
-export type MutationCreateUserArgs = {
-  input: CreateUserInput;
+export type MutationCreateBookReviewArgs = {
+  input: CreateBookReviewInput;
 };
 
 
@@ -149,6 +168,11 @@ export type MutationRemoveAuthorArgs = {
 
 export type MutationRemoveBookArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationRemoveBookReviewArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -181,10 +205,14 @@ export type Query = {
   __typename?: 'Query';
   getAuthor: Author;
   getBook: Book;
+  getReviewByUser: BookReview;
   getUser: User;
   getUserSession: UserSession;
+  listAllReviews: Array<BookReview>;
   listAuthors: Array<Author>;
   listBooks: Array<Book>;
+  listReviewsByBook: Array<BookReview>;
+  listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
 };
 
@@ -199,8 +227,24 @@ export type QueryGetBookArgs = {
 };
 
 
+export type QueryGetReviewByUserArgs = {
+  bookId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
 export type QueryGetUserArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryListReviewsByBookArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryListReviewsByUserArgs = {
+  userId: Scalars['String']['input'];
 };
 
 export type UpdateAuthorInput = {
@@ -293,6 +337,13 @@ export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: Array<{ __typename?: 'Book', coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> }> };
+
+export type GetUserByIdQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'Query', getUser: { __typename?: 'User', id: string, firstName: string, lastName: string, bio?: string | null, dateOfBirth: string } };
 
 
 export const GetUserSessionDocument = gql`
@@ -472,3 +523,47 @@ export type GetBooksListQueryHookResult = ReturnType<typeof useGetBooksListQuery
 export type GetBooksListLazyQueryHookResult = ReturnType<typeof useGetBooksListLazyQuery>;
 export type GetBooksListSuspenseQueryHookResult = ReturnType<typeof useGetBooksListSuspenseQuery>;
 export type GetBooksListQueryResult = Apollo.QueryResult<GetBooksListQuery, GetBooksListQueryVariables>;
+export const GetUserByIdDocument = gql`
+    query GetUserById($userId: String!) {
+  getUser(id: $userId) {
+    id
+    firstName
+    lastName
+    bio
+    dateOfBirth
+  }
+}
+    `;
+
+/**
+ * __useGetUserByIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByIdQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+      }
+export function useGetUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        }
+export function useGetUserByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        }
+export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
+export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
+export type GetUserByIdSuspenseQueryHookResult = ReturnType<typeof useGetUserByIdSuspenseQuery>;
+export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;

@@ -3,9 +3,9 @@ import { Paper, Typography } from '@mui/material';
 
 interface UserDetailsProps {
     id: string;
-    name: string;
-    bio: string;
-    age: string;
+    name: string | null | undefined;
+    bio: string | null | undefined;
+    age: string | null | undefined;
 }
 
 export default function UserDetails({ id, name, bio, age }: UserDetailsProps) {
