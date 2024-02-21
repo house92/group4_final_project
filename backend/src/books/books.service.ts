@@ -28,7 +28,7 @@ export class BooksService {
             const authors = await this.authorRepo.find({ where: { id: In(input.authorIds) } });
             newBook.authors = authors;
         }
-
+        
         return this.repo.save(newBook);
     }
 
