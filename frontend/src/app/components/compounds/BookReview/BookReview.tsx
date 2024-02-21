@@ -9,7 +9,7 @@ interface BookDetailsProps {
 }
 
 export default function BookReview({ title }: BookDetailsProps) {
-    const [value, setValue] = React.useState(2);
+    const [value, setValue] = React.useState<number | null>(null);
     const [hover, setHover] = React.useState(-1);
     const labels = {
         1: 'Terrible',
@@ -22,6 +22,7 @@ export default function BookReview({ title }: BookDetailsProps) {
     function getLabelText(value) {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
+
     return (
         <Paper
             variant="outlined"
@@ -58,13 +59,8 @@ export default function BookReview({ title }: BookDetailsProps) {
                         onChange={(event, newValue) => {
                             setValue(newValue);
                         }}
-                        name="hover-feedback"
-                        value={value}
                         precision={1.0}
                         getLabelText={getLabelText}
-                        onChange={(event, newValue) => {
-                            setValue(newValue);
-                        }}
                         onChangeActive={(event, newHover) => {
                             setHover(newHover);
                         }}
