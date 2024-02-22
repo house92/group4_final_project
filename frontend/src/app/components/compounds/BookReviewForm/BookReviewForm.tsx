@@ -11,7 +11,7 @@ interface BookReviewProps {
     onSubmit: (values: { review: string }) => void;
 }
 
-export default function BookReview({ title, onSubmit }: BookReviewProps) {
+export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
     const [value, setValue] = useState<number | null>(null);
     const [hover, setHover] = useState(-1);
     const labels = {

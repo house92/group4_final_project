@@ -4,4 +4,4 @@ export { default as BookDetails } from './BookDetails';
 export { default as BookIndexItem } from './BookIndexItem';
 export { default as SignInForm } from './SignInForm';
 export { default as UserDetails } from './UserDetails';
-export { default as BookReview } from './BookReview';
+export { default as BookReviewForm } from './BookReviewForm';
