@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { User } from './user.entity';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { CurrentRequestContext, RequestContext } from 'src/auth/decorators/current_request_context.decorator';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -27,5 +28,14 @@ export class UserResolver {
     @Mutation(() => User)
     removeUser(@Args('id', { type: () => Int }) id: number) {
         return this.userService.remove(id);
+    }
+
+    @Mutation(() => User)
+    addFriend(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ) {
+        const currentUserId = ctx.userId;
+        return this.userService.addUserToCurrentUserFriends(currentUserId, friendId);
     }
 }

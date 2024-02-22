@@ -38,7 +38,7 @@ export class UserService {
     }
 
     findById(id: string) {
-        return this.repo.findOne({ where: { id } });
+        return this.repo.findOne({ where: { id }, relations: { friends: true } });
     }
 
     update(input: UpdateUserInput) {
@@ -47,5 +47,29 @@ export class UserService {
 
     remove(id: number) {
         return `This action removes a #${id} user`;
+    }
+
+    async addUserToCurrentUserFriends(currentUserId: string, friendUserId: string) {
+        const currentUser = await this.repo.findOne({ where: { id: currentUserId }, relations: { friends: true } });
+
+        if (!currentUser) {
+            throw new Error(
+                `UserService::addUserToCurrentUserFriends() - could not find current user (ID: ${currentUserId})`,
+            );
+        }
+
+        const friend = await this.repo.findOne({ where: { id: friendUserId }, relations: { friends: true } });
+
+        if (!friend) {
+            throw new Error(`UserService::addUserToCurrentUserFriends() - could not find friend (ID: ${friendUserId})`);
+        }
+
+        currentUser.friends.push(friend);
+        friend.friends.push(currentUser);
+
+        await this.repo.save(currentUser);
+        await this.repo.save(friend);
+
+        return currentUser;
     }
 }
