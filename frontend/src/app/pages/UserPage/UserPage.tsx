@@ -7,11 +7,14 @@ import useUser from './UseUser';
 export default function UserPage() {
     const { userId } = useParams();
     const { user } = useUser(userId);
-
-    return (
-        <Box>
-            <Box marginBottom="20px" />
-            <UserDetails name={user?.name} age={user?.dateOfBirth} bio={user?.bio} id={''} />
-        </Box>
-    );
+    if (userId !== null) {
+        return (
+            <Box>
+                <Box marginBottom="20px" />
+                <UserDetails name={user?.name} age={user?.age} bio={user?.bio} />
+            </Box>
+        );
+    } else {
+        return null;
+    }
 }
