@@ -5,10 +5,15 @@ import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import { string, object, number } from 'yup';
 
+interface BookReviewInput {
+    body: string;
+    rating: number;
+}
 interface BookReviewProps {
     title: string;
-    onSubmit: (values: { review: string }) => void;
+    onSubmit: (values: { BookReviewInput }) => void;
 }
 
 export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
@@ -22,14 +27,19 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
         5: 'Excellent',
     };
 
-    const formik = useFormik({
+    const formik = useFormik<BookReviewInput>({
         enableReinitialize: true,
         initialValues: {
-            review: '',
+            body: '',
+            rating: 0,
         },
         validateOnChange: false,
         validateOnBlur: false,
         validateOnMount: false,
+        validationSchema: object().shape({
+            body: string().required('a review is required'),
+            rating: number().typeError('a rating must be a valid number 1-5').required('a rating is required'),
+        }),
         onSubmit: (values) => {
             console.log(values);
         },
@@ -41,6 +51,8 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
 
     return (
         <Paper
+            component="form"
+            onSubmit={formik.handleSubmit}
             variant="outlined"
             style={{ padding: 20 }}
             sx={{
@@ -48,6 +60,7 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
                 display: 'flex',
                 alignItems: 'center',
             }}
+            autoComplete="off"
         >
             <Stack spacing={1}>
                 <Typography variant="h5">{title}</Typography>
@@ -62,6 +75,7 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
                         value={value}
                         onChange={(event, newValue) => {
                             setValue(newValue);
+                            formik.setFieldValue('rating', newValue);
                         }}
                         precision={1.0}
                         getLabelText={getLabelText}
@@ -72,32 +86,29 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
                     />
                     {value !== null && <Box sx={{ ml: 0.5 }}>{labels[hover !== -1 ? hover : value]}</Box>}
                 </Box>
-
                 <Box
-                    component="form"
-                    onSubmit={formik.handleSubmit}
                     sx={{
                         '& > :not(style)': { m: 2, width: '35ch' },
                     }}
-                    noValidate
-                    autoComplete="off"
                 >
                     <TextField
                         id="outlined-basic"
-                        name="review"
+                        name="body"
                         variant="outlined"
                         multiline
                         maxRows={5}
                         minRows={10}
-                        value={formik.values.review}
+                        value={formik.values.body}
                         onChange={formik.handleChange}
+                        error={formik.touched.body && Boolean(formik.errors.body)}
+                        helperText={formik.touched.body && formik.errors.body}
                     />
                 </Box>
                 <Box
                     sx={{
                         '& > legend': { mt: 2 },
                     }}
-                >
+                > 
                     <Button type="submit" variant="contained">
                         Save
                     </Button>
