@@ -1,6 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { UserAuth } from 'src/user-auth/user-auth.entity';
-import { PrimaryGeneratedColumn, Column, OneToOne, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, OneToOne, OneToMany, Entity, ManyToMany, JoinTable } from 'typeorm';
+import { BookReview } from 'src/bookreviews/bookreview.entity';
 
 @ObjectType()
 @Entity()
@@ -28,4 +29,16 @@ export class User {
     @OneToOne(() => UserAuth, (userAuth) => userAuth.user)
     @Field(() => UserAuth)
     userAuth: UserAuth;
+
+    @OneToMany(() => BookReview, (bookReview) => bookReview.user)
+    reviews?: BookReview[];
+
+    @ManyToMany(() => User)
+    @JoinTable({
+        name: 'friends',
+        joinColumn: { name: 'user_1_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'user_2_id', referencedColumnName: 'id' },
+    })
+    @Field(() => [User], { nullable: true })
+    friends?: User[];
 }

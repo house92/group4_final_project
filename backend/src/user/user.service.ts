@@ -13,7 +13,7 @@ export class UserService {
         @InjectRepository(User) private userAuthRepo: Repository<UserAuth>,
     ) {}
 
-    async create(_input: CreateUserInput, _userAuth?: UserAuth) {
+    async create(_input: CreateUserInput, _userAuth?: UserAuth): Promise<User> {
         const { userAuthId, ...input } = _input;
         let userAuth = _userAuth;
 
@@ -37,8 +37,8 @@ export class UserService {
         return `This action returns all user`;
     }
 
-    findOne(id: string) {
-        return this.repo.findOne({ where: { id } });
+    findById(id: string) {
+        return this.repo.findOne({ where: { id }, relations: { friends: true } });
     }
 
     update(input: UpdateUserInput) {
@@ -47,5 +47,29 @@ export class UserService {
 
     remove(id: number) {
         return `This action removes a #${id} user`;
+    }
+
+    async addUserToCurrentUserFriends(currentUserId: string, friendUserId: string) {
+        const currentUser = await this.repo.findOne({ where: { id: currentUserId }, relations: { friends: true } });
+
+        if (!currentUser) {
+            throw new Error(
+                `UserService::addUserToCurrentUserFriends() - could not find current user (ID: ${currentUserId})`,
+            );
+        }
+
+        const friend = await this.repo.findOne({ where: { id: friendUserId }, relations: { friends: true } });
+
+        if (!friend) {
+            throw new Error(`UserService::addUserToCurrentUserFriends() - could not find friend (ID: ${friendUserId})`);
+        }
+
+        currentUser.friends.push(friend);
+        friend.friends.push(currentUser);
+
+        await this.repo.save(currentUser);
+        await this.repo.save(friend);
+
+        return currentUser;
     }
 }

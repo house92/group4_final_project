@@ -2,28 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  bio: String
-  dateOfBirth: String!
-  userAuth: UserAuth!
-}
-
-type UserAuth {
-  id: ID!
-  email: String!
-  user: User!
-}
-
-type UserSession {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  token: String
-}
-
 type Author {
   id: ID!
 
@@ -73,6 +51,47 @@ type Book {
   authors: [Author!]!
 }
 
+type BookReview {
+  id: ID!
+
+  """Date as ISO string"""
+  creationDate: String!
+
+  """Date as ISO string"""
+  lastUpdated: String!
+
+  """review body text"""
+  body: String!
+
+  """Book Rating"""
+  rating: Float!
+  user: User!
+  book: Book!
+}
+
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  bio: String
+  dateOfBirth: String!
+  userAuth: UserAuth!
+  friends: [User!]
+}
+
+type UserAuth {
+  id: ID!
+  email: String!
+  user: User!
+}
+
+type UserSession {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  token: String
+}
+
 type Query {
   getUserSession: UserSession!
   listUsers: [User!]!
@@ -81,20 +100,26 @@ type Query {
   getBook(id: String!): Book!
   listAuthors: [Author!]!
   getAuthor(id: String!): Author!
+  listReviewsByUser(userId: String!): [BookReview!]!
+  listReviewsByBook(id: String!): [BookReview!]!
+  getReviewByUser(userId: String!, bookId: String!): BookReview!
+  listAllReviews: [BookReview!]!
 }
 
 type Mutation {
   registerUser(input: CreateUserAuthInput!): UserSession!
   signInUser(email: String!, password: String!): UserSession!
-  createUser(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
   removeUser(id: Int!): User!
+  addFriend(friendId: String!): User!
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
   createAuthor(input: CreateAuthorInput!): Author!
   updateAuthor(input: UpdateAuthorInput!): Author!
   removeAuthor(id: String!): Author!
+  createBookReview(input: CreateBookReviewInput!): BookReview!
+  removeBookReview(id: String!): Book!
 }
 
 input CreateUserAuthInput {
@@ -104,14 +129,6 @@ input CreateUserAuthInput {
   dateOfBirth: String!
   email: String!
   password: String!
-}
-
-input CreateUserInput {
-  firstName: String!
-  lastName: String!
-  bio: String
-  dateOfBirth: String!
-  userAuthId: ID!
 }
 
 input UpdateUserInput {
@@ -212,4 +229,18 @@ input UpdateAuthorInput {
   bio: String
   bookIds: [ID!]
   id: String!
+}
+
+input CreateBookReviewInput {
+  """Id of the reviewer"""
+  userId: String!
+
+  """Id of the book being reviewed"""
+  bookId: String!
+
+  """Body of the review"""
+  body: String!
+
+  """Rating tied to review"""
+  rating: Float!
 }
