@@ -55,6 +55,21 @@ export type Book = {
   title: Scalars['String']['output'];
 };
 
+export type BookReview = {
+  __typename?: 'BookReview';
+  /** review body text */
+  body: Scalars['String']['output'];
+  book: Book;
+  /** Date as ISO string */
+  creationDate: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  /** Date as ISO string */
+  lastUpdated: Scalars['String']['output'];
+  /** Book Rating */
+  rating: Scalars['Float']['output'];
+  user: User;
+};
+
 export type CreateAuthorInput = {
   /** Biography of author */
   bio?: InputMaybe<Scalars['String']['input']>;
@@ -89,6 +104,17 @@ export type CreateBookInput = {
   title: Scalars['String']['input'];
 };
 
+export type CreateBookReviewInput = {
+  /** Body of the review */
+  body: Scalars['String']['input'];
+  /** Id of the book being reviewed */
+  bookId: Scalars['String']['input'];
+  /** Rating tied to review */
+  rating: Scalars['Float']['input'];
+  /** Id of the reviewer */
+  userId: Scalars['String']['input'];
+};
+
 export type CreateUserAuthInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   dateOfBirth: Scalars['String']['input'];
@@ -98,22 +124,15 @@ export type CreateUserAuthInput = {
   password: Scalars['String']['input'];
 };
 
-export type CreateUserInput = {
-  bio?: InputMaybe<Scalars['String']['input']>;
-  dateOfBirth: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  userAuthId: Scalars['ID']['input'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   createAuthor: Author;
   createBook: Book;
-  createUser: User;
+  createBookReview: BookReview;
   registerUser: UserSession;
   removeAuthor: Author;
   removeBook: Book;
+  removeBookReview: Book;
   removeUser: User;
   signInUser: UserSession;
   updateAuthor: Author;
@@ -132,8 +151,8 @@ export type MutationCreateBookArgs = {
 };
 
 
-export type MutationCreateUserArgs = {
-  input: CreateUserInput;
+export type MutationCreateBookReviewArgs = {
+  input: CreateBookReviewInput;
 };
 
 
@@ -149,6 +168,11 @@ export type MutationRemoveAuthorArgs = {
 
 export type MutationRemoveBookArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationRemoveBookReviewArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -181,10 +205,14 @@ export type Query = {
   __typename?: 'Query';
   getAuthor: Author;
   getBook: Book;
+  getReviewByUser: BookReview;
   getUser: User;
   getUserSession: UserSession;
+  listAllReviews: Array<BookReview>;
   listAuthors: Array<Author>;
   listBooks: Array<Book>;
+  listReviewsByBook: Array<BookReview>;
+  listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
 };
 
@@ -199,8 +227,24 @@ export type QueryGetBookArgs = {
 };
 
 
+export type QueryGetReviewByUserArgs = {
+  bookId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
 export type QueryGetUserArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryListReviewsByBookArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryListReviewsByUserArgs = {
+  userId: Scalars['String']['input'];
 };
 
 export type UpdateAuthorInput = {
@@ -293,14 +337,6 @@ export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: Array<{ __typename?: 'Book', coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> }> };
-
-export type SignInUserMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-}>;
-
-
-export type SignInUserMutation = { __typename?: 'Mutation', signInUser: { __typename?: 'UserSession', id: string, firstName: string, lastName: string, token?: string | null } };
 
 
 export const GetUserSessionDocument = gql`
@@ -480,40 +516,3 @@ export type GetBooksListQueryHookResult = ReturnType<typeof useGetBooksListQuery
 export type GetBooksListLazyQueryHookResult = ReturnType<typeof useGetBooksListLazyQuery>;
 export type GetBooksListSuspenseQueryHookResult = ReturnType<typeof useGetBooksListSuspenseQuery>;
 export type GetBooksListQueryResult = Apollo.QueryResult<GetBooksListQuery, GetBooksListQueryVariables>;
-export const SignInUserDocument = gql`
-    mutation SignInUser($email: String!, $password: String!) {
-  signInUser(email: $email, password: $password) {
-    id
-    firstName
-    lastName
-    token
-  }
-}
-    `;
-export type SignInUserMutationFn = Apollo.MutationFunction<SignInUserMutation, SignInUserMutationVariables>;
-
-/**
- * __useSignInUserMutation__
- *
- * To run a mutation, you first call `useSignInUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSignInUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [signInUserMutation, { data, loading, error }] = useSignInUserMutation({
- *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
- *   },
- * });
- */
-export function useSignInUserMutation(baseOptions?: Apollo.MutationHookOptions<SignInUserMutation, SignInUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SignInUserMutation, SignInUserMutationVariables>(SignInUserDocument, options);
-      }
-export type SignInUserMutationHookResult = ReturnType<typeof useSignInUserMutation>;
-export type SignInUserMutationResult = Apollo.MutationResult<SignInUserMutation>;
-export type SignInUserMutationOptions = Apollo.BaseMutationOptions<SignInUserMutation, SignInUserMutationVariables>;
