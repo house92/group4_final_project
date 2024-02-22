@@ -126,6 +126,7 @@ export type CreateUserAuthInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addFriend: User;
   createAuthor: Author;
   createBook: Book;
   createBookReview: BookReview;
@@ -138,6 +139,11 @@ export type Mutation = {
   updateAuthor: Author;
   updateBook: Book;
   updateUser: User;
+};
+
+
+export type MutationAddFriendArgs = {
+  friendId: Scalars['String']['input'];
 };
 
 
@@ -296,6 +302,7 @@ export type User = {
   bio?: Maybe<Scalars['String']['output']>;
   dateOfBirth: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
+  friends?: Maybe<Array<User>>;
   id: Scalars['ID']['output'];
   lastName: Scalars['String']['output'];
   userAuth: UserAuth;
@@ -337,6 +344,21 @@ export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: Array<{ __typename?: 'Book', coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> }> };
+
+export type GetBookByIdQueryVariables = Exact<{
+  bookId: Scalars['String']['input'];
+}>;
+
+
+export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> } };
+
+export type SignInUserMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+}>;
+
+
+export type SignInUserMutation = { __typename?: 'Mutation', signInUser: { __typename?: 'UserSession', id: string, firstName: string, lastName: string } };
 
 
 export const GetUserSessionDocument = gql`
@@ -516,3 +538,87 @@ export type GetBooksListQueryHookResult = ReturnType<typeof useGetBooksListQuery
 export type GetBooksListLazyQueryHookResult = ReturnType<typeof useGetBooksListLazyQuery>;
 export type GetBooksListSuspenseQueryHookResult = ReturnType<typeof useGetBooksListSuspenseQuery>;
 export type GetBooksListQueryResult = Apollo.QueryResult<GetBooksListQuery, GetBooksListQueryVariables>;
+export const GetBookByIdDocument = gql`
+    query GetBookById($bookId: String!) {
+  getBook(id: $bookId) {
+    id
+    title
+    coverImage
+    authors {
+      firstName
+      lastName
+    }
+    publicationDate
+    synopsis
+  }
+}
+    `;
+
+/**
+ * __useGetBookByIdQuery__
+ *
+ * To run a query within a React component, call `useGetBookByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBookByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBookByIdQuery({
+ *   variables: {
+ *      bookId: // value for 'bookId'
+ *   },
+ * });
+ */
+export function useGetBookByIdQuery(baseOptions: Apollo.QueryHookOptions<GetBookByIdQuery, GetBookByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBookByIdQuery, GetBookByIdQueryVariables>(GetBookByIdDocument, options);
+      }
+export function useGetBookByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBookByIdQuery, GetBookByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBookByIdQuery, GetBookByIdQueryVariables>(GetBookByIdDocument, options);
+        }
+export function useGetBookByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetBookByIdQuery, GetBookByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetBookByIdQuery, GetBookByIdQueryVariables>(GetBookByIdDocument, options);
+        }
+export type GetBookByIdQueryHookResult = ReturnType<typeof useGetBookByIdQuery>;
+export type GetBookByIdLazyQueryHookResult = ReturnType<typeof useGetBookByIdLazyQuery>;
+export type GetBookByIdSuspenseQueryHookResult = ReturnType<typeof useGetBookByIdSuspenseQuery>;
+export type GetBookByIdQueryResult = Apollo.QueryResult<GetBookByIdQuery, GetBookByIdQueryVariables>;
+export const SignInUserDocument = gql`
+    mutation SignInUser($email: String!, $password: String!) {
+  signInUser(email: $email, password: $password) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+export type SignInUserMutationFn = Apollo.MutationFunction<SignInUserMutation, SignInUserMutationVariables>;
+
+/**
+ * __useSignInUserMutation__
+ *
+ * To run a mutation, you first call `useSignInUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInUserMutation, { data, loading, error }] = useSignInUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useSignInUserMutation(baseOptions?: Apollo.MutationHookOptions<SignInUserMutation, SignInUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignInUserMutation, SignInUserMutationVariables>(SignInUserDocument, options);
+      }
+export type SignInUserMutationHookResult = ReturnType<typeof useSignInUserMutation>;
+export type SignInUserMutationResult = Apollo.MutationResult<SignInUserMutation>;
+export type SignInUserMutationOptions = Apollo.BaseMutationOptions<SignInUserMutation, SignInUserMutationVariables>;
