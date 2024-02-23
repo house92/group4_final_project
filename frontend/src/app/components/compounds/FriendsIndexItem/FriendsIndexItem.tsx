@@ -1,20 +1,20 @@
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
-interface FriendIndex {
+interface Friend {
     name: string;
 }
 
 interface FriendsIndexItemProps {
-    friends: FriendIndex[];
+    friends: Friend[];
 }
 
-const FriendsIndexItem = ({ name }) => {
-    return (
-        <Paper variant="outlined" style={{ padding: 20 }}>
-            <Typography variant="h5">Name: {name}</Typography>
-        </Paper>
-    );
+const FriendsIndexItem = ({ name }: Friend) => {
+        return (
+            <Paper variant="outlined" style={{ padding: 20 }}>
+                <Typography variant="h5">Name: {name}</Typography>
+            </Paper>
+        );
 };
 
 export default FriendsIndexItem;
