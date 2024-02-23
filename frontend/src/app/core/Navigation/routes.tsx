@@ -25,10 +25,10 @@ export function generateRouter() {
                     path: 'books',
                     element: <BookIndexPage />,
                 },
-
                 {
                     path: 'user/:userId',
                     element: <UserPage />,
+                },
                 {
                     path: 'books/:bookId',
                     element: <BookPage />,
