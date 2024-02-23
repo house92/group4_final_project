@@ -78,6 +78,7 @@ type User {
   """Author year of death"""
   dateOfBirth: String!
   userAuth: UserAuth!
+  friends: [User!]
 }
 
 type UserAuth {
@@ -88,8 +89,8 @@ type UserAuth {
 
 type UserSession {
   id: ID!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   token: String
 }
 
@@ -112,6 +113,7 @@ type Mutation {
   signInUser(email: String!, password: String!): UserSession!
   updateUser(input: UpdateUserInput!): User!
   removeUser(id: Int!): User!
+  addFriend(friendId: String!): User!
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
