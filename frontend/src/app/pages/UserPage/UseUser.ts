@@ -15,24 +15,22 @@ export default function useUser(userId: string = '') {
     let user: User = {
         id: '',
         name: '',
-        age: 12,
-        bio: undefined
+        age: 0,
+        bio: null
     };
+
     if (data?.getUser) {
         user = {
             id: data?.getUser.id,
             name: `${data?.getUser.firstName} ${data?.getUser.lastName}`,
-            age:DateTime.fromISO(data?.getUser.dateOfBirth).year,
+            age:
+                DateTime.fromISO(data?.getUser.dateOfBirth).month <= DateTime.now().month &&
+                DateTime.fromISO(data?.getUser.dateOfBirth).day <= DateTime.now().day
+                    ? DateTime.now().year - DateTime.fromISO(data?.getUser.dateOfBirth).year
+                    : DateTime.now().year - DateTime.fromISO(data?.getUser.dateOfBirth).year - 1,
             bio: data?.getUser.bio,
         };
     }
-
-    console.log(DateTime.fromISO(data?.getUser.dateOfBirth || ''));
-    console.log(DateTime.fromISO(data?.getUser.dateOfBirth || '').day);
-    console.log(DateTime.fromISO(data?.getUser.dateOfBirth || '').month);
-    console.log(DateTime.fromISO(data?.getUser.dateOfBirth || '').year);
-
-    
 
     return { user };
 }

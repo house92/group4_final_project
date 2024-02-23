@@ -74,6 +74,8 @@ type User {
   firstName: String!
   lastName: String!
   bio: String
+
+  """Author year of death"""
   dateOfBirth: String!
   userAuth: UserAuth!
 }
