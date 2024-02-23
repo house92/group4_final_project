@@ -87,8 +87,8 @@ type UserAuth {
 
 type UserSession {
   id: ID!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   token: String
 }
 
