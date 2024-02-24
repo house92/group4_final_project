@@ -16,8 +16,6 @@ interface ChatGptResponse {
 export async function runGpt(book: string, reviewer: number) {
     let setup = '';
 
-// review if the author themself read the book
-
     switch (reviewer) {
         case 0:
             setup = 'You are Robert Downey Jr if he was alive in the year 1800.';
@@ -32,7 +30,7 @@ export async function runGpt(book: string, reviewer: number) {
             setup =
                 'You are Mary Poppins. Speak in her manner of speaking, including references to the film Mary Poppins.';
     }
-    const prompt = 'Write me a three-paragraph review of ' + book;
+    const prompt = 'Write me a two-paragraph review of ' + book;
 
     const completion = await openai.chat.completions.create({
         messages: [
@@ -50,6 +48,6 @@ function getContentFromResponse(response: ChatGptResponse): string {
 }
 
 async function main() {
-    console.log(await runGpt('Frankenstein', 1));
+    console.log(await runGpt('Frankenstein', 2));
 }
 main();
