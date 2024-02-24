@@ -27,12 +27,12 @@ export class BookReview {
     rating: number;
 
     @ManyToOne(() => User)
-    @JoinColumn({ name: 'user_id', referencedColumnName: 'id'})
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     @Field(() => User)
     user: User;
 
     @ManyToOne(() => Book)
-    @JoinColumn({ name: 'book_id', referencedColumnName: 'id'})
+    @JoinColumn({ name: 'book_id', referencedColumnName: 'id' })
     @Field(() => Book)
     book: Book;
 }
