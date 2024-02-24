@@ -1,7 +1,7 @@
 import { OpenAI } from 'openai';
-import { getApiKey } from '../../environment';
+import { getChatGptApiKey } from '../../environment';
 
-const openai = new OpenAI({ apiKey: getApiKey() });
+const openai = new OpenAI({ apiKey: getChatGptApiKey() });
 
 interface ChatGptResponse {
     index: number;
@@ -15,6 +15,8 @@ interface ChatGptResponse {
 
 export async function runGpt(book: string, reviewer: number) {
     let setup = '';
+
+// review if the author themself read the book
 
     switch (reviewer) {
         case 0:
