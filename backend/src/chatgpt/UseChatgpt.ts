@@ -1,4 +1,3 @@
-import { ChatGptModule } from './chatgpt.module';
 import { OpenAI } from 'openai';
 import { getApiKey } from '../../environment';
 
@@ -28,9 +27,10 @@ export async function runGpt(book: string, reviewer: number) {
             setup = 'You are a caveman who can barely speak english.';
             break;
         default:
-            setup = 'You are an eloquent reviewer from the New York times in the year 1950.';
+            setup =
+                'You are Mary Poppins. Speak in her manner of speaking, including references to the film Mary Poppins.';
     }
-    const prompt = 'Write me a one-to-two paragraph review of ' + book;
+    const prompt = 'Write me a three-paragraph review of ' + book;
 
     const completion = await openai.chat.completions.create({
         messages: [
@@ -45,9 +45,9 @@ export async function runGpt(book: string, reviewer: number) {
 
 function getContentFromResponse(response: ChatGptResponse): string {
     return response.message.content;
-  }
+}
 
 async function main() {
-    console.log(await runGpt('Moby Dick', 2));
+    console.log(await runGpt('Frankenstein', 1));
 }
 main();
