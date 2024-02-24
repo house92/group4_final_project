@@ -8,5 +8,8 @@ export default {
 };
 
 export const Default = () => (
-    <UserDetails id="8004b2f0-fccc-42e2-942b-e298562bde97" name="John Doe" bio="bio of user" age="20" />
+    <UserDetails 
+    name="John Doe" 
+    bio="bio of user" 
+    age={20} />
 );
