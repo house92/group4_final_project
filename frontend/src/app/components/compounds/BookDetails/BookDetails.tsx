@@ -6,19 +6,19 @@ interface BookDetailsProps {
     id: string;
     title: string;
     coverImage: string;
-    authorName?: string;
-    publicationDate: DateTime;
+    authorNames: string[] | undefined;
+    publicationDate: DateTime | undefined;
     synopsis: string;
 }
 
-export default function BookDetails({ title, coverImage, authorName, publicationDate, synopsis }: BookDetailsProps) {
+export default function BookDetails({ title, coverImage, authorNames, publicationDate, synopsis }: BookDetailsProps) {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
             <Typography variant="h5">{title}</Typography>
             <img src={coverImage} alt="Book Cover" style={{ maxWidth: '100%', marginBottom: 10 }} />
-            <Typography variant="body1">Author: {authorName}</Typography>
+            <Typography variant="body1">Authors: {authorNames?.join(', ')}</Typography>
             <Typography variant="body1">
-                Publication Date: {publicationDate.toLocaleString(DateTime.DATE_MED)}
+                Publication Date: {publicationDate ? publicationDate.toLocaleString(DateTime.DATE_MED) : 'Unknown'}
             </Typography>
             <Typography variant="body1">Synopsis: {synopsis}</Typography>
         </Paper>

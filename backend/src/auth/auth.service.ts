@@ -7,23 +7,21 @@ import { UserAuthService } from '../user-auth/user-auth.service';
 @Injectable()
 export class AuthService {
     constructor(
-        private usersService: UserAuthService,
+        private userAuthService: UserAuthService,
         private jwtService: JwtService,
     ) {}
 
     async signIn(email: string, password: string) {
-        const user = await this.usersService.findByEmail(email);
+        const userAuth = await this.userAuthService.findByEmail(email, { user: true });
 
-        const isPasswordMatching = await bcrypt.compare(password, user.passwordhash);
+        const isPasswordMatching = await bcrypt.compare(password, userAuth.passwordhash);
 
         if (!isPasswordMatching) {
             console.warn(`incorrect password for ${email}`);
             throw new UnauthorizedException('There is no user with that email and password');
         }
 
-        const token = await this.generateToken(user.id);
-
-        return { user, token };
+        return { user: userAuth.user };
     }
 
     async generateToken(userId: string) {

@@ -7,7 +7,6 @@ import { UserAuthService } from '../user-auth/user-auth.service';
 import { Public } from './decorators/public.decorator';
 import { CurrentRequestContext, RequestContext } from './decorators/current_request_context.decorator';
 import { UserService } from 'src/user/user.service';
-import { UserAuth } from 'src/user-auth/user-auth.entity';
 import { CreateUserAuthInput } from 'src/user-auth/inputs/create-user-auth-input';
 
 const AUTHENTICATION_COOKIE_NAME = 'Authentication';
@@ -17,10 +16,10 @@ class UserSession {
     @Field(() => ID)
     id: string;
 
-    @Field()
+    @Field({ nullable: true })
     firstName?: string;
 
-    @Field()
+    @Field({ nullable: true })
     lastName?: string;
 
     @Field({ nullable: true })
@@ -40,12 +39,12 @@ export class AuthResolver {
     async registerUser(@Args('input') input: CreateUserAuthInput): Promise<UserSession> {
         const userAuth = await this.userAuthService.createUser(input);
 
-        await this.userService.create({ ...input, userAuthId: userAuth.id }, userAuth);
+        const user = await this.userService.create({ ...input, userAuthId: userAuth.id }, userAuth);
 
-        const token = await this.service.generateToken(userAuth.id);
+        const token = await this.service.generateToken(user.id);
 
         return {
-            id: userAuth.id,
+            id: user.id,
             token,
         };
     }
@@ -57,7 +56,9 @@ export class AuthResolver {
         @Args('password') password: string,
         @Context('res') res: Response,
     ): Promise<UserSession> {
-        const { user, token } = await this.service.signIn(email, password);
+        const { user } = await this.service.signIn(email, password);
+
+        const token = await this.service.generateToken(user.id);
 
         res.cookie(AUTHENTICATION_COOKIE_NAME, token, {
             httpOnly: true,
@@ -75,6 +76,6 @@ export class AuthResolver {
 
     @Query(() => UserSession)
     async getUserSession(@CurrentRequestContext() ctx: RequestContext): Promise<UserSession> {
-        return this.userAuthService.findById(ctx.userId);
+        return this.userService.findById(ctx.userId);
     }
 }

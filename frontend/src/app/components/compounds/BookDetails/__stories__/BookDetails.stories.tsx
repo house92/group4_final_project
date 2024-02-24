@@ -10,7 +10,7 @@ export const Default = () => (
         id="abc-123"
         title="Book Title"
         coverImage="Cover Image URL"
-        authorName="John Doe"
+        authorNames={['John Doe']}
         publicationDate={DateTime.now().minus({ years: 10 })}
         synopsis="This is the books synopsis... 123"
     />

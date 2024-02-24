@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { UserAuth } from './user-auth.entity';
@@ -30,7 +30,7 @@ export class UserAuthService {
         return this.userRepository.findOneBy({ id });
     }
 
-    async findByEmail(email: string): Promise<UserAuth | null> {
-        return this.userRepository.findOneBy({ email });
+    async findByEmail(email: string, relations: FindOneOptions<UserAuth>['relations'] = {}): Promise<UserAuth | null> {
+        return this.userRepository.findOne({ where: { email }, relations });
     }
 }
