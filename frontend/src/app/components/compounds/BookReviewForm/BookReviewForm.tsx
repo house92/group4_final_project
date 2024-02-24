@@ -108,7 +108,7 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
                     sx={{
                         '& > legend': { mt: 2 },
                     }}
-                > 
+                >
                     <Button type="submit" variant="contained">
                         Save
                     </Button>

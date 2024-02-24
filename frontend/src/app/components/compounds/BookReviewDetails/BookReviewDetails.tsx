@@ -22,4 +22,4 @@ export default function BookReviewDetails({ title, review, rating, reviewerName 
             )}
         </Paper>
     );
-};
+}
