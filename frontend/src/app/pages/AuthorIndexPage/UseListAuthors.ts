@@ -13,7 +13,7 @@ export default function useAuthors() {
     const { data } = useGetAuthorsListQuery();
 
     let authors: Author[] = [];
-    
+
     if (data?.listAuthors) {
         authors = data.listAuthors.map((author) => ({
             id: author.id,

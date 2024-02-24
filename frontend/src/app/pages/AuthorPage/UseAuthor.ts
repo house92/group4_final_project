@@ -24,7 +24,6 @@ export default function useAuthor(authorId: string = '') {
             bio: data?.getAuthor.bio,
         };
     }
-    
 
     return { author };
 }
