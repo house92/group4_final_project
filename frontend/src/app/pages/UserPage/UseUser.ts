@@ -16,7 +16,7 @@ export default function useUser(userId: string = '') {
         id: '',
         name: '',
         age: 0,
-        bio: null
+        bio: null,
     };
 
     if (data?.getUser) {
