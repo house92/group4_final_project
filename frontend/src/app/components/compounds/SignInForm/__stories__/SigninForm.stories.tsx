@@ -6,10 +6,8 @@ export default {
     title: 'Compounds/SigninForm',
 };
 
-export const Default = () => (
-    <SigninForm onSubmit={handleSubmit} />
-);
+export const Default = () => <SigninForm onSubmit={handleSubmit} />;
 
 const handleSubmit = (SigninCreds) => {
-    console.log("Form submitted with data:", SigninCreds);
-}
+    console.log('Form submitted with data:', SigninCreds);
+};
