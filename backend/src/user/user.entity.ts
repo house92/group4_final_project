@@ -31,7 +31,8 @@ export class User {
     userAuth: UserAuth;
 
     @OneToMany(() => BookReview, (bookReview) => bookReview.user)
-    reviews?: BookReview[];
+    @Field(() => [BookReview], { nullable: true })
+    bookReviews?: BookReview[];
 
     @ManyToMany(() => User)
     @JoinTable({

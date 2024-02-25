@@ -49,6 +49,7 @@ type Book {
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
   authors: [Author!]!
+  bookReviews: [BookReview!]!
 }
 
 type BookReview {
@@ -78,6 +79,7 @@ type User {
   """Author year of death"""
   dateOfBirth: DateTime!
   userAuth: UserAuth!
+  bookReviews: [BookReview!]
   friends: [User!]
 }
 

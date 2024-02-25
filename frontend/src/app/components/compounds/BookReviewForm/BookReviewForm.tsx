@@ -13,7 +13,7 @@ interface BookReviewInput {
 }
 interface BookReviewProps {
     title: string;
-    onSubmit: (values: { BookReviewInput }) => void;
+    onSubmit: (values: BookReviewInput) => void;
 }
 
 export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
@@ -40,9 +40,7 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
             body: string().required('a review is required'),
             rating: number().typeError('a rating must be a valid number 1-5').required('a rating is required'),
         }),
-        onSubmit: (values) => {
-            console.log(values);
-        },
+        onSubmit,
     });
 
     function getLabelText(value) {

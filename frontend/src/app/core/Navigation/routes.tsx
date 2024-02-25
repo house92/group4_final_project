@@ -26,7 +26,7 @@ export function generateRouter() {
                     element: <BookIndexPage />,
                 },
                 {
-                    path: 'user/:userId',
+                    path: 'users/:userId',
                     element: <UserPage />,
                 },
                 {

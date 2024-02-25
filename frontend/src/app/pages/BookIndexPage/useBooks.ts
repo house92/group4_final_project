@@ -2,6 +2,7 @@ import { useGetBooksListQuery } from 'generated/graphql';
 import { DateTime } from 'luxon';
 
 interface Book {
+    id: string;
     coverImage: string;
     title: string;
     authorNames: string[];
@@ -14,6 +15,7 @@ export default function useBooks() {
     let books: Book[] = [];
     if (data?.listBooks) {
         books = data.listBooks.map((book) => ({
+            id: book.id,
             coverImage: book.coverImage,
             title: book.title,
             authorNames: book.authors.map((author) => `${author.firstName} ${author.lastName}`),

@@ -1,16 +1,33 @@
 query GetBookById($bookId: String!) {
+    getBook(id: $bookId) {
+        id
+        title
+        coverImage
+        authors {
+            firstName
+            lastName
+        }
+        publicationDate
+        synopsis
 
-  getBook(id: $bookId) {
-    id
-    title
-    coverImage
-    authors{
-        firstName
-        lastName
+        bookReviews {
+            id
+            body
+            rating
+
+            user {
+                id
+                firstName
+                lastName
+            }
+        }
     }
-    publicationDate
-    synopsis
+}
 
-  }
-
+mutation CreateBookReview($input: CreateBookReviewInput!) {
+    createBookReview(input: $input) {
+        id
+        body
+        rating
+    }
 }

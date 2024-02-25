@@ -1,12 +1,20 @@
 query GetUserById($userId: String!) {
+    getUser(id: $userId) {
+        id
+        firstName
+        lastName
+        bio
+        dateOfBirth
 
-  getUser(id: $userId) {
-    id
-    firstName
-    lastName
-    bio
-    dateOfBirth
+        bookReviews {
+            id
+            body
+            rating
 
-  }
-
+            book {
+                id
+                title
+            }
+        }
+    }
 }

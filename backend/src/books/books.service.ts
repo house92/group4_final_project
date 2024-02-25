@@ -3,7 +3,7 @@ import { CreateBookInput } from './inputs/create-book.input';
 import { UpdateBookInput } from './inputs/update-book.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './book.entity';
-import { In, Repository } from 'typeorm';
+import { FindOneOptions, In, Repository } from 'typeorm';
 import { Author } from 'src/authors/author.entity';
 
 @Injectable()
@@ -17,8 +17,8 @@ export class BooksService {
         return this.repo.find({ relations: { authors: true } });
     }
 
-    findById(id: string) {
-        return this.repo.findOne({ where: { id }, relations: { authors: true } });
+    findById(id: string, relations: FindOneOptions<Book>['relations'] = {}) {
+        return this.repo.findOne({ where: { id }, relations });
     }
 
     async create(input: CreateBookInput) {
@@ -28,7 +28,7 @@ export class BooksService {
             const authors = await this.authorRepo.find({ where: { id: In(input.authorIds) } });
             newBook.authors = authors;
         }
-        
+
         return this.repo.save(newBook);
     }
 
