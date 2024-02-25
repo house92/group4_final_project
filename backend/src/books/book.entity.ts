@@ -48,5 +48,6 @@ export class Book {
     authors?: Author[];
 
     @OneToMany(() => BookReview, (bookReview) => bookReview.book)
-    reviews?: BookReview[];
+    @Field(() => [BookReview])
+    bookReviews?: BookReview[];
 }

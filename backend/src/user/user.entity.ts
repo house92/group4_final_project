@@ -22,16 +22,17 @@ export class User {
     @Field({ nullable: true })
     bio?: string;
 
-    @Column()
-    @Field(() => String, { description: 'Author year of death' })
-    dateOfBirth: string;
+    @Column({ name: 'date_of_birth', type: 'timestamptz' })
+    @Field(() => Date, { description: 'Author year of death' })
+    dateOfBirth: Date;
 
     @OneToOne(() => UserAuth, (userAuth) => userAuth.user)
     @Field(() => UserAuth)
     userAuth: UserAuth;
 
     @OneToMany(() => BookReview, (bookReview) => bookReview.user)
-    reviews?: BookReview[];
+    @Field(() => [BookReview], { nullable: true })
+    bookReviews?: BookReview[];
 
     @ManyToMany(() => User)
     @JoinTable({

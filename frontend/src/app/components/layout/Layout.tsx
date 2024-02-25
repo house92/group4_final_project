@@ -1,30 +1,39 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { Link, Outlet } from 'react-router-dom';
+
+const NAV_WIDTH = 300;
 
 export default function Layout() {
     return (
         <Box display="flex" flexDirection="row">
             <Box
                 sx={{ display: { xs: 'none', md: 'flex' } }}
-                minWidth={200}
-                width={200}
+                position="fixed"
+                minWidth={NAV_WIDTH}
+                width={NAV_WIDTH}
                 height="100vh"
-                p={6}
-                mr={4}
                 bgcolor="#2E3B4E"
             >
-                <Stack>
-                    <Link to="/authors" style={{ textDecoration: 'none' }}>
-                        <Typography color="white">Authors</Typography>
-                    </Link>
+                <Box display="flex" flexDirection="column" justifyContent="space-between" p={6}>
+                    <Stack gap={1}>
+                        <Link to="/authors" style={{ textDecoration: 'none' }}>
+                            <Typography color="white">Authors</Typography>
+                        </Link>
 
-                    <Link to="/books" style={{ textDecoration: 'none' }}>
-                        <Typography color="white">Books</Typography>
-                    </Link>
-                </Stack>
+                        <Link to="/books" style={{ textDecoration: 'none' }}>
+                            <Typography color="white">Books</Typography>
+                        </Link>
+                    </Stack>
+
+                    <Button href="/sign-in" variant="contained">
+                        Sign in
+                    </Button>
+                </Box>
             </Box>
 
-            <Outlet />
+            <Box ml={`${NAV_WIDTH}px`} pl={4}>
+                <Outlet />
+            </Box>
         </Box>
     );
 }

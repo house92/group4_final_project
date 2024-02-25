@@ -22,7 +22,7 @@ export class BooksResolver {
     @Public()
     @Query(() => Book)
     async getBook(@Args('id', { type: () => String }) id: string) {
-        return this.booksService.findById(id);
+        return this.booksService.findById(id, { authors: true, bookReviews: { user: true } });
     }
 
     ////////////////////////////////
