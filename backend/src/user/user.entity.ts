@@ -22,8 +22,8 @@ export class User {
     @Field({ nullable: true })
     bio?: string;
 
-    @Column({ name: 'date_of_birth', type: 'timestamptz' })
-    @Field()
+    @Column()
+    @Field(() => String, { description: 'Author year of death' })
     dateOfBirth: string;
 
     @OneToOne(() => UserAuth, (userAuth) => userAuth.user)

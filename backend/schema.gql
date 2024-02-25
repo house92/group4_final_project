@@ -74,6 +74,8 @@ type User {
   firstName: String!
   lastName: String!
   bio: String
+
+  """Author year of death"""
   dateOfBirth: String!
   userAuth: UserAuth!
   friends: [User!]
@@ -87,8 +89,8 @@ type UserAuth {
 
 type UserSession {
   id: ID!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   token: String
 }
 
