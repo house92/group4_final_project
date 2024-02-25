@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import { useGetBookByIdQuery } from 'generated/graphql';
 import { DateTime } from 'luxon';
 
@@ -6,9 +5,17 @@ interface Book {
     id: string;
     title: string;
     coverImage: string;
-    authorNames?: string[];
-    publicationDate?: DateTime | undefined;
-    synopsis: string | null | undefined;
+    authorNames: string[];
+    publicationDate?: DateTime;
+    synopsis?: string;
+
+    bookReviews: {
+        id: string;
+        title: string;
+        body: string;
+        rating: number;
+        reviewerName: string;
+    }[];
 }
 
 export default function useBook(bookId: string = '') {
@@ -16,15 +23,24 @@ export default function useBook(bookId: string = '') {
 
     let book: Book | undefined;
     if (data?.getBook) {
+        const baseBook = data.getBook;
+        const title = baseBook.title;
+
         book = {
-            id: data?.getBook.id,
-            title: data?.getBook.title,
-            coverImage: data?.getBook.coverImage,
-            authorNames: data?.getBook.authors.map((authorNames) => `${authorNames.firstName} ${authorNames.lastName}`),
-            publicationDate: data?.getBook.publicationDate
-                ? DateTime.fromISO(data?.getBook.publicationDate)
-                : undefined,
-            synopsis: data?.getBook.synopsis ?? null,
+            id: baseBook.id,
+            title,
+            coverImage: baseBook.coverImage,
+            authorNames: baseBook.authors.map((authorNames) => `${authorNames.firstName} ${authorNames.lastName}`),
+            publicationDate: baseBook.publicationDate ? DateTime.fromISO(baseBook.publicationDate) : undefined,
+            synopsis: baseBook.synopsis ?? undefined,
+
+            bookReviews: baseBook.bookReviews.map((review) => ({
+                id: review.id,
+                title,
+                body: review.body,
+                rating: review.rating,
+                reviewerName: `${review.user.firstName} ${review.user.lastName}`,
+            })),
         };
     }
 

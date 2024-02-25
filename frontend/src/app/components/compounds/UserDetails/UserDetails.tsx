@@ -16,4 +16,4 @@ export default function UserDetails({ name, bio, age }: UserDetailsProps) {
             <Typography variant="body1">Age: {age}</Typography>
         </Paper>
     );
-};
+}

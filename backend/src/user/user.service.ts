@@ -3,7 +3,7 @@ import { CreateUserInput } from './inputs/create-user.input';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { UserAuth } from 'src/user-auth/user-auth.entity';
 
 @Injectable()
@@ -37,8 +37,8 @@ export class UserService {
         return `This action returns all user`;
     }
 
-    findById(id: string) {
-        return this.repo.findOne({ where: { id }, relations: { friends: true } });
+    findById(id: string, relations: FindOneOptions<User>['relations'] = {}) {
+        return this.repo.findOne({ where: { id }, relations });
     }
 
     update(input: UpdateUserInput) {

@@ -17,7 +17,7 @@ export class UserResolver {
     @Public()
     @Query(() => User)
     getUser(@Args('id', { type: () => String }) id: string) {
-        return this.userService.findById(id);
+        return this.userService.findById(id, { friends: true, bookReviews: { book: true } });
     }
 
     @Mutation(() => User)
