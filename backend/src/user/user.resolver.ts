@@ -30,6 +30,7 @@ export class UserResolver {
         return this.userService.remove(id);
     }
 
+    @Public()
     @Mutation(() => User)
     addFriend(
         @Args('friendId', { type: () => String }) friendId: string,
