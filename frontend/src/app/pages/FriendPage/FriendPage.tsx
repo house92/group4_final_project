@@ -1,41 +1,26 @@
-import React from 'react';
-import { useQuery, gql } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import FriendIndex from 'app/components/compounds/FriendIndex';
+import { List } from '@mui/material';
+import useUsersFriends from './useUsersFriends';
 
-const GET_FRIENDS_OF_USER = gql`
-    query GetFriendsOfUser($userId: String!) {
-        user(id: $userId) {
-            friends {
-                id
-                name
-            }
-        }
+export default function FriendsPage() {
+    const { userId } = useParams();
+    const { friends } = useUsersFriends(userId);
+
+    if (!friends || friends.length === 0) {
+        return <h1>No friends found.</h1>;
     }
-`;
-
-export default function FriendPage() {
-    const { userId } = useParams<{ userId: string }>();
-    const { data, loading, error } = useQuery(GET_FRIENDS_OF_USER, {
-        variables: { userId },
-    });
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-
-    // Extract the friends from the query data
-    const friends = data?.user?.friends || [];
 
     return (
-        <div>
+        <List>
             <h1>Friend Page</h1>
             <FriendIndex
                 friends={friends.map((friend) => ({
-                id: friend.id, // Ensure you have an 'id' field for each friend
+                    id: friend.id,
                     name: friend.name,
                     onClick: () => console.log('Friend clicked', friend.id),
                 }))}
             />
-        </div>
+        </List>
     );
 }

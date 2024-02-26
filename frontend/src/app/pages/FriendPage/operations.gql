@@ -1,10 +1,8 @@
-const GET_FRIENDS_OF_USER = gql`
-    query GetFriendsOfUser($userId: String!) {
-        user(id: $userId) {
-            friends {
-                id
-                name
-            }
+query GetUserFriends($userId: String!) {
+    getUserFriends(id: $userId) {
+        friends {
+            id
+            name
         }
     }
-`;
+}
