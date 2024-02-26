@@ -369,12 +369,7 @@ export type GetUserFriendsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserFriendsQuery = { __typename?: 'Query', getUser: {
-        map(arg0: (friend: any) => { id: any; name: any }): Friend[] | undefined;
-        __typename?: 'User';
-        friends?: Array<{ __typename?: 'User'; id: string; firstName: string; lastName: string }> | null;
-    };
-};
+export type GetUserFriendsQuery = { __typename?: 'Query', getUser: { __typename?: 'User', friends?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> | null } };
 
 export type SignInUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
