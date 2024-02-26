@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import FriendIndex from 'app/components/compounds/FriendIndex';
 import { List } from '@mui/material';
-import useUsersFriends from './useUsersFriends';
+import useUsersFriends from './useUserFriends';
 
 export default function FriendsPage() {
     const { userId } = useParams();
