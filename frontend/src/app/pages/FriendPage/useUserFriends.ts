@@ -14,8 +14,8 @@ export default function useUsersFriends(userId: string = ''): Response {
 
     let res: Response = { friends: [] };
 
-    if (data?.getUserFriends) {
-        res.friends = data.getUserFriends.map((friend) => ({
+    if (data?.getUser) {
+        res.friends = data.getUser.map((friend) => ({
             id: friend.id,
             name: friend.name,
         }));
