@@ -18,7 +18,7 @@ export default function FriendPage() {
                 <FriendIndex
                     friends={friends.map((friend) => ({
                         id: friend.id,
-                        name: friend.name,
+                        name: friend.firstName,
                     }))}
                 />
             </Link>
