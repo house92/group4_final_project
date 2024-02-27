@@ -13,8 +13,8 @@ export default function FriendPage() {
 
     return (
         <Typography>
-            <Typography >Friend Page</Typography>
-            <Link to={`/users/${friends.find}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography>Friend Page</Typography>
+            <Link to={`/users/${userId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <FriendIndex
                     friends={friends.map((friend) => ({
                         id: friend.id,
