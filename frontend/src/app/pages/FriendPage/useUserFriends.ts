@@ -2,12 +2,11 @@ import { useGetUserFriendsQuery } from 'generated/graphql';
 
 interface Friend {
     id: any;
-    firstName: string;
-    lastName: string;
+    name: string;
 }
 
 interface Response {
-    friends?: Friend[];
+    friends: Friend[];
 }
 
 export default function useUsersFriends(userId: string = ''): Response {
@@ -18,8 +17,7 @@ export default function useUsersFriends(userId: string = ''): Response {
     if (data?.getUser?.friends) {
         res.friends = data.getUser.friends.map((friend) => ({
             id: friend.id,
-            firstName: friend.firstName,
-            lastName: friend.lastName,
+            name: `${friend.firstName} ${friend.lastName}`,
         }));
     }
 

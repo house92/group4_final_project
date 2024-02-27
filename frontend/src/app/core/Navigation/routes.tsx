@@ -35,7 +35,7 @@ export function generateRouter() {
                     element: <BookPage />,
                 },
                 {
-                    path: '/friends/:userId',
+                    path: '/users/:userId/friends',
                     element: <FriendPage />,
                 },
             ],
