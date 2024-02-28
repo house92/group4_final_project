@@ -19,7 +19,7 @@ interface Book {
 }
 
 export default function useBook(bookId: string = '') {
-    const { data } = useGetBookByIdQuery({ variables: { bookId } });
+    const { data, refetch } = useGetBookByIdQuery({ variables: { bookId } });
 
     let book: Book | undefined;
     if (data?.getBook) {
@@ -47,5 +47,5 @@ export default function useBook(bookId: string = '') {
         };
     }
 
-    return { book };
+    return { book, refetch };
 }

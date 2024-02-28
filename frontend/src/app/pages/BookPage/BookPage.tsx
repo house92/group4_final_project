@@ -9,7 +9,7 @@ import { useUserSession } from 'app/core/Session';
 
 export default function BookPage() {
     const { bookId } = useParams();
-    const { book } = useBook(bookId);
+    const { book, refetch } = useBook(bookId);
     const userSession = useUserSession();
 
     const [createBookReview] = useCreateBookReviewMutation();
@@ -28,9 +28,12 @@ export default function BookPage() {
             {userSession && (
                 <BookReviewForm
                     title={book.title}
-                    onSubmit={({ body, rating }) =>
-                        createBookReview({ variables: { input: { userId: userSession.id, bookId, body, rating } } })
-                    }
+                    onSubmit={async ({ body, rating }) => {
+                        await createBookReview({
+                            variables: { input: { userId: userSession.id, bookId, body, rating } },
+                        });
+                        refetch();
+                    }}
                 />
             )}
 
