@@ -6,7 +6,7 @@ export default function BookIndexPage() {
     const { books } = useBooks();
 
     return (
-        <Box py={4}>
+        <Box>
             <Typography variant="h3" component="h1" mb={4}>
                 Books
             </Typography>

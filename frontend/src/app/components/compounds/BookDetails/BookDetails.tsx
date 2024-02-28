@@ -1,26 +1,36 @@
-import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import { Link } from 'react-router-dom';
 
 interface BookDetailsProps {
-    id: string;
-    title: string;
+    title?: string;
     coverImage: string;
-    authorNames: string[] | undefined;
-    publicationDate: DateTime | undefined;
-    synopsis: string;
+    authors: { name: string; id: string }[];
+    publicationDate?: DateTime;
+    synopsis?: string;
 }
 
-export default function BookDetails({ title, coverImage, authorNames, publicationDate, synopsis }: BookDetailsProps) {
+export default function BookDetails({ title, coverImage, authors, publicationDate, synopsis }: BookDetailsProps) {
     return (
-        <Paper variant="outlined" style={{ padding: 20 }}>
-            <Typography variant="h5">{title}</Typography>
+        <Box display="flex" flexDirection="row" gap={2}>
             <img src={coverImage} alt="Book Cover" style={{ maxWidth: '100%', marginBottom: 10 }} />
-            <Typography variant="body1">Authors: {authorNames?.join(', ')}</Typography>
-            <Typography variant="body1">
-                Publication Date: {publicationDate ? publicationDate.toLocaleString(DateTime.DATE_MED) : 'Unknown'}
-            </Typography>
-            <Typography variant="body1">Synopsis: {synopsis}</Typography>
-        </Paper>
+
+            <Stack gap={2}>
+                {title && <Typography variant="h5">{title}</Typography>}
+
+                <Typography variant="body1">
+                    Authors:{' '}
+                    {authors.map((author) => (
+                        <Link to={`/authors/${author.id}`}>{author.name}</Link>
+                    ))}
+                </Typography>
+
+                <Typography variant="body1">
+                    Publication Date: {publicationDate ? publicationDate.toLocaleString(DateTime.DATE_MED) : 'Unknown'}
+                </Typography>
+
+                {synopsis && <Typography variant="body1">{synopsis}</Typography>}
+            </Stack>
+        </Box>
     );
 }

@@ -1,13 +1,13 @@
-import { useQuery } from '@apollo/client';
 import { useGetAuthorByIdQuery } from 'generated/graphql';
+import { DateTime } from 'luxon';
 
 interface Author {
     id: string;
     name: string;
-    dateOfBirth: string;
-    dateOfDeath?: string | null | undefined;
-    hometown: string | null | undefined;
-    bio: string | null | undefined;
+    dateOfBirth: DateTime;
+    dateOfDeath?: DateTime;
+    hometown?: string;
+    bio?: string;
 }
 
 export default function useAuthor(authorId: string = '') {
@@ -15,13 +15,15 @@ export default function useAuthor(authorId: string = '') {
 
     let author: Author | undefined;
     if (data?.getAuthor) {
+        const baseAuthor = data.getAuthor;
+
         author = {
-            id: data?.getAuthor.id,
-            name: `${data?.getAuthor.firstName} ${data?.getAuthor.lastName}`,
-            dateOfBirth: data?.getAuthor.dateOfBirth,
-            dateOfDeath: data?.getAuthor.dateOfDeath,
-            hometown: data?.getAuthor.hometown,
-            bio: data?.getAuthor.bio,
+            id: baseAuthor.id,
+            name: `${baseAuthor.firstName} ${baseAuthor.lastName}`,
+            dateOfBirth: DateTime.fromISO(baseAuthor.dateOfBirth),
+            dateOfDeath: baseAuthor.dateOfDeath ? DateTime.fromISO(baseAuthor.dateOfDeath) : undefined,
+            hometown: baseAuthor.hometown ?? undefined,
+            bio: baseAuthor.bio ?? undefined,
         };
     }
 

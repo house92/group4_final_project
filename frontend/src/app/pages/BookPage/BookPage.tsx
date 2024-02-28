@@ -18,19 +18,12 @@ export default function BookPage() {
     if (!book) return null;
 
     return (
-        <Stack p={2} gap={4}>
-            <Typography variant="h4" component="h1">
+        <Stack gap={4}>
+            <Typography variant="h3" component="h1">
                 {book.title}
             </Typography>
 
-            <BookDetails
-                id={book.id}
-                title={book.title}
-                coverImage={book.coverImage}
-                authorNames={book.authorNames}
-                publicationDate={book.publicationDate}
-                synopsis={book.synopsis ?? ''}
-            />
+            <BookDetails {...book} />
 
             {userSession && (
                 <BookReviewForm

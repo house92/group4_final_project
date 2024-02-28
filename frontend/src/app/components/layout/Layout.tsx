@@ -31,7 +31,7 @@ export default function Layout() {
                 </Box>
             </Box>
 
-            <Box ml={`${NAV_WIDTH}px`} pl={4}>
+            <Box ml={`${NAV_WIDTH}px`} p={4}>
                 <Outlet />
             </Box>
         </Box>

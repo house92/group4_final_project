@@ -7,7 +7,7 @@ export default function AuthorIndexPage() {
     const { authors } = useAuthors();
 
     return (
-        <Box py={4}>
+        <Box>
             <Typography variant="h3" component="h1" mb={4}>
                 Authors
             </Typography>
