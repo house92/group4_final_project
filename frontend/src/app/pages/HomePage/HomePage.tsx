@@ -12,9 +12,9 @@ export default function HomePage() {
         const fetchData = async () => {
             let data;
             if (userSession && userSession.token) {
-                data = await useHomePageData();
+                data = useHomePageData(userSession.id);
             } else {
-                data = await useHomePageData();
+                data = useHomePageData('');
             }
             setReviews(data);
         };

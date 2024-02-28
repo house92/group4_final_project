@@ -371,6 +371,13 @@ export type GetUserFriendsQueryVariables = Exact<{
 
 export type GetUserFriendsQuery = { __typename?: 'Query', getUser: { __typename?: 'User', friends?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> | null } };
 
+export type GetHomePageDataQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetHomePageDataQuery = { __typename?: 'Query', friendReviews: { __typename?: 'User', friends?: Array<{ __typename?: 'User', id: string, bookReviews?: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, book: { __typename?: 'Book', id: string, title: string }, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> | null }> | null }, allReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, book: { __typename?: 'Book', id: string, title: string }, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> };
+
 export type SignInUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -702,6 +709,76 @@ export type GetUserFriendsQueryHookResult = ReturnType<typeof useGetUserFriendsQ
 export type GetUserFriendsLazyQueryHookResult = ReturnType<typeof useGetUserFriendsLazyQuery>;
 export type GetUserFriendsSuspenseQueryHookResult = ReturnType<typeof useGetUserFriendsSuspenseQuery>;
 export type GetUserFriendsQueryResult = Apollo.QueryResult<GetUserFriendsQuery, GetUserFriendsQueryVariables>;
+export const GetHomePageDataDocument = gql`
+    query GetHomePageData($userId: String!) {
+  friendReviews: getUser(id: $userId) @include(if: true) {
+    friends {
+      id
+      bookReviews {
+        id
+        body
+        rating
+        book {
+          id
+          title
+        }
+        user {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+  allReviews: listAllReviews @skip(if: true) {
+    id
+    body
+    rating
+    book {
+      id
+      title
+    }
+    user {
+      id
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetHomePageDataQuery__
+ *
+ * To run a query within a React component, call `useGetHomePageDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetHomePageDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetHomePageDataQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetHomePageDataQuery(baseOptions: Apollo.QueryHookOptions<GetHomePageDataQuery, GetHomePageDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(GetHomePageDataDocument, options);
+      }
+export function useGetHomePageDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetHomePageDataQuery, GetHomePageDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(GetHomePageDataDocument, options);
+        }
+export function useGetHomePageDataSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetHomePageDataQuery, GetHomePageDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(GetHomePageDataDocument, options);
+        }
+export type GetHomePageDataQueryHookResult = ReturnType<typeof useGetHomePageDataQuery>;
+export type GetHomePageDataLazyQueryHookResult = ReturnType<typeof useGetHomePageDataLazyQuery>;
+export type GetHomePageDataSuspenseQueryHookResult = ReturnType<typeof useGetHomePageDataSuspenseQuery>;
+export type GetHomePageDataQueryResult = Apollo.QueryResult<GetHomePageDataQuery, GetHomePageDataQueryVariables>;
 export const SignInUserDocument = gql`
     mutation SignInUser($email: String!, $password: String!) {
   signInUser(email: $email, password: $password) {
