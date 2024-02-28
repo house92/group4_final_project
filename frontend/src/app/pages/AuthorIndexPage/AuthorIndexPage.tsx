@@ -1,25 +1,18 @@
-import AuthorIndexItem from 'app/components/compounds/AuthorIndexItem';
+import { AuthorIndex } from 'app/components';
 
 import useAuthors from './UseListAuthors';
-import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
 export default function AuthorIndexPage() {
     const { authors } = useAuthors();
 
     return (
-        <div>
-            <h1>Authors Index</h1>
-            <div style={{ marginBottom: '20px' }}></div>
-            {authors.map((author) => (
-                <Link to={`/authors/${author.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <AuthorIndexItem
-                        authorId={author.id}
-                        authorName={author.name}
-                        birthYear={author.dateOfBirth}
-                        hometown={author.hometown}
-                    />
-                </Link>
-            ))}
-        </div>
+        <Box py={4}>
+            <Typography variant="h3" component="h1" mb={4}>
+                Authors
+            </Typography>
+
+            <AuthorIndex authors={authors} />
+        </Box>
     );
 }
