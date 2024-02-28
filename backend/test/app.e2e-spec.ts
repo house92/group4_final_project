@@ -1,10 +1,13 @@
 import * as request from 'supertest';
+import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { BooksService } from 'src/books/books.service';
 import { AuthorsService } from 'src/authors/authors.service';
-
+import { BookReviewsService } from 'src/bookreviews/bookreviews.service';
+import { UserService } from 'src/user/user.service';
+import { UserAuthService } from 'src/user-auth/user-auth.service';
+ 
 describe('AuthorsModule', () => {
     let app: INestApplication;
     const authorsService = {
@@ -26,7 +29,7 @@ describe('AuthorsModule', () => {
     const bookReviewsService = {
         findAllByUser: () => ['test'],
         findOneByUser: () => 'test',
-        findAllByBook: () => 'test',
+        findAllByBook: () => ['test'],
         create: () => 'test',
         remove: () => 'test',
     };
@@ -39,6 +42,13 @@ describe('AuthorsModule', () => {
         remove: () => 'test',
     };
 
+    const userAuthService = {
+        findAll: () => ['test'],
+        findById: () => 'test',
+        findByEmail: () => 'test',
+        createUser: () => 'test', 
+    }
+
     beforeEach(async () => {
         const moduleRef = await Test.createTestingModule({
             imports: [AppModule],
@@ -47,6 +57,12 @@ describe('AuthorsModule', () => {
             .useValue(authorsService)
             .overrideProvider(BooksService)
             .useValue(booksService)
+            .overrideProvider(BookReviewsService)
+            .useValue(bookReviewsService)
+            .overrideProvider(UserService)
+            .useValue(usersService)
+            .overrideProvider(UserAuthService)
+            .useValue(userAuthService)
             .compile();
 
         app = moduleRef.createNestApplication();
@@ -111,7 +127,7 @@ describe('AuthorsModule', () => {
             .expect(200, { data: bookReviewsService.findOneByUser() });
     });
 
-    it('GET: bookreviews', () => {
+    it('GET: bookreviews/:book', () => {
         return request(app.getHttpServer())
             .get('/bookreviews')
             .expect(200, { data: bookReviewsService.findAllByBook() });
@@ -144,6 +160,24 @@ describe('AuthorsModule', () => {
 
     it('DELETE: users/:id', () => {
         return request(app.getHttpServer()).delete('/users/1').expect(200, { data: usersService.remove() });
+    });
+
+    /* tests for user authentication */
+
+    it('GET: user-auth', () => {
+        return request(app.getHttpServer()).get('/user-auth').expect(200, { data: userAuthService.findAll() });
+    });
+
+    it('GET: users-auth/:id', () => {
+        return request(app.getHttpServer()).get('/users-auth/1').expect(200, { data: userAuthService.findById() });
+    });
+
+    it('GET: users-auth/:email', () => {
+        return request(app.getHttpServer()).get('/users-auth/1').expect(200, { data: userAuthService.findByEmail() });
+    });
+
+    it('POST: users-auth', () => {
+        return request(app.getHttpServer()).post('/users-auth').expect(201, { data: userAuthService.createUser() });
     });
 
     afterAll(async () => {
