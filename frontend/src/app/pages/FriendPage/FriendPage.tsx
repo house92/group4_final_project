@@ -15,7 +15,7 @@ export default function FriendPage() {
         <Typography>
             <Typography>Friend Page</Typography>
             {friends.map((friend) => (
-                <Link key={friend.id} to={`/authors/${friend.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link key={friend.id} to={`/users/${friend.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <FriendIndex
                         friends={friends.map((friend) => ({
                             id: friend.id,
