@@ -20,7 +20,7 @@ query GetHomePageData($userId: String!, $friendId: String!) {
     }
   }
   # If user is not authenticated, fetch all reviews
-  listAllReviews: getAllReviews @skip(if: $friendId) {
+  allReviews: listAllReviews @skip(if: $friendId) {
     id
     title
     body
