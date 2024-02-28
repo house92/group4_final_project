@@ -1,0 +1,9 @@
+query GetUserFriends($userId: String!) {
+  getUser(id: $userId) {
+    friends{
+      id
+      firstName
+      lastName
+    }
+  }
+}
