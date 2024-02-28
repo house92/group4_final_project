@@ -7,19 +7,11 @@ import useHomePageData from './useHomePageData';
 export default function HomePage() {
     const userSession = useUserSession();
     const [reviews, setReviews] = useState<any[]>([]);
+    const data = useHomePageData(userSession && userSession.token ? userSession.id : '');
 
     useEffect(() => {
-        const fetchData = async () => {
-            let data;
-            if (userSession && userSession.token) {
-                data = useHomePageData(userSession.id);
-            } else {
-                data = useHomePageData('');
-            }
-            setReviews(data);
-        };
-        fetchData();
-    }, [userSession]);
+        setReviews(data);
+    }, [data]);
 
     return (
         <Container>
