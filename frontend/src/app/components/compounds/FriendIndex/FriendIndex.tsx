@@ -1,7 +1,9 @@
-import { Box } from '@mui/material';
+import { Stack } from '@mui/material';
 import FriendIndexItem from './FriendIndexItem';
+import { Link } from 'react-router-dom';
 
 interface Friend {
+    id: string;
     name: string;
 }
 
@@ -11,10 +13,12 @@ interface FriendsIndexItemProps {
 
 export default function FriendIndex({ friends }: FriendsIndexItemProps) {
     return (
-        <Box>
+        <Stack gap={2}>
             {friends.map((friend, index) => (
-                <FriendIndexItem key={index} name={friend.name} />
+                <Link key={friend.id} to={`/users/${friend.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <FriendIndexItem key={index} name={friend.name} />
+                </Link>
             ))}
-        </Box>
+        </Stack>
     );
 }
