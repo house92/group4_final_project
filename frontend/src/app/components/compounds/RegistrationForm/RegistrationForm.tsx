@@ -48,7 +48,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         }),
 
         onSubmit,
-    })
+    });
 
     return (
         <Container maxWidth="sm">
