@@ -1,10 +1,12 @@
 import { Box, Button, Container, Stack, TextField, Typography } from "@mui/material";
-import { useFormik } from "formik";
-import { object, string } from "yup";
+import { useFormik } from 'formik';
+import { date, object, string } from 'yup';
+import { DateTime } from 'luxon';
 
 interface RegistrationCreds {
     firstName: string;
     lastName: string;
+    birthDate: DateTime;
     email: string;
     password: string;
 }
@@ -20,6 +22,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         initialValues: {
             firstName: '',
             lastName: '',
+            birthDate: DateTime.local(2000, 1, 1),
             email: '',
             password: '',
         },
@@ -30,6 +33,14 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         validationSchema: object().shape({
             firstName: string().required('Please enter a first name'),
             lastName: string().required('Please enter a last name'),
+            birthDate: date()
+                .nullable()
+                .transform((value, originalValue) => {
+                    const parsedDate = new Date(originalValue);
+                    return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+                })
+                .max(new Date(), 'Birth date cannot be in the future')
+                .required('Please enter a date of birth'),
             email: string()
                 .email('some error message about being invalid')
                 .required('some error message about being required'),
@@ -66,6 +77,17 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                         type="lastName"
                         placeholder="Last Name"
                         name="lastName"
+                        margin="normal"
+                    />
+                    <TextField
+                        fullWidth
+                        label="Date of Birth"
+                        variant="outlined"
+                        value={formik.values.birthDate}
+                        onChange={formik.handleChange}
+                        type="birthDate"
+                        placeholder="mm/dd/yyyy"
+                        name="birthDate"
                         margin="normal"
                     />
                     <TextField
