@@ -5,7 +5,6 @@ import * as commander from 'commander';
 import * as dotenv from 'dotenv';
 import { DateTime } from 'luxon';
 import * as hash from 'object-hash';
-import { toArray } from 'rxjs';
 import { Author } from 'src/authors/author.entity';
 import { CreateAuthorInput } from 'src/authors/inputs/create-author.input';
 
@@ -17,6 +16,11 @@ import { generateTypeORMModuleOptions } from 'src/db/index';
 dotenv.config();
 
 async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
+    const s: string = arr.toString();
+    // for (let i = 0; i < arr.length; i++) {
+
+    // }
+    console.log(s);
     return arr;
 }
 
@@ -24,8 +28,6 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
     imports: [TypeOrmModule.forRoot(generateTypeORMModuleOptions()), TypeOrmModule.forFeature([Book, Author])],
     providers: [BooksService],
 })
-
-
 export class BookModule {}
 
 const GUTENDEX_API_ENDPOINT = 'https://gutendex.com/books';
@@ -78,10 +80,6 @@ function transformGutendexPersonToAuthor(gutendexPerson: GutendexPerson): Create
         dateOfBirth: DateTime.fromObject({ year: gutendexPerson.birth_year }).toISODate(),
         dateOfDeath: DateTime.fromObject({ year: gutendexPerson.death_year }).toISODate(),
     };
-    console.log("First name" + names[1]);
-    console.log("Last name" + names[0]);
-    console.log("Date of birth: " + DateTime.fromObject({ year: gutendexPerson.birth_year }).toISODate());
-    console.log("Date of death: " + DateTime.fromObject({ year: gutendexPerson.death_year }).toISODate());
 
     return transformedAuthor;
 }
@@ -151,7 +149,7 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     const authorInputArr: CreateAuthorInput[] = [];
     const hashes: string[] = [];
 
-    authorInputArr.push
+    authorInputArr.push;
 
     console.log('creating authors..');
 
@@ -169,11 +167,10 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     const finAuthorInputs: CreateAuthorInput[] = await augmentAuthors(authorInputArr);
 
     console.log('authors created');
-  
+
     for (let i = 0; i < finAuthorInputs.length; i++) {
         const author = await ds.manager.save(Author, finAuthorInputs.at(i));
         authorMap[hashes.at(i)] = author.id;
-
     }
 
     console.log('creating books..');
@@ -191,17 +188,10 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
 
     console.log(`added ${books.length} books to database`);
 
-
-
     await app.close();
 
     console.log('finished');
 }
-
-
-
-
-
 
 const run = async function () {
     const program = new commander.Command();
@@ -214,8 +204,6 @@ const run = async function () {
 
     program.parse(process.argv);
 };
-
-
 
 run();
 
