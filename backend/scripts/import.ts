@@ -12,33 +12,31 @@ import { Book } from 'src/books/book.entity';
 import { BooksService } from 'src/books/books.service';
 import { CreateBookInput } from 'src/books/inputs/create-book.input';
 import { generateTypeORMModuleOptions } from 'src/db/index';
-import { getAuthorData, Authors, response2 } from 'src/chatgpt/UseChatgpt';
+import { getAuthorData, BulkAuthorsReturn, FetchedAuthorData } from 'src/chatgpt/UseChatgpt';
 dotenv.config();
 
-let s1: string;
-let s2: Authors;
-let s3: string;
-let names: string[] = [];
-let tempNames: string[] = [];
-const responses: response2[] = [];
-let temp3: CreateAuthorInput[];
-const stupidArr: string[] = [];
 
 
 async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
+    let getter: BulkAuthorsReturn;
+    let names: string[] = [];
+    let tempNames: string[] = [];
+    const responses: FetchedAuthorData[] = [];
+
+    let name: string;
     for (let i = 0; i < arr.length; i++) {
         if (arr[i].firstName != null) {
-            s1 = arr[i].firstName + ' ' + arr[i].lastName;
-            if (names.includes(s1)) {
+            name = arr[i].firstName + ' ' + arr[i].lastName;
+            if (names.includes(name)) {
                 continue;
             }
-            names.push(s1);
+            names.push(name);
         } else {
-            s1 = arr[i].lastName;
-            if (names.includes(s1)) {
+            name = arr[i].lastName;
+            if (names.includes(name)) {
                 continue;
             }
-            names.push(s1);
+            names.push(name);
         }
     }
 
@@ -54,53 +52,46 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
             }
         }
         if (tempNames.length > 0) {
-            s2 = await getAuthorData(tempNames);
-            for (let i = 0; i < s2.authors.length; i++) {
-                responses.push(s2.authors.at(i));
+            getter = await getAuthorData(tempNames);
+            for (let i = 0; i < getter.authors.length; i++) {
+                responses.push(getter.authors.at(i));
             }
-            break;
         }
-        s2 = null;
+        getter = null;
         tempNames = [];
-        console.log('finished round' + round + ' of calls');
+        console.log('Finished round' + round + ' of ChatGpt calls (30 authors per round)..');
+        round += 1;
         if (names.length == 0) {
             break;
         }
-        round += 1;
     }
 
     const lastList: CreateAuthorInput[] = [];
     let inputCounter = 0;
     let responseCounter = 0;
-    let temp4: CreateAuthorInput;
+    let tempAuthorInput: CreateAuthorInput;
 
-    s3 = "before while, responses len: " + responses.length + " input len: " + arr.length;
     while (responseCounter < responses.length && inputCounter < arr.length) {
         let s: string;
         if (arr.at(inputCounter).firstName == null) {
             s = arr.at(inputCounter).lastName;
-        }
-        else {
+        } else {
             s = arr[inputCounter].firstName + ' ' + arr[inputCounter].lastName;
             s = s.substring(1);
         }
-        stupidArr.push(s);
-        stupidArr.push(responses.at(responseCounter).name);
-
         if (s === responses.at(responseCounter).name) {
-            temp4 = arr.at(inputCounter);
+            tempAuthorInput = arr.at(inputCounter);
 
-            temp4.bio = responses[responseCounter].bio;
-            temp4.hometown = responses[responseCounter].hometown;
+            tempAuthorInput.bio = responses[responseCounter].bio;
+            tempAuthorInput.hometown = responses[responseCounter].hometown;
+            tempAuthorInput.dateOfDeath = responses[responseCounter].death;
+            tempAuthorInput.dateOfBirth = responses[responseCounter].death;
 
-            lastList.push(temp4);
+            lastList.push(tempAuthorInput);
             responseCounter += 1;
         }
         inputCounter += 1;
     }
-    s1 = 'last length: ' + lastList.length + ' responses len: ' + responses.length;
-
-    temp3 = lastList;
 
     return lastList;
 }
@@ -245,14 +236,15 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
         }
     }
 
-    const finAuthorInputs: CreateAuthorInput[] = await augmentAuthors(authorInputArr);
-
     console.log('authors created');
+
+    const finAuthorInputs: CreateAuthorInput[] = await augmentAuthors(authorInputArr);
 
     for (let i = 0; i < finAuthorInputs.length; i++) {
         const author = await ds.manager.save(Author, finAuthorInputs.at(i));
         authorMap[hashes.at(i)] = author.id;
     }
+    console.log('authors augmented');
 
     console.log('creating books..');
 
@@ -272,18 +264,6 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     await app.close();
 
     console.log('finished');
-    console.log(s1);
-    console.log(s2);
-    console.log(s3);
-    console.log(stupidArr);
-    // console.log(responses);
-    try {
-        for (let i = 0; i < temp3.length; i++) {
-            console.log('arr: ' + temp3[i].lastName + ' resp: ' + responses[i].name);
-        }
-    } catch (error) {
-        console.log('error logging arr and responses');
-    }
 }
 
 const run = async function () {

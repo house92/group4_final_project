@@ -11,7 +11,7 @@ type Author {
   """Author last name"""
   lastName: String!
 
-  """Author year of death"""
+  """Author year of birth"""
   dateOfBirth: String!
 
   """Author year of death"""

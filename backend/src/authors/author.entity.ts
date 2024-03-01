@@ -18,7 +18,7 @@ export class Author {
     lastName: string;
 
     @Column()
-    @Field(() => String, { description: 'Author year of death' })
+    @Field(() => String, { description: 'Author year of birth' })
     dateOfBirth: string;
 
     @Column({ nullable: true })
