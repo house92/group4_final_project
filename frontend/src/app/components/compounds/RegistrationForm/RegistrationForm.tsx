@@ -34,7 +34,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
             firstName: string().required('Please enter your first name'),
             lastName: string().required('Please enter your last name'),
             birthDate: date()
-                .max(new Date(), 'Birth date cannot be in the future')
+                .max(new Date(), 'Date of Birth cannot be in the future')
                 .required('Please enter a date of birth'),
             email: string().email('Invalid Email').required('Email Required'),
             password: string().required('Password Required'),
