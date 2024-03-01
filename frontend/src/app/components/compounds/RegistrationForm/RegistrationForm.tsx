@@ -31,14 +31,9 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         validateOnBlur: false,
         validateOnMount: false,
         validationSchema: object().shape({
-            firstName: string().required('Please enter a first name'),
-            lastName: string().required('Please enter a last name'),
+            firstName: string().required('Please enter your first name'),
+            lastName: string().required('Please enter your last name'),
             birthDate: date()
-                .nullable()
-                .transform((value, originalValue) => {
-                    const parsedDate = new Date(originalValue);
-                    return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
-                })
                 .max(new Date(), 'Birth date cannot be in the future')
                 .required('Please enter a date of birth'),
             email: string().email('Invalid Email').required('Email Required'),
