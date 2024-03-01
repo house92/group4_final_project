@@ -83,7 +83,7 @@ function getContentFromResponse(response: ChatGptResponse): string {
     return response.message.content;
 }
 
-async function main() {
-    console.log(await runGpt('Frankenstein', 2));
-}
-main();
+// async function main() {
+//     console.log(await runGpt('Frankenstein', 2));
+// }
+// main();

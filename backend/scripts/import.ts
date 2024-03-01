@@ -13,9 +13,58 @@ import { BooksService } from 'src/books/books.service';
 import { CreateBookInput } from 'src/books/inputs/create-book.input';
 import { generateTypeORMModuleOptions } from 'src/db/index';
 import { getAuthorData, BulkAuthorsReturn, FetchedAuthorData } from 'src/chatgpt/UseChatgpt';
+
 dotenv.config();
 
 
+
+@Module({
+    imports: [TypeOrmModule.forRoot(generateTypeORMModuleOptions()), TypeOrmModule.forFeature([Book, Author])],
+    providers: [BooksService],
+})
+export class BookModule {}
+
+const GUTENDEX_API_ENDPOINT = 'https://gutendex.com/books';
+
+interface GutendexPerson {
+    name: string;
+    birth_year: number;
+    death_year: number;
+}
+
+interface GutendexBook {
+    id: string;
+    title: string;
+    authors: GutendexPerson[];
+    translators: GutendexPerson[];
+    subjects: string[];
+    bookshelves: string[];
+    languages: string[];
+    copyright: boolean;
+    media_type: string;
+    formats: {
+        'text/html'?: string;
+        'application/epub+zip'?: string;
+        'image/jpeg'?: string;
+    };
+    download_count: number;
+}
+
+interface GutendexResponse {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: GutendexBook[];
+}
+
+/**
+ * This is for creating a map of unique author IDs,
+ * made by hashing the object from Gutendex, to IDs
+ * in our database
+ */
+interface AuthorMap {
+    [key: string]: string;
+}
 
 async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
     let getter: BulkAuthorsReturn;
@@ -94,54 +143,6 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
     }
 
     return lastList;
-}
-
-@Module({
-    imports: [TypeOrmModule.forRoot(generateTypeORMModuleOptions()), TypeOrmModule.forFeature([Book, Author])],
-    providers: [BooksService],
-})
-export class BookModule {}
-
-const GUTENDEX_API_ENDPOINT = 'https://gutendex.com/books';
-
-interface GutendexPerson {
-    name: string;
-    birth_year: number;
-    death_year: number;
-}
-
-interface GutendexBook {
-    id: string;
-    title: string;
-    authors: GutendexPerson[];
-    translators: GutendexPerson[];
-    subjects: string[];
-    bookshelves: string[];
-    languages: string[];
-    copyright: boolean;
-    media_type: string;
-    formats: {
-        'text/html'?: string;
-        'application/epub+zip'?: string;
-        'image/jpeg'?: string;
-    };
-    download_count: number;
-}
-
-interface GutendexResponse {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: GutendexBook[];
-}
-
-/**
- * This is for creating a map of unique author IDs,
- * made by hashing the object from Gutendex, to IDs
- * in our database
- */
-interface AuthorMap {
-    [key: string]: string;
 }
 
 function transformGutendexPersonToAuthor(gutendexPerson: GutendexPerson): CreateAuthorInput {
