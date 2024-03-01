@@ -21,9 +21,9 @@ export class Author {
     @Field(() => String, { description: 'Author year of birth' })
     dateOfBirth: string;
 
-    @Column({ nullable: true })
-    @Field(() => String, { description: 'Author year of death', nullable: true })
-    dateOfDeath?: string;
+    @Column({ nullable: true, type: 'timestamptz' })
+    @Field(() => Date, { description: 'Author year of death', nullable: true })
+    dateOfDeath?: Date;
 
     @Column({ nullable: true })
     @Field(() => String, { description: 'Author hometown', nullable: true })

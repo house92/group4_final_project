@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import FriendIndex from 'app/components/compounds/FriendIndex';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import useUsersFriends from './useUserFriends';
 
 export default function FriendPage() {
@@ -12,18 +12,8 @@ export default function FriendPage() {
     }
 
     return (
-        <Typography>
-            <Typography>Friend Page</Typography>
-            {friends.map((friend) => (
-                <Link key={friend.id} to={`/users/${friend.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <FriendIndex
-                        friends={friends.map((friend) => ({
-                            id: friend.id,
-                            name: friend.name,
-                        }))}
-                    />
-                </Link>
-            ))}
-        </Typography>
-    )
+        <Box>
+            <FriendIndex friends={friends} />
+        </Box>
+    );
 }
