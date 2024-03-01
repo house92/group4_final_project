@@ -17,9 +17,13 @@ dotenv.config();
 
 let s1: string;
 let s2: Authors;
+let s3: string;
 let names: string[] = [];
 let tempNames: string[] = [];
 const responses: response2[] = [];
+let temp3: CreateAuthorInput[];
+const stupidArr: string[] = [];
+
 
 async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
     for (let i = 0; i < arr.length; i++) {
@@ -54,17 +58,51 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
             for (let i = 0; i < s2.authors.length; i++) {
                 responses.push(s2.authors.at(i));
             }
+            break;
         }
         s2 = null;
         tempNames = [];
-        console.log("finished round" + round + " of calls");
+        console.log('finished round' + round + ' of calls');
         if (names.length == 0) {
             break;
         }
         round += 1;
     }
 
-    return arr;
+    const lastList: CreateAuthorInput[] = [];
+    let inputCounter = 0;
+    let responseCounter = 0;
+    let temp4: CreateAuthorInput;
+
+    s3 = "before while, responses len: " + responses.length + " input len: " + arr.length;
+    while (responseCounter < responses.length && inputCounter < arr.length) {
+        let s: string;
+        if (arr.at(inputCounter).firstName == null) {
+            s = arr.at(inputCounter).lastName;
+        }
+        else {
+            s = arr[inputCounter].firstName + ' ' + arr[inputCounter].lastName;
+            s = s.substring(1);
+        }
+        stupidArr.push(s);
+        stupidArr.push(responses.at(responseCounter).name);
+
+        if (s === responses.at(responseCounter).name) {
+            temp4 = arr.at(inputCounter);
+
+            temp4.bio = responses[responseCounter].bio;
+            temp4.hometown = responses[responseCounter].hometown;
+
+            lastList.push(temp4);
+            responseCounter += 1;
+        }
+        inputCounter += 1;
+    }
+    s1 = 'last length: ' + lastList.length + ' responses len: ' + responses.length;
+
+    temp3 = lastList;
+
+    return lastList;
 }
 
 @Module({
@@ -236,8 +274,16 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     console.log('finished');
     console.log(s1);
     console.log(s2);
-    console.log(names);
-    console.log(responses);
+    console.log(s3);
+    console.log(stupidArr);
+    // console.log(responses);
+    try {
+        for (let i = 0; i < temp3.length; i++) {
+            console.log('arr: ' + temp3[i].lastName + ' resp: ' + responses[i].name);
+        }
+    } catch (error) {
+        console.log('error logging arr and responses');
+    }
 }
 
 const run = async function () {
