@@ -15,6 +15,7 @@ interface Book {
         body: string;
         rating: number;
         reviewerName: string;
+        reviewerId: string;
     }[];
 }
 
@@ -43,6 +44,7 @@ export default function useBook(bookId: string = '') {
                 body: review.body,
                 rating: review.rating,
                 reviewerName: `${review.user.firstName} ${review.user.lastName}`,
+                reviewerId: review.user.id,
             })),
         };
     }

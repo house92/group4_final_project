@@ -17,6 +17,8 @@ export default function BookPage() {
     if (!bookId) return null;
     if (!book) return null;
 
+    const canReview = userSession && book.bookReviews.every((review) => review.reviewerId !== userSession.id);
+
     return (
         <Stack gap={4}>
             <Typography variant="h3" component="h1">
@@ -25,7 +27,7 @@ export default function BookPage() {
 
             <BookDetails {...book} />
 
-            {userSession && (
+            {canReview && (
                 <BookReviewForm
                     title={book.title}
                     onSubmit={async ({ body, rating }) => {
