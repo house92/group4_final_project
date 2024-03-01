@@ -1,9 +1,12 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { useUserSession } from 'app/core/Session';
 import { Link, Outlet } from 'react-router-dom';
 
 const NAV_WIDTH = 300;
 
 export default function Layout() {
+    const userSession = useUserSession();
+
     return (
         <Box display="flex" flexDirection="row">
             <Box
@@ -15,23 +18,44 @@ export default function Layout() {
                 bgcolor="#2E3B4E"
             >
                 <Box display="flex" flexDirection="column" justifyContent="space-between" p={6}>
-                    <Stack gap={1}>
-                        <Link to="/authors" style={{ textDecoration: 'none' }}>
-                            <Typography color="white">Authors</Typography>
-                        </Link>
+                    <Stack gap={4}>
+                        {userSession && (
+                            <Link to={`/users/${userSession.id}`} style={{ textDecoration: 'none' }}>
+                                <Typography color="white">{userSession.fullName}</Typography>
+                            </Link>
+                        )}
 
-                        <Link to="/books" style={{ textDecoration: 'none' }}>
-                            <Typography color="white">Books</Typography>
-                        </Link>
+                        <Stack gap={1}>
+                            <Link to="/authors" style={{ textDecoration: 'none' }}>
+                                <Typography color="white">Authors</Typography>
+                            </Link>
+
+                            <Link to="/books" style={{ textDecoration: 'none' }}>
+                                <Typography color="white">Books</Typography>
+                            </Link>
+
+                            {userSession && (
+                                <Link to={`/users/${userSession.id}/friends`} style={{ textDecoration: 'none' }}>
+                                    <Typography color="white">Friends</Typography>
+                                </Link>
+                            )}
+                        </Stack>
                     </Stack>
 
-                    <Button href="/sign-in" variant="contained">
-                        Sign in
-                    </Button>
+                    {userSession ? (
+                        // we need to make this actually sign the user out
+                        <Button href="/" variant="contained">
+                            Sign out
+                        </Button>
+                    ) : (
+                        <Button href="/sign-in" variant="contained">
+                            Sign in
+                        </Button>
+                    )}
                 </Box>
             </Box>
 
-            <Box ml={`${NAV_WIDTH}px`} pl={4}>
+            <Box ml={`${NAV_WIDTH}px`} p={4}>
                 <Outlet />
             </Box>
         </Box>

@@ -1,12 +1,13 @@
 import { useGetAuthorsListQuery } from 'generated/graphql';
+import { DateTime } from 'luxon';
 
 interface Author {
     id: string;
     name: string;
-    dateOfBirth: string;
-    dateOfDeath: string | null | undefined;
-    hometown: string | null | undefined;
-    bio: string | null | undefined;
+    dateOfBirth: DateTime;
+    dateOfDeath: DateTime | undefined;
+    hometown: string | undefined;
+    bio: string | undefined;
 }
 
 export default function useAuthors() {
@@ -18,14 +19,11 @@ export default function useAuthors() {
         authors = data.listAuthors.map((author) => ({
             id: author.id,
             name: `${author.firstName} ${author.lastName}`,
-            dateOfBirth: author.dateOfBirth,
-            dateOfDeath: author.dateOfDeath,
-            hometown: author.hometown,
-            bio: author.bio,
+            dateOfBirth: DateTime.fromISO(author.dateOfBirth),
+            dateOfDeath: author.dateOfDeath ? DateTime.fromISO(author.dateOfDeath) : undefined,
+            hometown: author.hometown ?? undefined,
+            bio: author.bio ?? undefined,
         }));
-        if (data.listAuthors) {
-            console.log(data.listAuthors.at(0)?.id);
-        }
     }
 
     return { authors };
