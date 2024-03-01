@@ -22,7 +22,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         initialValues: {
             firstName: '',
             lastName: '',
-            birthDate: DateTime.local(2000, 1, 1),
+            birthDate: DateTime.utc(2000, 1, 1),
             email: '',
             password: '',
         },
@@ -41,10 +41,8 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                 })
                 .max(new Date(), 'Birth date cannot be in the future')
                 .required('Please enter a date of birth'),
-            email: string()
-                .email('some error message about being invalid')
-                .required('some error message about being required'),
-            password: string().required('some error message about being required'),
+            email: string().email('Invalid Email').required('Email Required'),
+            password: string().required('Password Required'),
         }),
 
         onSubmit,
@@ -53,10 +51,10 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
     return (
         <Container maxWidth="sm">
             <Box display="flex" flexDirection="column" alignItems="center">
-                <Typography variant="h4" gutterBottom>
-                    Sign in
+                <Typography variant="h4" component="p" gutterBottom>
+                    Register
                 </Typography>
-                <Stack component="form" onSubmit={formik.handleSubmit}>
+                <Stack gap="2" component="form" onSubmit={formik.handleSubmit}>
                     <TextField
                         fullWidth
                         label="First Name"
@@ -85,7 +83,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                         variant="outlined"
                         value={formik.values.birthDate}
                         onChange={formik.handleChange}
-                        type="birthDate"
+                        type="date"
                         placeholder="mm/dd/yyyy"
                         name="birthDate"
                         margin="normal"
