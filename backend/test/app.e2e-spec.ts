@@ -1,13 +1,13 @@
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
-import { AppModule } from 'src/app.module';
+import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
-import { BooksService } from 'src/books/books.service';
-import { AuthorsService } from 'src/authors/authors.service';
-import { BookReviewsService } from 'src/bookreviews/bookreviews.service';
-import { UserService } from 'src/user/user.service';
-import { UserAuthService } from 'src/user-auth/user-auth.service';
- 
+import { BooksService } from '../src/books/books.service';
+import { AuthorsService } from '../src/authors/authors.service';
+import { BookReviewsService } from '../src/bookreviews/bookreviews.service';
+import { UserService } from '../src/user/user.service';
+import { UserAuthService } from '../src/user-auth/user-auth.service';
+
 describe('AuthorsModule', () => {
     let app: INestApplication;
     const authorsService = {
@@ -46,8 +46,8 @@ describe('AuthorsModule', () => {
         findAll: () => ['test'],
         findById: () => 'test',
         findByEmail: () => 'test',
-        createUser: () => 'test', 
-    }
+        createUser: () => 'test',
+    };
 
     beforeEach(async () => {
         const moduleRef = await Test.createTestingModule({
