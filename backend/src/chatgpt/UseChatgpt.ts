@@ -13,41 +13,75 @@ interface ChatGptResponse {
     finish_reason: string;
 }
 
-export async function runGpt(book: string, reviewer: number) {
-    let setup = '';
+export interface response2 {
+    name: string;
+    bio: string;
+    hometown: string;
+}
 
-    switch (reviewer) {
-        case 0:
-            setup = 'You are Robert Downey Jr if he was alive in the year 1800.';
-            break;
-        case 1:
-            setup = 'You are a man obsessed with baseball, fitting it into conversations anywhere you can.';
-            break;
-        case 2:
-            setup = 'You are a caveman who can barely speak english.';
-            break;
-        default:
-            setup =
-                'You are Mary Poppins. Speak in her manner of speaking, including references to the film Mary Poppins.';
-    }
-    const prompt = 'Write me a two-paragraph review of ' + book;
+export interface Authors {
+    authors: response2[];
+}
 
+export async function getAuthorData(names: string[]): Promise<Authors> {
+
+    let s = 'Please create an array with one JSON for each of the authors (ignoring repeats) in this list that contains their name as "name" (which is the inputted name), a "bio" (three-sentence biography of the author), and a "hometown" (the home town of the author). The array is: ';
+    s += names;
     const completion = await openai.chat.completions.create({
         messages: [
-            { role: 'system', content: setup },
-            { role: 'user', content: prompt },
+            {
+                role: 'system',
+                content: 'You are a helpful assistant designed to output JSON.',
+            },
+            {
+                role: 'user',
+                content: s
+            },
         ],
         model: 'gpt-3.5-turbo',
+        response_format: { type: 'json_object' },
     });
 
-    return getContentFromResponse(completion.choices[0]);
+    const parsedObject: Authors = JSON.parse(completion.choices[0].message.content);
+
+    return parsedObject;
 }
 
-function getContentFromResponse(response: ChatGptResponse): string {
-    return response.message.content;
-}
+// export async function runGpt(book: string, reviewer: number) {
+//     let setup = '';
 
-async function main() {
-    console.log(await runGpt('Frankenstein', 2));
-}
-main();
+//     switch (reviewer) {
+//         case 0:
+//             setup = 'You are Robert Downey Jr if he was alive in the year 1800.';
+//             break;
+//         case 1:
+//             setup = 'You are a man obsessed with baseball, fitting it into conversations anywhere you can.';
+//             break;
+//         case 2:
+//             setup = 'You are a caveman who can barely speak english.';
+//             break;
+//         default:
+//             setup =
+//                 'You are Mary Poppins. Speak in her manner of speaking, including references to the film Mary Poppins.';
+//     }
+//     const prompt = 'Write me a two-paragraph review of ' + book;
+
+//     const completion = await openai.chat.completions.create({
+//         messages: [
+//             { role: 'system', content: setup },
+//             { role: 'user', content: prompt },
+//         ],
+//         model: 'gpt-3.5-turbo',
+//     });
+
+//     return getContentFromResponse(completion.choices[0]);
+// }
+
+// function getContentFromResponse(response: ChatGptResponse): string {
+//     return response.message.content;
+// }
+
+// async function main() {
+//     console.log(await runGpt('Frankenstein', 2));
+// }
+// main();

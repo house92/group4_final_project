@@ -12,15 +12,58 @@ import { Book } from 'src/books/book.entity';
 import { BooksService } from 'src/books/books.service';
 import { CreateBookInput } from 'src/books/inputs/create-book.input';
 import { generateTypeORMModuleOptions } from 'src/db/index';
-
+import { getAuthorData, Authors, response2 } from 'src/chatgpt/UseChatgpt';
 dotenv.config();
 
-async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
-    const s: string = arr.toString();
-    // for (let i = 0; i < arr.length; i++) {
+let s1: string;
+let s2: Authors;
+let names: string[] = [];
+let tempNames: string[] = [];
+const responses: response2[] = [];
 
-    // }
-    console.log(s);
+async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].firstName != null) {
+            s1 = arr[i].firstName + ' ' + arr[i].lastName;
+            if (names.includes(s1)) {
+                continue;
+            }
+            names.push(s1);
+        } else {
+            s1 = arr[i].lastName;
+            if (names.includes(s1)) {
+                continue;
+            }
+            names.push(s1);
+        }
+    }
+
+    names = names.reverse();
+
+    let round = 1;
+
+    while (true) {
+        for (let i = 0; i < 30; i++) {
+            tempNames.push(names.pop());
+            if (names.length == 0) {
+                break;
+            }
+        }
+        if (tempNames.length > 0) {
+            s2 = await getAuthorData(tempNames);
+            for (let i = 0; i < s2.authors.length; i++) {
+                responses.push(s2.authors.at(i));
+            }
+        }
+        s2 = null;
+        tempNames = [];
+        console.log("finished round" + round + " of calls");
+        if (names.length == 0) {
+            break;
+        }
+        round += 1;
+    }
+
     return arr;
 }
 
@@ -191,6 +234,10 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     await app.close();
 
     console.log('finished');
+    console.log(s1);
+    console.log(s2);
+    console.log(names);
+    console.log(responses);
 }
 
 const run = async function () {
