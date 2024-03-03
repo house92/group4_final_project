@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import { Image } from 'mui-image';
 
 interface BookIndexItemProps {
     coverImage: string;
@@ -11,8 +12,7 @@ interface BookIndexItemProps {
 export default function BookIndexItem({ coverImage, title, authorNames, publicationDate }: BookIndexItemProps) {
     return (
         <Box display="flex" flexDirection="row" gap={2}>
-            <img src={coverImage} alt={`${title} book cover`} style={{ maxWidth: '100%', marginBottom: 10 }} />
-
+            <Image src={coverImage} alt={`${title} book cover`} />
             <Stack gap={2} maxWidth={400}>
                 <Typography variant="h5" component="p">
                     {title}
