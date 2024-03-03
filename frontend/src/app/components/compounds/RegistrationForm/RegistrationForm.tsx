@@ -22,7 +22,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         initialValues: {
             firstName: '',
             lastName: '',
-            birthDate: DateTime.utc(2000, 1, 1),
+            dateOfBirth: DateTime.utc(2000, 1, 1),
             email: '',
             password: '',
         },
@@ -33,7 +33,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         validationSchema: object().shape({
             firstName: string().required('Please enter your first name'),
             lastName: string().required('Please enter your last name'),
-            birthDate: date()
+            dateOfBirth: date()
                 .max(new Date(), 'Date of birth cannot be in the future')
                 .required('Please enter a date of birth'),
             email: string().email('Invalid Email').required('Email Required'),
@@ -49,7 +49,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                 <Typography variant="h4" component="p" gutterBottom>
                     Register
                 </Typography>
-                <Stack gap="2" component="form" onSubmit={formik.handleSubmit}>
+                <Stack gap={2} component="form" onSubmit={formik.handleSubmit}>
                     <TextField
                         fullWidth
                         label="First Name"
@@ -59,7 +59,6 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                         type="firstName"
                         placeholder="First Name"
                         name="firstName"
-                        margin="normal"
                     />
                     <TextField
                         fullWidth
@@ -70,18 +69,16 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                         type="lastName"
                         placeholder="Last Name"
                         name="lastName"
-                        margin="normal"
                     />
                     <TextField
                         fullWidth
                         label="Date of Birth"
                         variant="outlined"
-                        value={formik.values.birthDate}
+                        value={formik.values.dateOfBirth}
                         onChange={formik.handleChange}
                         type="date"
                         placeholder="mm/dd/yyyy"
-                        name="birthDate"
-                        margin="normal"
+                        name="dateOfBirth"
                     />
                     <TextField
                         fullWidth
@@ -92,7 +89,6 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                         type="email"
                         placeholder="youremail@mail.com"
                         name="email"
-                        margin="normal"
                     />
                     <TextField
                         fullWidth
@@ -103,7 +99,6 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
                         type="password"
                         placeholder="**********"
                         name="password"
-                        margin="normal"
                     />
                     <Button type="submit" variant="contained" color="primary">
                         Register
