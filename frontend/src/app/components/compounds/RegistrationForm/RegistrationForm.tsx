@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 interface RegistrationCreds {
     firstName: string;
     lastName: string;
-    birthDate: DateTime;
+    dateOfBirth: DateTime;
     email: string;
     password: string;
 }
