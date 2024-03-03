@@ -16,10 +16,12 @@ export default function ChatGptDetails({ clicked, title }) {
     const [button1Clicked, setButton1Clicked] = useState(false);
     const [button2Clicked, setButton2Clicked] = useState(false);
     const [button3Clicked, setButton3Clicked] = useState(false);
+    const [button4Clicked, setButton4Clicked] = useState(false);
 
     const [textContent1, setTextContent1] = useState('');
     const [textContent2, setTextContent2] = useState('');
     const [textContent3, setTextContent3] = useState('');
+    const [textContent4, setTextContent4] = useState('');
 
     const handleButtonClick1 = async () => {
         try {
@@ -52,6 +54,16 @@ export default function ChatGptDetails({ clicked, title }) {
         }
         setButton3Clicked(true);
     };
+    const handleButtonClick4 = async () => {
+        try {
+            setTextContent4('Popeye is writing his review...');
+            const result = await clicked(bookTitle, 3);
+            setTextContent4(result);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+        setButton4Clicked(true);
+    };
 
     return (
         <Box sx={{ width: 600, typography: 'body1' }}>
@@ -61,6 +73,7 @@ export default function ChatGptDetails({ clicked, title }) {
                         <Tab label="Mary Poppins" value="0" />
                         <Tab label="Baseball Joe" value="1" />
                         <Tab label="Caveman" value="2" />
+                        <Tab label="Popeye the Sailor" value="3" />
                     </TabList>
                 </Box>
                 <TabPanel value="0">
@@ -110,6 +123,22 @@ export default function ChatGptDetails({ clicked, title }) {
                     </Box>
                     <Typography variant="body1" style={{ marginTop: '16px' }}>
                         {textContent3}
+                    </Typography>
+                </TabPanel>
+                <TabPanel value="3">
+                    <Box display="flex" alignItems="center">
+                        <Typography variant="h5">Popeye's Piece:</Typography>
+                        <Button
+                            variant="contained"
+                            style={{ marginLeft: '16px' }}
+                            onClick={handleButtonClick4}
+                            disabled={button4Clicked}
+                        >
+                            See Review
+                        </Button>
+                    </Box>
+                    <Typography variant="body1" style={{ marginTop: '16px' }}>
+                        {textContent4}
                     </Typography>
                 </TabPanel>
             </TabContext>

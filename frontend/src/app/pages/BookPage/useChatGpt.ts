@@ -1,6 +1,6 @@
 // import { useRunChatGptQueryQuery } from 'generated/graphql';
 import { OpenAI } from 'openai';
-import { getChatGptApiKey } from '../../../environment';
+import { getChatGptApiKey, getGQLOrigin } from '../../../environment';
 
 let openai: OpenAI;
 
@@ -15,6 +15,9 @@ interface ChatGptResponse {
 }
 
 export async function runGpt(book: string, reviewer: number): Promise<string> {
+
+    console.log(getChatGptApiKey());
+
     if (openai == null) {
         openai = new OpenAI({
             apiKey: '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',
@@ -34,6 +37,10 @@ export async function runGpt(book: string, reviewer: number): Promise<string> {
             break;
         case 2:
             setup = 'You are a caveman who can barely speak english.';
+            break;
+        case 3:
+            setup =
+                'You are Popeye the Sailor man. You speak the same way that he does in the cartoons and you include many references to episodes of the cartoon.';
             break;
         default:
             setup =
