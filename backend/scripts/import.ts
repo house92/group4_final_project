@@ -16,8 +16,6 @@ import { getAuthorData, BulkAuthorsReturn, FetchedAuthorData } from 'src/chatgpt
 
 dotenv.config();
 
-
-
 @Module({
     imports: [TypeOrmModule.forRoot(generateTypeORMModuleOptions()), TypeOrmModule.forFeature([Book, Author])],
     providers: [BooksService],
@@ -94,7 +92,7 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
     let round = 1;
 
     while (true) {
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 25; i++) {
             tempNames.push(names.pop());
             if (names.length == 0) {
                 break;
@@ -108,7 +106,7 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
         }
         getter = null;
         tempNames = [];
-        console.log('Finished round' + round + ' of ChatGpt calls (30 authors per round)..');
+        console.log('Finished round' + round + ' of ChatGpt calls (25 authors per round)..');
         round += 1;
         if (names.length == 0) {
             break;
@@ -129,14 +127,20 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
             s = s.substring(1);
         }
         if (s === responses.at(responseCounter).name) {
-            tempAuthorInput = arr.at(inputCounter);
 
-            tempAuthorInput.bio = responses[responseCounter].bio;
-            tempAuthorInput.hometown = responses[responseCounter].hometown;
-            tempAuthorInput.dateOfDeath = responses[responseCounter].death;
-            tempAuthorInput.dateOfBirth = responses[responseCounter].death;
+            if (responses[responseCounter].death != null && responses[responseCounter].birth != null) {
 
-            lastList.push(tempAuthorInput);
+                tempAuthorInput = arr.at(inputCounter);
+
+                tempAuthorInput.bio = responses[responseCounter].bio;
+                tempAuthorInput.hometown = responses[responseCounter].hometown;
+
+                tempAuthorInput.dateOfDeath = DateTime.fromISO(responses[responseCounter].death).toJSDate();
+                tempAuthorInput.dateOfBirth = DateTime.fromISO(responses[responseCounter].birth).toJSDate();
+
+                lastList.push(tempAuthorInput);
+            }
+
             responseCounter += 1;
         }
         inputCounter += 1;

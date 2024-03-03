@@ -25,9 +25,9 @@ export type Author = {
   bio?: Maybe<Scalars['String']['output']>;
   books: Array<Book>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['output'];
+  dateOfBirth?: Maybe<Scalars['DateTime']['output']>;
   /** Author year of death */
-  dateOfDeath?: Maybe<Scalars['String']['output']>;
+  dateOfDeath?: Maybe<Scalars['DateTime']['output']>;
   /** Author first name */
   firstName?: Maybe<Scalars['String']['output']>;
   /** Author hometown */
@@ -78,9 +78,9 @@ export type CreateAuthorInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['input'];
+  dateOfBirth: Scalars['DateTime']['input'];
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName: Scalars['String']['input'];
   /** Author hometown */
@@ -261,9 +261,9 @@ export type UpdateAuthorInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth?: InputMaybe<Scalars['String']['input']>;
+  dateOfBirth?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName?: InputMaybe<Scalars['String']['input']>;
   /** Author hometown */
@@ -336,14 +336,14 @@ export type GetUserSessionQuery = { __typename?: 'Query', getUserSession: { __ty
 export type GetAuthorsListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
+export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
 
 export type GetAuthorByIdQueryVariables = Exact<{
   authorId: Scalars['String']['input'];
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
 
 export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 

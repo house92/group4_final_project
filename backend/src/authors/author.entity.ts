@@ -19,7 +19,7 @@ export class Author {
 
     @Column()
     @Field(() => String, { description: 'Author year of birth' })
-    dateOfBirth: string;
+    dateOfBirth: Date;
 
     @Column({ nullable: true, type: 'timestamptz' })
     @Field(() => Date, { description: 'Author year of death', nullable: true })
