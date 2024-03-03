@@ -7,8 +7,10 @@ export default {
     title: 'Compounds/ChatGptDetails',
 };
 
-function tester() {
+async function tester(): Promise<string> {
     console.log("clicked.");
+
+    return 'Button clicked.';
 }
 
 export const Default = () => <ChatGptDetails clicked={tester} />;

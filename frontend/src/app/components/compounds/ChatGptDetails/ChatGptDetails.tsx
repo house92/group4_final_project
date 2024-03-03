@@ -7,32 +7,53 @@ import { Image } from 'mui-image';
 import { useFormik } from 'formik';
 
 export default function ChatGptDetails({ clicked }) {
-    const [value, setValue] = React.useState('1');
+    const [value, setValue] = React.useState('0');
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
 
-    const [textContent1, setTextContent1] = useState('Initial text 1');
-    const [textContent2, setTextContent2] = useState('Initial text 2');
-    const [textContent3, setTextContent3] = useState('Initial text 3');
+    const [button1Clicked, setButton1Clicked] = useState(false);
+    const [button2Clicked, setButton2Clicked] = useState(false);
+    const [button3Clicked, setButton3Clicked] = useState(false);
 
-    const handleButtonClick1 = () => {
-        setTextContent1('New text after button click');
-        clicked();
+    const [textContent1, setTextContent1] = useState('');
+    const [textContent2, setTextContent2] = useState('');
+    const [textContent3, setTextContent3] = useState('');
+
+    const handleButtonClick1 = async () => {
+        try {
+            setTextContent1('Mary Poppins is writing her review...');
+            const result = await clicked();
+            setTextContent1(result);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+        setButton1Clicked(true);
     };
-    const handleButtonClick2 = () => {
-        setTextContent2('New text after button click');
-        clicked();
+    const handleButtonClick2 = async () => {
+        try {
+            setTextContent2('Baseball Joe is writing his review...');
+            const result = await clicked();
+            setTextContent2(result);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+        setButton2Clicked(true);
     };
-    const handleButtonClick3 = () => {
-        setTextContent3('New text after button click');
-        clicked();
+    const handleButtonClick3 = async () => {
+        try {
+            setTextContent3('Caveman is writing his review...');
+            const result = await clicked();
+            setTextContent3(result);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+        setButton3Clicked(true);
     };
 
     return (
-        <Box sx={{ width: '100%', typography: 'body1' }}>
-            <Typography variant="h5">Reviews</Typography>
+        <Box sx={{ width: 600, typography: 'body1' }}>
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="Reviewer Changed">
@@ -43,12 +64,13 @@ export default function ChatGptDetails({ clicked }) {
                 </Box>
                 <TabPanel value="0">
                     <Box display="flex" alignItems="center">
-                        <Typography variant="h5">Mary Poppins</Typography>
+                        <Typography variant="h5">Mary Poppins' Spoonful of Sugar:</Typography>
                         <Button
                             variant="contained"
                             color="primary"
                             style={{ marginLeft: '16px' }}
                             onClick={handleButtonClick1}
+                            disabled={button1Clicked}
                         >
                             See Review
                         </Button>
@@ -59,8 +81,13 @@ export default function ChatGptDetails({ clicked }) {
                 </TabPanel>
                 <TabPanel value="1">
                     <Box display="flex" alignItems="center">
-                        <Typography variant="h5">Baseball Joe</Typography>
-                        <Button variant="contained" style={{ marginLeft: '16px' }} onClick={handleButtonClick2}>
+                        <Typography variant="h5">Baseball Joe's Grand Slam:</Typography>
+                        <Button
+                            variant="contained"
+                            style={{ marginLeft: '16px' }}
+                            onClick={handleButtonClick2}
+                            disabled={button2Clicked}
+                        >
                             See Review
                         </Button>
                     </Box>
@@ -70,8 +97,13 @@ export default function ChatGptDetails({ clicked }) {
                 </TabPanel>
                 <TabPanel value="2">
                     <Box display="flex" alignItems="center">
-                        <Typography variant="h5">Caveman</Typography>
-                        <Button variant="contained" style={{ marginLeft: '16px' }} onClick={handleButtonClick3}>
+                        <Typography variant="h5">Caveman's Chronicle:</Typography>
+                        <Button
+                            variant="contained"
+                            style={{ marginLeft: '16px' }}
+                            onClick={handleButtonClick3}
+                            disabled={button3Clicked}
+                        >
                             See Review
                         </Button>
                     </Box>

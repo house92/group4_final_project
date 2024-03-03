@@ -3,4 +3,3 @@ export { default as AuthorPage } from './AuthorPage';
 export { default as BookIndexPage } from './BookIndexPage';
 export { default as UserPage } from './UserPage';
 export { default as BookPage } from './BookPage';
-export { default as TestPage } from './TestPage';
