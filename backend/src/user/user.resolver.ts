@@ -38,4 +38,74 @@ export class UserResolver {
         const currentUserId = ctx.userId;
         return this.userService.addUserToCurrentUserFriends(currentUserId, friendId);
     }
+
+    @Mutation(() => Boolean)
+    async acceptInvite(
+        @Args('isUser') isUser: string,
+        @Args('invitedUser') invitedUser: string,
+        @Args({ name: 'accepted', defaultValue: false }) accepted: boolean,
+        @CurrentRequestContext() ctx: RequestContext,
+    ): Promise<boolean> {
+        try {
+            const currentUserId = ctx.userId;
+            this.userService.addUserToCurrentUserFriends(currentUserId, invitedUser);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+    //this mutation may be repetative with addFriend?
+   /*  @Mutation(() => User)
+    acceptInvite(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @Args('acceptInvite', { nullable: true, defaultValue: false }) addInvite: boolean,
+        @CurrentRequestContext() ctx: RequestContext,
+    ) {
+        const currentUserId = ctx.userId;
+        return this.userService.addUserToCurrentUserFriends(currentUserId, friendId);
+    } */
+
+   /*  @Mutation(() => Boolean)
+    async acceptInvite(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ) {
+        const currentUserId = ctx.userId;
+        // Find the receiving user
+        const receivingUser = await this.userService.findById(friendId);
+        if (!receivingUser || !friendId) {
+            return false; // User not found or has no received invites
+        }
+
+        // Check if invitingUserId is in the list of received invites
+        const inviteIndex = receivingUser.receivedInvites.findIndex(invite => invite === invitingUserId);
+        if (inviteIndex === -1) {
+            return false; // The inviting user is not in the received invites list
+        }
+
+        // Remove inviting user from received invites list and update the user
+        receivingUser.receivedInvites.splice(inviteIndex, 1);
+        await this.userService.update(receivingUser);
+        return true;
+    } */
+
+
+    /* @Query(() => Boolean)
+    isFriendInvited(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ) {
+        const currentUserId = ctx.userId;
+
+        if (!currentUserId || !friendId) {
+            return false; 
+        }
+        return this.userService.findById(friendId);
+    }
+ */
+    /* @Mutation(() => User)
+    inviteFriend(
+        @Args('invitedFriend', { type: () => String }) invitedFriend: string,
+
+    ) */
 }

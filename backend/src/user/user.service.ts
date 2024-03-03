@@ -72,4 +72,21 @@ export class UserService {
 
         return currentUser;
     }
+
+   /*  async sendFriendRequest(friendId: string, userId: string) {
+        if (friendId == userId) {
+            throw new Error('It is not possible to add yourself');
+        }
+
+        const friend = await this.repo.findOne({ where: { id: friendId }, relations: { friends: false } });
+        
+        if (!friend) {
+            throw new Error('Friend not found');
+        }
+
+        // Assuming you have some mechanism to track friend requests, you would add the logic here
+        // For example, you might create a new record in a "friend requests" table or add the friendId to the current user's list of sent requests
+        // Here, we're just returning the friend object as a placeholder
+        return User.friends;
+    } */
 }
