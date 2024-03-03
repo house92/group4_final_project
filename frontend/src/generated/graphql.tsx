@@ -37,6 +37,20 @@ export type Author = {
   lastName: Scalars['String']['output'];
 };
 
+export type AuthorConnection = {
+  __typename?: 'AuthorConnection';
+  edges: Array<AuthorEdge>;
+  pageInfo: PageInfo;
+};
+
+export type AuthorEdge = {
+  __typename?: 'AuthorEdge';
+  /** An opaque cursor that can be used to retrieve further pages of edges before or after this one. */
+  cursor: Scalars['String']['output'];
+  /** The node object (belonging to type Author) attached to the edge. */
+  node: Author;
+};
+
 export type Book = {
   __typename?: 'Book';
   authors: Array<Author>;
@@ -241,7 +255,7 @@ export type Query = {
   getUser: User;
   getUserSession: UserSession;
   listAllReviews: Array<BookReview>;
-  listAuthors: Array<Author>;
+  listAuthors: AuthorConnection;
   listBooks: BookConnection;
   listReviewsByBook: Array<BookReview>;
   listReviewsByUser: Array<BookReview>;
@@ -267,6 +281,15 @@ export type QueryGetReviewByUserArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryListAuthorsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -368,7 +391,7 @@ export type GetUserSessionQuery = { __typename?: 'Query', getUserSession: { __ty
 export type GetAuthorsListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
+export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: { __typename?: 'AuthorConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'AuthorEdge', node: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null } }> } };
 
 export type GetAuthorByIdQueryVariables = Exact<{
   authorId: Scalars['String']['input'];
@@ -463,13 +486,20 @@ export type GetUserSessionQueryResult = Apollo.QueryResult<GetUserSessionQuery, 
 export const GetAuthorsListDocument = gql`
     query GetAuthorsList {
   listAuthors {
-    id
-    firstName
-    lastName
-    dateOfBirth
-    dateOfDeath
-    hometown
-    bio
+    pageInfo {
+      totalEdges
+      hasNextPage
+      hasPreviousPage
+    }
+    edges {
+      node {
+        id
+        firstName
+        lastName
+        dateOfBirth
+        dateOfDeath
+      }
+    }
   }
 }
     `;

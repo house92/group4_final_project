@@ -13,7 +13,7 @@ export const Basic = (args) => {
         <Grid container>
             <Grid item xs={12} sm={9} lg={6}>
                 <Paper variant="outlined" sx={{ p: 4, background: '#ffffee' }}>
-                    <AuthorIndexItem name="Herman Melville" birthYear={1819} hometown="Nantucket" />
+                    <AuthorIndexItem name="Herman Melville" birthYear={1819} />
                 </Paper>
             </Grid>
         </Grid>
