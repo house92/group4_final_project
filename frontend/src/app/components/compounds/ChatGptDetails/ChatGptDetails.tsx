@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Button, Paper, Typography } from '@mui/material';
-import { DateTime } from 'luxon';
 import { Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Image } from 'mui-image';
-import { useFormik } from 'formik';
 
-export default function ChatGptDetails({ clicked }) {
+export default function ChatGptDetails({ clicked, title }) {
     const [value, setValue] = React.useState('0');
+
+    const bookTitle = title;
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -24,17 +24,18 @@ export default function ChatGptDetails({ clicked }) {
     const handleButtonClick1 = async () => {
         try {
             setTextContent1('Mary Poppins is writing her review...');
-            const result = await clicked();
+            const result = await clicked(bookTitle, 0);
             setTextContent1(result);
         } catch (error) {
             console.log('Error:', error);
         }
         setButton1Clicked(true);
     };
+
     const handleButtonClick2 = async () => {
         try {
             setTextContent2('Baseball Joe is writing his review...');
-            const result = await clicked();
+            const result = await clicked(bookTitle, 1);
             setTextContent2(result);
         } catch (error) {
             console.log('Error:', error);
@@ -44,7 +45,7 @@ export default function ChatGptDetails({ clicked }) {
     const handleButtonClick3 = async () => {
         try {
             setTextContent3('Caveman is writing his review...');
-            const result = await clicked();
+            const result = await clicked(bookTitle, 2);
             setTextContent3(result);
         } catch (error) {
             console.log('Error:', error);

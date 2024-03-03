@@ -13,4 +13,4 @@ async function tester(): Promise<string> {
     return 'Button clicked.';
 }
 
-export const Default = () => <ChatGptDetails clicked={tester} />;
+export const Default = () => <ChatGptDetails clicked={tester} title="Moby Dick" />;

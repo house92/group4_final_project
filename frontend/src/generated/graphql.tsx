@@ -25,9 +25,9 @@ export type Author = {
   bio?: Maybe<Scalars['String']['output']>;
   books: Array<Book>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['output'];
+  dateOfBirth?: Maybe<Scalars['DateTime']['output']>;
   /** Author year of death */
-  dateOfDeath?: Maybe<Scalars['String']['output']>;
+  dateOfDeath?: Maybe<Scalars['DateTime']['output']>;
   /** Author first name */
   firstName?: Maybe<Scalars['String']['output']>;
   /** Author hometown */
@@ -78,9 +78,9 @@ export type CreateAuthorInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['input'];
+  dateOfBirth: Scalars['DateTime']['input'];
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName: Scalars['String']['input'];
   /** Author hometown */
@@ -223,6 +223,7 @@ export type Query = {
   listReviewsByBook: Array<BookReview>;
   listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
+  runChatGptQuery: Scalars['String']['output'];
 };
 
 
@@ -256,14 +257,20 @@ export type QueryListReviewsByUserArgs = {
   userId: Scalars['String']['input'];
 };
 
+
+export type QueryRunChatGptQueryArgs = {
+  bookTitle: Scalars['String']['input'];
+  reviewer: Scalars['Int']['input'];
+};
+
 export type UpdateAuthorInput = {
   /** Biography of author */
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth?: InputMaybe<Scalars['String']['input']>;
+  dateOfBirth?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName?: InputMaybe<Scalars['String']['input']>;
   /** Author hometown */
@@ -336,14 +343,14 @@ export type GetUserSessionQuery = { __typename?: 'Query', getUserSession: { __ty
 export type GetAuthorsListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
+export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
 
 export type GetAuthorByIdQueryVariables = Exact<{
   authorId: Scalars['String']['input'];
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
 
 export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -356,6 +363,14 @@ export type GetBookByIdQueryVariables = Exact<{
 
 
 export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+
+export type RunChatGptQueryQueryVariables = Exact<{
+  reviewer: Scalars['Int']['input'];
+  bookTitle: Scalars['String']['input'];
+}>;
+
+
+export type RunChatGptQueryQuery = { __typename?: 'Query', runChatGptQuery: string };
 
 export type CreateBookReviewMutationVariables = Exact<{
   input: CreateBookReviewInput;
@@ -624,6 +639,45 @@ export type GetBookByIdQueryHookResult = ReturnType<typeof useGetBookByIdQuery>;
 export type GetBookByIdLazyQueryHookResult = ReturnType<typeof useGetBookByIdLazyQuery>;
 export type GetBookByIdSuspenseQueryHookResult = ReturnType<typeof useGetBookByIdSuspenseQuery>;
 export type GetBookByIdQueryResult = Apollo.QueryResult<GetBookByIdQuery, GetBookByIdQueryVariables>;
+export const RunChatGptQueryDocument = gql`
+    query RunChatGptQuery($reviewer: Int!, $bookTitle: String!) {
+  runChatGptQuery(reviewer: $reviewer, bookTitle: $bookTitle)
+}
+    `;
+
+/**
+ * __useRunChatGptQueryQuery__
+ *
+ * To run a query within a React component, call `useRunChatGptQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRunChatGptQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRunChatGptQueryQuery({
+ *   variables: {
+ *      reviewer: // value for 'reviewer'
+ *      bookTitle: // value for 'bookTitle'
+ *   },
+ * });
+ */
+export function useRunChatGptQueryQuery(baseOptions: Apollo.QueryHookOptions<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>(RunChatGptQueryDocument, options);
+      }
+export function useRunChatGptQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>(RunChatGptQueryDocument, options);
+        }
+export function useRunChatGptQuerySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>(RunChatGptQueryDocument, options);
+        }
+export type RunChatGptQueryQueryHookResult = ReturnType<typeof useRunChatGptQueryQuery>;
+export type RunChatGptQueryLazyQueryHookResult = ReturnType<typeof useRunChatGptQueryLazyQuery>;
+export type RunChatGptQuerySuspenseQueryHookResult = ReturnType<typeof useRunChatGptQuerySuspenseQuery>;
+export type RunChatGptQueryQueryResult = Apollo.QueryResult<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>;
 export const CreateBookReviewDocument = gql`
     mutation CreateBookReview($input: CreateBookReviewInput!) {
   createBookReview(input: $input) {

@@ -3,12 +3,9 @@ import { runGpt } from './UseChatgpt';
 
 @Injectable()
 export class ChatGptService {
-    constructor(
-    ) {}
+    constructor() {}
 
     async callChatGpt(reviewer: number, bookTitle: string): Promise<string> {
-
         return await runGpt(bookTitle, reviewer);
     }
-
 }
