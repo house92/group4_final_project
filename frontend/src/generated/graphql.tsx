@@ -355,7 +355,7 @@ export type GetBookByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
 
 export type CreateBookReviewMutationVariables = Exact<{
   input: CreateBookReviewInput;
@@ -580,6 +580,7 @@ export const GetBookByIdDocument = gql`
     title
     coverImage
     authors {
+      id
       firstName
       lastName
     }

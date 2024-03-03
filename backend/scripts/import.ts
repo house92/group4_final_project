@@ -68,8 +68,8 @@ function transformGutendexPersonToAuthor(gutendexPerson: GutendexPerson): Create
     const transformedAuthor: CreateAuthorInput = {
         firstName: names[1],
         lastName: names[0],
-        dateOfBirth: DateTime.fromObject({ year: gutendexPerson.birth_year }).toISODate(),
-        dateOfDeath: DateTime.fromObject({ year: gutendexPerson.death_year }).toISODate(),
+        dateOfBirth: DateTime.fromObject({ year: gutendexPerson.birth_year }).toJSDate(),
+        dateOfDeath: DateTime.fromObject({ year: gutendexPerson.death_year }).toJSDate(),
     };
 
     return transformedAuthor;

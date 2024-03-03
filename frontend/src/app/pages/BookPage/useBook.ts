@@ -5,7 +5,7 @@ interface Book {
     id: string;
     title: string;
     coverImage: string;
-    authorNames: string[];
+    authors: { id: string; name: string }[];
     publicationDate?: DateTime;
     synopsis?: string;
 
@@ -15,11 +15,12 @@ interface Book {
         body: string;
         rating: number;
         reviewerName: string;
+        reviewerId: string;
     }[];
 }
 
 export default function useBook(bookId: string = '') {
-    const { data } = useGetBookByIdQuery({ variables: { bookId } });
+    const { data, refetch } = useGetBookByIdQuery({ variables: { bookId } });
 
     let book: Book | undefined;
     if (data?.getBook) {
@@ -30,7 +31,10 @@ export default function useBook(bookId: string = '') {
             id: baseBook.id,
             title,
             coverImage: baseBook.coverImage,
-            authorNames: baseBook.authors.map((authorNames) => `${authorNames.firstName} ${authorNames.lastName}`),
+            authors: baseBook.authors.map((author) => ({
+                id: author.id,
+                name: `${author.firstName} ${author.lastName}`,
+            })),
             publicationDate: baseBook.publicationDate ? DateTime.fromISO(baseBook.publicationDate) : undefined,
             synopsis: baseBook.synopsis ?? undefined,
 
@@ -40,9 +44,10 @@ export default function useBook(bookId: string = '') {
                 body: review.body,
                 rating: review.rating,
                 reviewerName: `${review.user.firstName} ${review.user.lastName}`,
+                reviewerId: review.user.id,
             })),
         };
     }
 
-    return { book };
+    return { book, refetch };
 }
