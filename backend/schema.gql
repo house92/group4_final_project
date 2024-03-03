@@ -101,11 +101,49 @@ type UserSession {
   token: String
 }
 
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  totalEdges: Int
+}
+
+type BookEdge {
+  """The node object (belonging to type Book) attached to the edge."""
+  node: Book!
+
+  """
+  An opaque cursor that can be used to retrieve further pages of edges before or after this one.
+  """
+  cursor: String!
+}
+
+type BookConnection {
+  pageInfo: PageInfo!
+  edges: [BookEdge!]!
+}
+
 type Query {
   getUserSession: UserSession!
   listUsers: [User!]!
   getUser(id: String!): User!
-  listBooks: [Book!]!
+  listBooks(
+    """Retrieve page of edges by fixed offset page number."""
+    page: Int
+
+    """Retrieve page of edges before opaque cursor."""
+    before: String
+
+    """Retrieve page of edges after opaque cursor."""
+    after: String
+
+    """Retrieve first `n` edges."""
+    first: Int
+
+    """Retrieve last `n` edges."""
+    last: Int
+  ): BookConnection!
   getBook(id: String!): Book!
   listAuthors: [Author!]!
   getAuthor(id: String!): Author!

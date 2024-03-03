@@ -5,6 +5,7 @@ import { Book } from './book.entity';
 import { CreateBookInput } from './inputs/create-book.input';
 import { UpdateBookInput } from './inputs/update-book.input';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { BookConnection, BookConnectionArgs, BookConnectionBuilder } from './pagination/books.pagination';
 
 @Resolver(() => Book)
 export class BooksResolver {
@@ -14,9 +15,22 @@ export class BooksResolver {
     // QUERIES
     ////////////////////////////////
     @Public()
-    @Query(() => [Book])
-    listBooks() {
-        return this.booksService.findAll();
+    @Query(() => BookConnection)
+    async listBooks(@Args() connectionArgs: BookConnectionArgs): Promise<BookConnection> {
+        // Create builder instance
+        const connectionBuilder = new BookConnectionBuilder(connectionArgs);
+
+        // EXAMPLE: Do whatever you need to do to fetch the current page of books
+        const [books, count] = await this.booksService.findAll({
+            limit: connectionBuilder.edgesPerPage, // how many rows to fetch
+            from: connectionBuilder.startOffset, // row offset at which to start
+        });
+
+        // Return resolved BookConnection with edges and pageInfo
+        return connectionBuilder.build({
+            totalEdges: count,
+            nodes: books,
+        });
     }
 
     @Public()

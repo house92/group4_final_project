@@ -23,7 +23,7 @@ export default function AuthorPage() {
             </Typography>
 
             <AuthorDetails
-                birthYear={author.dateOfBirth.get('year')}
+                birthYear={author.dateOfBirth?.get('year')}
                 deathYear={author.dateOfDeath?.get('year')}
                 hometown={author.hometown}
                 bio={author.bio}

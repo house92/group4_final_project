@@ -25,9 +25,9 @@ export type Author = {
   bio?: Maybe<Scalars['String']['output']>;
   books: Array<Book>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['output'];
+  dateOfBirth?: Maybe<Scalars['DateTime']['output']>;
   /** Author year of death */
-  dateOfDeath?: Maybe<Scalars['String']['output']>;
+  dateOfDeath?: Maybe<Scalars['DateTime']['output']>;
   /** Author first name */
   firstName?: Maybe<Scalars['String']['output']>;
   /** Author hometown */
@@ -58,6 +58,20 @@ export type Book = {
   title: Scalars['String']['output'];
 };
 
+export type BookConnection = {
+  __typename?: 'BookConnection';
+  edges: Array<BookEdge>;
+  pageInfo: PageInfo;
+};
+
+export type BookEdge = {
+  __typename?: 'BookEdge';
+  /** An opaque cursor that can be used to retrieve further pages of edges before or after this one. */
+  cursor: Scalars['String']['output'];
+  /** The node object (belonging to type Book) attached to the edge. */
+  node: Book;
+};
+
 export type BookReview = {
   __typename?: 'BookReview';
   /** review body text */
@@ -78,9 +92,9 @@ export type CreateAuthorInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['input'];
+  dateOfBirth: Scalars['DateTime']['input'];
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName: Scalars['String']['input'];
   /** Author hometown */
@@ -210,6 +224,15 @@ export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  endCursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage: Scalars['Boolean']['output'];
+  hasPreviousPage: Scalars['Boolean']['output'];
+  startCursor?: Maybe<Scalars['String']['output']>;
+  totalEdges?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   getAuthor: Author;
@@ -219,7 +242,7 @@ export type Query = {
   getUserSession: UserSession;
   listAllReviews: Array<BookReview>;
   listAuthors: Array<Author>;
-  listBooks: Array<Book>;
+  listBooks: BookConnection;
   listReviewsByBook: Array<BookReview>;
   listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
@@ -247,6 +270,15 @@ export type QueryGetUserArgs = {
 };
 
 
+export type QueryListBooksArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QueryListReviewsByBookArgs = {
   id: Scalars['String']['input'];
 };
@@ -261,9 +293,9 @@ export type UpdateAuthorInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth?: InputMaybe<Scalars['String']['input']>;
+  dateOfBirth?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName?: InputMaybe<Scalars['String']['input']>;
   /** Author hometown */
@@ -336,19 +368,19 @@ export type GetUserSessionQuery = { __typename?: 'Query', getUserSession: { __ty
 export type GetAuthorsListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
+export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
 
 export type GetAuthorByIdQueryVariables = Exact<{
   authorId: Scalars['String']['input'];
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
 
 export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBooksListQuery = { __typename?: 'Query', listBooks: Array<{ __typename?: 'Book', id: string, coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> }> };
+export type GetBooksListQuery = { __typename?: 'Query', listBooks: { __typename?: 'BookConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'BookEdge', node: { __typename?: 'Book', id: string, coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> } }> } };
 
 export type GetBookByIdQueryVariables = Exact<{
   bookId: Scalars['String']['input'];
@@ -522,14 +554,23 @@ export type GetAuthorByIdQueryResult = Apollo.QueryResult<GetAuthorByIdQuery, Ge
 export const GetBooksListDocument = gql`
     query GetBooksList {
   listBooks {
-    id
-    coverImage
-    title
-    authors {
-      firstName
-      lastName
+    pageInfo {
+      totalEdges
+      hasNextPage
+      hasPreviousPage
     }
-    publicationDate
+    edges {
+      node {
+        id
+        coverImage
+        title
+        publicationDate
+        authors {
+          firstName
+          lastName
+        }
+      }
+    }
   }
 }
     `;

@@ -1,15 +1,23 @@
 query GetBooksList {
-
     listBooks {
-        id
-        coverImage
-        title
-        authors {
-            firstName
-            lastName
+        pageInfo {
+            totalEdges
+            hasNextPage
+            hasPreviousPage
         }
-        publicationDate
 
+        edges {
+            node {
+                id
+                coverImage
+                title
+                publicationDate
+
+                authors {
+                    firstName
+                    lastName
+                }
+            }
+        }
     }
-
 }
