@@ -19,6 +19,8 @@ export default function BookPage() {
 
     const canReview = userSession && book.bookReviews.every((review) => review.reviewerId !== userSession.id);
 
+    
+
     return (
         <Stack gap={4}>
             <Typography variant="h3" component="h1">
