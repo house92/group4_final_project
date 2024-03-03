@@ -7,4 +7,8 @@ export default {
     title: 'Compounds/ChatGptDetails',
 };
 
-export const Default = () => <ChatGptDetails />;
+function tester() {
+    console.log("clicked.");
+}
+
+export const Default = () => <ChatGptDetails clicked={tester} />;
