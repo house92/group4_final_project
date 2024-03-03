@@ -24,8 +24,7 @@ export default function ChatGptDetails() {
                 </Box>
                 <TabPanel value="0">
                     <Box display="flex" alignItems="center">
-                        <Image src="mary.jpg" alt="Mary Poppins" width={200} />
-                        <Typography variant="h5" style={{ marginLeft: '16px' }}>
+                        <Typography variant="h5">
                             Mary Poppins
                         </Typography>
                         <Button variant="contained" color="primary" style={{ marginLeft: '16px' }}>
@@ -37,19 +36,23 @@ export default function ChatGptDetails() {
                     </Typography>
                 </TabPanel>
                 <TabPanel value="1">
-                    <Typography variant="h5">Baseball Joe</Typography>
-                    <Button variant="contained" style={{ marginTop: '16px' }}>
-                        See Review
-                    </Button>
+                    <Box display="flex" alignItems="center">
+                        <Typography variant="h5">Baseball Joe</Typography>
+                        <Button variant="contained" style={{ marginLeft: '16px' }}>
+                            See Review
+                        </Button>
+                    </Box>
                     <Typography variant="body1" style={{ marginTop: '16px' }}>
                         Body goes here.
                     </Typography>
                 </TabPanel>
                 <TabPanel value="2">
-                    <Typography variant="h5">Caveman</Typography>
-                    <Button variant="contained" style={{ marginTop: '16px' }}>
-                        See Review
-                    </Button>
+                    <Box display="flex" alignItems="center">
+                        <Typography variant="h5">Caveman</Typography>
+                        <Button variant="contained" style={{ marginLeft: '16px' }}>
+                            See Review
+                        </Button>
+                    </Box>
                     <Typography variant="body1" style={{ marginTop: '16px' }}>
                         Body goes here.
                     </Typography>
