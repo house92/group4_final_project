@@ -373,6 +373,7 @@ export type GetUserFriendsQuery = { __typename?: 'Query', getUser: { __typename?
 
 export type GetHomePageDataQueryVariables = Exact<{
   userId: Scalars['String']['input'];
+  authenticated: Scalars['Boolean']['input'];
 }>;
 
 
@@ -710,8 +711,8 @@ export type GetUserFriendsLazyQueryHookResult = ReturnType<typeof useGetUserFrie
 export type GetUserFriendsSuspenseQueryHookResult = ReturnType<typeof useGetUserFriendsSuspenseQuery>;
 export type GetUserFriendsQueryResult = Apollo.QueryResult<GetUserFriendsQuery, GetUserFriendsQueryVariables>;
 export const GetHomePageDataDocument = gql`
-    query GetHomePageData($userId: String!) {
-  friendReviews: getUser(id: $userId) @include(if: true) {
+    query GetHomePageData($userId: String!, $authenticated: Boolean!) {
+  friendReviews: getUser(id: $userId) @include(if: $authenticated) {
     friends {
       id
       bookReviews {
@@ -730,7 +731,7 @@ export const GetHomePageDataDocument = gql`
       }
     }
   }
-  allReviews: listAllReviews @skip(if: true) {
+  allReviews: listAllReviews @skip(if: $authenticated) {
     id
     body
     rating
@@ -760,6 +761,7 @@ export const GetHomePageDataDocument = gql`
  * const { data, loading, error } = useGetHomePageDataQuery({
  *   variables: {
  *      userId: // value for 'userId'
+ *      authenticated: // value for 'authenticated'
  *   },
  * });
  */

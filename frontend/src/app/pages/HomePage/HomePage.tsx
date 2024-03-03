@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BookReviewIndex from 'app/components/compounds/BookReviewIndex';
 import { Container, Typography } from '@mui/material';
 import { useUserSession } from 'app/core/Session';
 import useHomePageData from './useHomePageData';
+import { BookReview } from 'generated/graphql';
 
 export default function HomePage() {
     const userSession = useUserSession();
-    const [reviews, setReviews] = useState<any[]>([]);
-    const data = useHomePageData(userSession && userSession.token ? userSession.id : '');
+    const userId = userSession ? userSession.id: '';
+    const isAuthenticated = !!userSession;
 
-    useEffect(() => {
-        setReviews(data);
-    }, [data]);
+    const { reviews } = useHomePageData(userId, isAuthenticated);
 
     return (
         <Container>

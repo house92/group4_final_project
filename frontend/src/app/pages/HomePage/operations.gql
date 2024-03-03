@@ -1,6 +1,6 @@
-query GetHomePageData($userId: String!) {
+query GetHomePageData($userId: String!, $authenticated: Boolean!) {
   # If user is authenticated, fetch friend reviews
-  friendReviews: getUser(id: $userId) @include(if: true) {
+  friendReviews: getUser(id: $userId) @include(if: $authenticated) {
     friends{
         id
         bookReviews {
@@ -18,13 +18,12 @@ query GetHomePageData($userId: String!) {
                 firstName
                 lastName
             }
-            #  timestamp
         }
     }
 }
 
   # If user is not authenticated, fetch all reviews
-  allReviews: listAllReviews @skip(if: true) {
+  allReviews: listAllReviews @skip(if: $authenticated) {
     id
     body
     rating
@@ -39,6 +38,5 @@ query GetHomePageData($userId: String!) {
       firstName
       lastName
     }
-    #timestamp
   }
 }

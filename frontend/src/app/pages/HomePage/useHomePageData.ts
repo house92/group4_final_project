@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { useGetHomePageDataQuery } from 'generated/graphql';
+import { useGetHomePageDataQuery, GetHomePageDataQueryVariables } from 'generated/graphql';
 
 interface Review {
     id: string;
@@ -7,41 +7,32 @@ interface Review {
     body: string;
     rating: number;
     reviewerName: string;
-    //timestamp: DateTime;
 }
 
-export default function useHomePageData(userId: string) {
+export default function useHomePageData(userId: string, authenticated: boolean) {
     const { data } = useGetHomePageDataQuery({
-        variables: { userId },
+        variables: { userId, authenticated },
     });
 
     let reviews: Review[] = [];
-    if (data) {
-        if (data.friendReviews?.friends) {
-            reviews = data.friendReviews.friends.flatMap((friend) =>
-                (friend.bookReviews || []).map((review) => ({
-                    id: review.id,
-                    title: review.book.title,
-                    body: review.body,
-                    rating: review.rating,
-                    reviewerName: `${review.user.firstName} ${review.user.lastName}`,
-                    //timestamp: review.timestamp,
-                })),
-            );
-        } else if (data.allReviews) {
-            reviews = data.allReviews.map((review) => ({
+    if (data?.friendReviews?.friends) {
+        reviews = data.friendReviews.friends.flatMap((friend) =>
+            (friend.bookReviews || []).map((review) => ({
                 id: review.id,
                 title: review.book.title,
                 body: review.body,
                 rating: review.rating,
                 reviewerName: `${review.user.firstName} ${review.user.lastName}`,
-                //timestamp: review.timestamp,
-            }));
-        }
+            })),
+        );
+    } else if (data?.allReviews) {
+        reviews = data.allReviews.map((review) => ({
+            id: review.id,
+            title: review.book.title,
+            body: review.body,
+            rating: review.rating,
+            reviewerName: `${review.user.firstName}`,
+        }));
     }
-
-    //const sortedReviews = reviews.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
-
-    //return sortedReviews;
-    return reviews;
+    return { reviews };
 }

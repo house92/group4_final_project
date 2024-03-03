@@ -39,7 +39,7 @@ export function generateRouter() {
                     element: <FriendPage />,
                 },
                 {
-                    path: '/home',
+                    path: '/',
                     element: <HomePage />,
                 },
             ],
