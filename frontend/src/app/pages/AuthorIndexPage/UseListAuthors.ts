@@ -6,23 +6,23 @@ interface Author {
     name: string;
     dateOfBirth?: DateTime;
     dateOfDeath?: DateTime;
-    hometown: string | undefined;
-    bio: string | undefined;
 }
 
-export default function useAuthors() {
+interface Response {
+    authors: Author[];
+}
+
+export default function useAuthors(): Response {
     const { data } = useGetAuthorsListQuery();
 
     let authors: Author[] = [];
 
     if (data?.listAuthors) {
-        authors = data.listAuthors.map((author) => ({
+        authors = data.listAuthors.edges.map(({ node: author }) => ({
             id: author.id,
             name: `${author.firstName} ${author.lastName}`,
             dateOfBirth: author.dateOfBirth ? DateTime.fromISO(author.dateOfBirth) : undefined,
             dateOfDeath: author.dateOfDeath ? DateTime.fromISO(author.dateOfDeath) : undefined,
-            hometown: author.hometown ?? undefined,
-            bio: author.bio ?? undefined,
         }));
     }
 

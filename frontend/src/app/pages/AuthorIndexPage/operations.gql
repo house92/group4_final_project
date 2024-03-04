@@ -1,14 +1,19 @@
 query GetAuthorsList {
+    listAuthors {
+        pageInfo {
+            totalEdges
+            hasNextPage
+            hasPreviousPage
+        }
 
-  listAuthors {
-    id
-    firstName
-    lastName
-    dateOfBirth
-    dateOfDeath
-    hometown
-    bio
-
-  }
-
+        edges {
+            node {
+                id
+                firstName
+                lastName
+                dateOfBirth
+                dateOfDeath
+            }
+        }
+    }
 }

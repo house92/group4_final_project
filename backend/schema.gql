@@ -124,6 +124,21 @@ type BookConnection {
   edges: [BookEdge!]!
 }
 
+type AuthorEdge {
+  """The node object (belonging to type Author) attached to the edge."""
+  node: Author!
+
+  """
+  An opaque cursor that can be used to retrieve further pages of edges before or after this one.
+  """
+  cursor: String!
+}
+
+type AuthorConnection {
+  pageInfo: PageInfo!
+  edges: [AuthorEdge!]!
+}
+
 type Query {
   getUserSession: UserSession!
   listUsers: [User!]!
@@ -145,7 +160,22 @@ type Query {
     last: Int
   ): BookConnection!
   getBook(id: String!): Book!
-  listAuthors: [Author!]!
+  listAuthors(
+    """Retrieve page of edges by fixed offset page number."""
+    page: Int
+
+    """Retrieve page of edges before opaque cursor."""
+    before: String
+
+    """Retrieve page of edges after opaque cursor."""
+    after: String
+
+    """Retrieve first `n` edges."""
+    first: Int
+
+    """Retrieve last `n` edges."""
+    last: Int
+  ): AuthorConnection!
   getAuthor(id: String!): Author!
   listReviewsByUser(userId: String!): [BookReview!]!
   listReviewsByBook(id: String!): [BookReview!]!

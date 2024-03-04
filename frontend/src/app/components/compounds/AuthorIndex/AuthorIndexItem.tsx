@@ -4,10 +4,9 @@ interface AuthorIndexItemProps {
     name: string;
     birthYear?: number;
     deathYear?: number;
-    hometown: string | undefined;
 }
 
-export default function AuthorIndexItem({ name, birthYear, deathYear, hometown }: AuthorIndexItemProps) {
+export default function AuthorIndexItem({ name, birthYear, deathYear }: AuthorIndexItemProps) {
     return (
         <Stack gap={2} maxWidth={400}>
             <Typography variant="h5" component="p">
@@ -19,8 +18,6 @@ export default function AuthorIndexItem({ name, birthYear, deathYear, hometown }
 
                 {deathYear && <Typography variant="body1">Died: {deathYear}</Typography>}
             </Box>
-
-            {hometown && <Typography variant="body1">{hometown}</Typography>}
         </Stack>
     );
 }

@@ -24,7 +24,6 @@ export default function AuthorIndex({ authors }: AuthorIndexProps) {
                             name={author.name}
                             birthYear={author.dateOfBirth?.get('year')}
                             deathYear={author.dateOfDeath?.get('year')}
-                            hometown={author.hometown}
                         />
                     </Link>
                 </Paper>
