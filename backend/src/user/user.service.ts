@@ -73,20 +73,24 @@ export class UserService {
         return currentUser;
     }
 
-   /*  async sendFriendRequest(friendId: string, userId: string) {
-        if (friendId == userId) {
-            throw new Error('It is not possible to add yourself');
+    async inviteFriend(currentUserId: string, friendUserId: string) {
+        const currentUser = await this.repo.findOne({
+            where: { id: currentUserId },
+            relations: { invitedFriends: true },
+        });
+
+        if (!currentUser) {
+            throw new Error(`UserService::inviteFriend() - could not find current user (ID: ${currentUserId})`);
         }
 
-        const friend = await this.repo.findOne({ where: { id: friendId }, relations: { friends: false } });
-        
-        if (!friend) {
-            throw new Error('Friend not found');
+        if (!currentUser.invitedFriends) {
+            currentUser.invitedFriends = [];
         }
 
-        // Assuming you have some mechanism to track friend requests, you would add the logic here
-        // For example, you might create a new record in a "friend requests" table or add the friendId to the current user's list of sent requests
-        // Here, we're just returning the friend object as a placeholder
-        return User.friends;
-    } */
+        const friend = await this.repo.findOne({ where: { id: friendUserId }, relations: { friends: true } });
+
+        currentUser.invitedFriends.push(friend);
+
+        return this.repo.save(currentUser);
+    }
 }

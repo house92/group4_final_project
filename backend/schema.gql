@@ -121,6 +121,7 @@ type Mutation {
   updateUser(input: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   addFriend(friendId: String!): User!
+  inviteFriend(friendId: String!): Boolean!
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!
