@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from '@mui/material';
 
 interface AuthorIndexItemProps {
     name: string;
-    birthYear: number;
+    birthYear?: number;
     deathYear?: number;
     hometown: string | undefined;
 }
@@ -15,7 +15,7 @@ export default function AuthorIndexItem({ name, birthYear, deathYear, hometown }
             </Typography>
 
             <Box display="flex" flexDirection="row" gap={2}>
-                <Typography variant="body1">Born: {birthYear}</Typography>
+                <Typography variant="body1">Born: {birthYear ?? 'Unknown'}</Typography>
 
                 {deathYear && <Typography variant="body1">Died: {deathYear}</Typography>}
             </Box>
