@@ -40,7 +40,7 @@ export default function BookPage() {
 
             <BookDetails {...book} />
 
-            <Box display="flex" >
+            <Box display="flex" alignItems="flex-start">
                 {canReview && (
                     <BookReviewForm
                         title={book.title}
@@ -52,12 +52,11 @@ export default function BookPage() {
                         }}
                     />
                 )}
+                    <BookReviewIndex bookReviews={book.bookReviews} />
 
-                <BookReviewIndex bookReviews={book.bookReviews} />
-
-                <Box marginLeft={4}>
-                    <ChatGptDetails clicked={runGpt} title={bookTitle} />
-                </Box>
+                    <Box marginLeft={4} marginBottom={4}>
+                        <ChatGptDetails clicked={runGpt} title={bookTitle} />
+                    </Box>
             </Box>
         </Stack>
     );
