@@ -43,7 +43,7 @@ export class UserResolver {
     inviteFriend(
         @Args('friendId', { type: () => String }) friendId: string,
         @CurrentRequestContext() ctx: RequestContext,
-    ) {
+    ): boolean {
         try {
             const currentUserId = ctx.userId;
             this.userService.inviteFriend(currentUserId, friendId);

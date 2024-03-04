@@ -76,7 +76,7 @@ export class UserService {
     async inviteFriend(currentUserId: string, friendUserId: string) {
         const currentUser = await this.repo.findOne({
             where: { id: currentUserId },
-            relations: { invitedFriends: true },
+            relations: { sender: true },
         });
 
         if (!currentUser) {
@@ -88,6 +88,10 @@ export class UserService {
         }
 
         const friend = await this.repo.findOne({ where: { id: friendUserId }, relations: { friends: true } });
+
+        if (!friend) {
+            throw new Error(`UserService::inviteFriend() - could not find friend (ID: ${friendUserId})`);
+        }
 
         currentUser.invitedFriends.push(friend);
 
