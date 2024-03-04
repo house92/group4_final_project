@@ -78,6 +78,16 @@ export default function ChatGptDetails({ clicked, title }) {
                 </Box>
                 <TabPanel value="0">
                     <Box display="flex" alignItems="center">
+                        <Image
+                            src={process.env.PUBLIC_URL + '/mary.jpg'}
+                            sx={{
+                                width: 100,
+                                height: 100,
+                                animation: 'none',
+                                transition: 'none',
+                            }}
+                            style={{ marginRight: '16px', width: 100, height: 100 }}
+                        />
                         <Typography variant="h5">Mary Poppins' Spoonful of Sugar:</Typography>
                         <Button
                             variant="contained"
