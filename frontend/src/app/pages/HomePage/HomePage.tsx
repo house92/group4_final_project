@@ -7,7 +7,7 @@ import { BookReview } from 'generated/graphql';
 
 export default function HomePage() {
     const userSession = useUserSession();
-    const userId = userSession ? userSession.id: '';
+    const userId = userSession ? userSession.id : '';
     const isAuthenticated = !!userSession;
 
     const { reviews } = useHomePageData(userId, isAuthenticated);
@@ -18,7 +18,7 @@ export default function HomePage() {
             {reviews.length > 0 ? (
                 <>
                     <Typography variant="h5">
-                        {userSession && userSession.token ? "Friend's Reviews:" : 'All Reviews:'}
+                        {userSession && userSession.id ? "Friend's Reviews:" : 'All Reviews:'}
                     </Typography>
                     <BookReviewIndex bookReviews={reviews} />
                 </>
