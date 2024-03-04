@@ -74,6 +74,17 @@ export class AuthResolver {
         };
     }
 
+
+    @Mutation(() => UserSession)
+    async signOutUser(
+        @Context('res') res: Response,
+    ): Promise<UserSession> {
+        
+        res.clearCookie;
+
+        return this.service.signOut();
+    }
+
     @Query(() => UserSession)
     async getUserSession(@CurrentRequestContext() ctx: RequestContext): Promise<UserSession> {
         return this.userService.findById(ctx.userId);

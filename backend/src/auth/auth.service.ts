@@ -23,6 +23,16 @@ export class AuthService {
 
         return { user: userAuth.user };
     }
+    
+    async signOut(){
+        return {
+            id: "",
+            firstName: null,
+            lastName: null,
+            token: null
+        }
+
+    }
 
     async generateToken(userId: string) {
         return this.jwtService.signAsync({ userId });
