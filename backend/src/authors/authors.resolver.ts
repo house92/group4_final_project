@@ -1,17 +1,31 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthorsService } from './authors.service';
 import { Author } from './author.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { CreateAuthorInput } from './inputs/create-author.input';
 import { UpdateAuthorInput } from './inputs/update-author.input';
+import { AuthorConnection, AuthorConnectionArgs, AuthorConnectionBuilder } from './pagination/authors.pagination';
 
 @Resolver()
 export class AuthorsResolver {
     constructor(private readonly authorsService: AuthorsService) {}
     @Public()
-    @Query(() => [Author])
-    listAuthors() {
-        return this.authorsService.findAll();
+    @Query(() => AuthorConnection)
+    async listAuthors(@Args() connectionArgs: AuthorConnectionArgs): Promise<AuthorConnection> {
+        // Create builder instance
+        const connectionBuilder = new AuthorConnectionBuilder(connectionArgs);
+
+        // EXAMPLE: Do whatever you need to do to fetch the current page of authors
+        const [authors, count] = await this.authorsService.findAll({
+            limit: connectionBuilder.edgesPerPage, // how many rows to fetch
+            from: connectionBuilder.startOffset, // row offset at which to start
+        });
+
+        // Return resolved AuthorConnection with edges and pageInfo
+        return connectionBuilder.build({
+            totalEdges: count,
+            nodes: authors,
+        });
     }
 
     @Public()

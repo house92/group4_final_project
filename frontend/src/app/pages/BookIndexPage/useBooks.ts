@@ -14,7 +14,7 @@ export default function useBooks() {
 
     let books: Book[] = [];
     if (data?.listBooks) {
-        books = data.listBooks.map((book) => ({
+        books = data.listBooks.edges.map(({ node: book }) => ({
             id: book.id,
             coverImage: book.coverImage,
             title: book.title,
