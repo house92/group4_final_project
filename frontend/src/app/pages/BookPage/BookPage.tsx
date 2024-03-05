@@ -6,7 +6,7 @@ import useBook from './useBook';
 import { BookReviewForm, BookReviewIndex } from 'app/components';
 import { useCreateBookReviewMutation } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';
-import ChatGptDetails from 'app/components/compounds/ChatGptDetails/ChatGptDetails';
+import ChatGptReviewerPanel, { Reviewer } from 'app/components/compounds/ChatGptDetails/ChatGptReviewerPanel';
 import { useRunChatGptQueryLazyQuery } from 'generated/graphql';
 
 let bookTitle: string;
@@ -17,6 +17,11 @@ let bookTitle: string;
 
 //     return s;
 // }
+
+async function tester(title: string, reviewer: Reviewer): Promise<string> {
+
+    return 'Button clicked for reviewer ' + reviewer + ' for title ' + title + '.';
+}
 
 export default function BookPage() {
     const { bookId } = useParams();
@@ -55,7 +60,7 @@ export default function BookPage() {
                 <BookReviewIndex bookReviews={book.bookReviews} />
 
                 <Box marginLeft={4} marginBottom={4}>
-                    <ChatGptDetails clicked={runGpt} title={bookTitle} />
+                    <ChatGptReviewerPanel clicked={tester} title={bookTitle} />
                 </Box>
             </Box>
         </Stack>

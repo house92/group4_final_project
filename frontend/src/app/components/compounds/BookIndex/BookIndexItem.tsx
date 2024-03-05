@@ -12,7 +12,7 @@ interface BookIndexItemProps {
 export default function BookIndexItem({ coverImage, title, authorNames, publicationDate }: BookIndexItemProps) {
     return (
         <Box display="flex" flexDirection="row" gap={2}>
-            <Image src={coverImage} alt={`${title} book cover`} />
+            <img src={coverImage} alt={`${title} book cover`} style={{ maxWidth: '100%', marginBottom: 10 }} />
             <Stack gap={2} maxWidth={400}>
                 <Typography variant="h5" component="p">
                     {title}
