@@ -1,16 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { UserAuth } from 'src/user-auth/user-auth.entity';
-import {
-    PrimaryGeneratedColumn,
-    Column,
-    OneToOne,
-    OneToMany,
-    Entity,
-    ManyToMany,
-    JoinTable,
-    ManyToOne,
-    JoinColumn,
-} from 'typeorm';
+import { PrimaryGeneratedColumn, Column, OneToOne, OneToMany, Entity, ManyToMany, JoinTable } from 'typeorm';
 import { BookReview } from 'src/bookreviews/bookreview.entity';
 
 @ObjectType()
@@ -59,8 +49,10 @@ export class User {
         joinColumn: { name: 'inviting_user_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'invited_user_id', referencedColumnName: 'id' },
     })
+    @Field(() => [User], { nullable: true })
     friendInvitations: User[];
 
     @Column({ name: 'is_accepted', default: false })
+    @Field()
     isAccepted: boolean;
 }

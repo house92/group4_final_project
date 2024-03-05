@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { UpdateUserInput } from './inputs/update-user.input';
@@ -40,16 +40,40 @@ export class UserResolver {
     }
 
     @Mutation(() => Boolean)
-    inviteFriend(
+    async inviteFriend(
         @Args('friendId', { type: () => String }) friendId: string,
         @CurrentRequestContext() ctx: RequestContext,
-    ): boolean {
+    ): Promise<boolean> {
         try {
             const currentUserId = ctx.userId;
-            this.userService.inviteFriend(currentUserId, friendId);
+            await this.userService.inviteFriend(currentUserId, friendId);
             return true;
         } catch (error) {
             return false;
         }
+    }
+
+    @Mutation(() => Boolean)
+    async acceptFriendInvitation(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ): Promise<boolean> {
+        try {
+            const currentUserId = ctx.userId;
+            await this.userService.acceptFriendInvitation(currentUserId, friendId);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    @ResolveField(() => [User])
+    async sentFriendInvitations(user: User) {
+        return this.userService.sentFriendInvitations(user.id);
+    }
+
+    @ResolveField(() => [User])
+    async pendingFriendInvitations(user: User) {
+        return this.userService.pendingFriendInvitations(user.id);
     }
 }
