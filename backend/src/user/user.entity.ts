@@ -53,6 +53,6 @@ export class User {
     friendInvitations: User[];
 
     @Column({ name: 'is_accepted', default: false })
-    @Field()
+    @Field({ nullable: true })
     isAccepted: boolean;
 }
