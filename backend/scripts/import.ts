@@ -64,22 +64,24 @@ interface AuthorMap {
     [key: string]: string;
 }
 
-async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
+const testArr: string[] = [];
+
+async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
     let getter: BulkAuthorsReturn;
     let names: string[] = [];
     let tempNames: string[] = [];
     const responses: FetchedAuthorData[] = [];
 
     let name: string;
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i].firstName != null) {
-            name = arr[i].firstName + ' ' + arr[i].lastName;
+    for (let i = 0; i < inputArray.length; i++) {
+        if (inputArray[i].firstName != null) {
+            name = inputArray[i].firstName + ' ' + inputArray[i].lastName;
             if (names.includes(name)) {
                 continue;
             }
             names.push(name);
         } else {
-            name = arr[i].lastName;
+            name = inputArray[i].lastName;
             if (names.includes(name)) {
                 continue;
             }
@@ -88,6 +90,7 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
     }
 
     names = names.reverse();
+    console.log('There are ' + names.length + ' names.');
 
     let round = 1;
 
@@ -107,6 +110,7 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
         getter = null;
         tempNames = [];
         console.log('Finished round' + round + ' of ChatGpt calls (25 authors per round)..');
+        console.log('Responses length: ' + responses.length);
         round += 1;
         if (names.length == 0) {
             break;
@@ -118,19 +122,21 @@ async function augmentAuthors(arr: CreateAuthorInput[]): Promise<CreateAuthorInp
     let responseCounter = 0;
     let tempAuthorInput: CreateAuthorInput;
 
-    while (responseCounter < responses.length && inputCounter < arr.length) {
+    while (responseCounter < responses.length && inputCounter < inputArray.length) {
         let s: string;
-        if (arr.at(inputCounter).firstName == null) {
-            s = arr.at(inputCounter).lastName;
+        if (inputArray.at(inputCounter).firstName == null) {
+            s = inputArray.at(inputCounter).lastName;
         } else {
-            s = arr[inputCounter].firstName + ' ' + arr[inputCounter].lastName;
+            s = inputArray[inputCounter].firstName + ' ' + inputArray[inputCounter].lastName;
             s = s.substring(1);
         }
+        testArr.push(' input: ' + inputCounter + 'response: ' + responseCounter);
+        testArr.push('input: ' + s + ' response: ' + responses.at(responseCounter).name);
         if (s === responses.at(responseCounter).name) {
 
             if (responses[responseCounter].death != null && responses[responseCounter].birth != null) {
 
-                tempAuthorInput = arr.at(inputCounter);
+                tempAuthorInput = inputArray.at(inputCounter);
 
                 tempAuthorInput.bio = responses[responseCounter].bio;
                 tempAuthorInput.hometown = responses[responseCounter].hometown;
@@ -269,6 +275,9 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     await app.close();
 
     console.log('finished');
+
+    console.log(testArr);
+
 }
 
 const run = async function () {

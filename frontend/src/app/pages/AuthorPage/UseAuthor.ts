@@ -25,6 +25,10 @@ export default function useAuthor(authorId: string = '') {
             hometown: baseAuthor.hometown ?? undefined,
             bio: baseAuthor.bio ?? undefined,
         };
+
+        console.log('Base DoB: ' + baseAuthor.dateOfBirth);
+        console.log('Base DoD: ' + baseAuthor.dateOfDeath);
+
     }
 
     return { author };

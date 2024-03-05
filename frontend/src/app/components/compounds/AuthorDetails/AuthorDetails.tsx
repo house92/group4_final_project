@@ -15,7 +15,7 @@ const AuthorDetails = ({ name, birthYear, deathYear, hometown, bio }: AuthorDeta
             {name && <Typography variant="h5">Author: {name}</Typography>}
 
             <Box display="flex" flexDirection="row" gap={2}>
-                <Typography variant="body1">Born: {birthYear ?? 'Unknown'}</Typography>
+                {birthYear && <Typography variant="body1">Born: {birthYear}</Typography>}
 
                 {deathYear && <Typography variant="body1">Died: {deathYear}</Typography>}
             </Box>
