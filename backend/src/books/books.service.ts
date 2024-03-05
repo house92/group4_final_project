@@ -6,6 +6,11 @@ import { Book } from './book.entity';
 import { FindOneOptions, In, Repository } from 'typeorm';
 import { Author } from 'src/authors/author.entity';
 
+interface FindAllArgs {
+    limit?: number;
+    from?: number;
+}
+
 @Injectable()
 export class BooksService {
     constructor(
@@ -13,8 +18,8 @@ export class BooksService {
         @InjectRepository(Author) private authorRepo: Repository<Author>,
     ) {}
 
-    findAll() {
-        return this.repo.find({ relations: { authors: true } });
+    findAll({ limit, from }: FindAllArgs) {
+        return this.repo.findAndCount({ take: limit, skip: from, relations: { authors: true } });
     }
 
     findById(id: string, relations: FindOneOptions<Book>['relations'] = {}) {

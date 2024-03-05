@@ -6,7 +6,7 @@ import { Paper, Stack } from '@mui/material';
 
 interface Author extends Omit<ComponentProps<typeof AuthorIndexItem>, 'birthYear' | 'deathYear'> {
     id: string;
-    dateOfBirth: DateTime;
+    dateOfBirth?: DateTime;
     dateOfDeath?: DateTime;
 }
 
@@ -22,9 +22,8 @@ export default function AuthorIndex({ authors }: AuthorIndexProps) {
                     <Link to={`/authors/${author.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <AuthorIndexItem
                             name={author.name}
-                            birthYear={author.dateOfBirth.get('year')}
+                            birthYear={author.dateOfBirth?.get('year')}
                             deathYear={author.dateOfDeath?.get('year')}
-                            hometown={author.hometown}
                         />
                     </Link>
                 </Paper>
