@@ -118,7 +118,7 @@ export class UserService {
         }
 
         friend.isAccepted = true;
-        
+
         currentUser.friends.push(friend);
         friend.friends.push(currentUser);
 
