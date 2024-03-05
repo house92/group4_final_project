@@ -53,10 +53,14 @@ export class User {
     @Field(() => [User], { nullable: true })
     friends?: User[];
 
-    @OneToMany(() => User, (user) => user.sender)
-    invitedFriends?: User[];
+    @ManyToMany(() => User)
+    @JoinTable({
+        name: 'friend_invitation',
+        joinColumn: { name: 'inviting_user_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'invited_user_id', referencedColumnName: 'id' },
+    })
+    friendInvitations: User[];
 
-    @ManyToOne(() => User, (user) => user.invitedFriends)
-    @JoinColumn({ name: 'receiver_id' })
-    sender?: User;
+    @Column({ name: 'is_accepted', default: false })
+    isAccepted: boolean;
 }
