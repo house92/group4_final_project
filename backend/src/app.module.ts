@@ -9,6 +9,7 @@ import { BooksModule } from './books/books.module';
 import { AuthorsModule } from './authors/authors.module';
 import { UserModule } from './user/user.module';
 import { BookReviewsModule } from './bookreviews/bookreviews.module';
+import { ChatGptModule } from './chatgpt/chatgpt.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { BookReviewsModule } from './bookreviews/bookreviews.module';
         AuthorsModule,
         UserModule,
         BookReviewsModule,
+        ChatGptModule,
     ],
     exports: [],
 })

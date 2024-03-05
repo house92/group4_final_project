@@ -24,6 +24,12 @@ query GetBookById($bookId: String!) {
         }
     }
 }
+
+query RunChatGptQuery($reviewer: Int!, $bookTitle: String!) {
+  runChatGptQuery(reviewer: $reviewer, bookTitle: $bookTitle)
+}
+
+
 mutation CreateBookReview($input: CreateBookReviewInput!) {
     createBookReview(input: $input) {
         id
