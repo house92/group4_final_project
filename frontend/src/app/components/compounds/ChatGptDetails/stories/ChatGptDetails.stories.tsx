@@ -1,14 +1,14 @@
 import React from 'react';
 import { Paper, Typography } from '@mui/material';
-import ChatGptReviewerPanel, { Reviewer } from '../ChatGptReviewerPanel';
+import ReviewContainer, { Reviewer } from '../ReviewContainer';
 
 export default {
     title: 'Compounds/ChatGptReviewerPanel',
 };
 
-async function tester(title: string, reviewer: Reviewer): Promise<string> {
+async function tester(reviewer: Reviewer): Promise<string> {
 
-    return 'Button clicked for reviewer ' + reviewer + ' for title ' + title + '.';
+    return 'Button clicked for reviewer ' + reviewer + ' for a title.';
 }
 
-export const Default = () => <ChatGptReviewerPanel clicked={tester} title="Moby Dick" />;
+export const Default = () => <ReviewContainer onReviewRequest={tester} />;

@@ -181,7 +181,7 @@ type Query {
   listReviewsByBook(id: String!): [BookReview!]!
   getReviewByUser(userId: String!, bookId: String!): BookReview!
   listAllReviews: [BookReview!]!
-  runChatGptQuery(reviewer: Int!, bookTitle: String!): String!
+  generateReview(reviewer: Int!, bookId: String!): String!
 }
 
 type Mutation {

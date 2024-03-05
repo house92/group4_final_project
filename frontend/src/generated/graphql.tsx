@@ -249,6 +249,7 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  generateReview: Scalars['String']['output'];
   getAuthor: Author;
   getBook: Book;
   getReviewByUser: BookReview;
@@ -260,7 +261,12 @@ export type Query = {
   listReviewsByBook: Array<BookReview>;
   listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
-  runChatGptQuery: Scalars['String']['output'];
+};
+
+
+export type QueryGenerateReviewArgs = {
+  bookId: Scalars['String']['input'];
+  reviewer: Scalars['Int']['input'];
 };
 
 
@@ -310,12 +316,6 @@ export type QueryListReviewsByBookArgs = {
 
 export type QueryListReviewsByUserArgs = {
   userId: Scalars['String']['input'];
-};
-
-
-export type QueryRunChatGptQueryArgs = {
-  bookTitle: Scalars['String']['input'];
-  reviewer: Scalars['Int']['input'];
 };
 
 export type UpdateAuthorInput = {
@@ -419,13 +419,13 @@ export type GetBookByIdQueryVariables = Exact<{
 
 export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
 
-export type RunChatGptQueryQueryVariables = Exact<{
+export type GenerateReviewQueryVariables = Exact<{
   reviewer: Scalars['Int']['input'];
-  bookTitle: Scalars['String']['input'];
+  bookId: Scalars['String']['input'];
 }>;
 
 
-export type RunChatGptQueryQuery = { __typename?: 'Query', runChatGptQuery: string };
+export type GenerateReviewQuery = { __typename?: 'Query', generateReview: string };
 
 export type CreateBookReviewMutationVariables = Exact<{
   input: CreateBookReviewInput;
@@ -718,45 +718,45 @@ export type GetBookByIdQueryHookResult = ReturnType<typeof useGetBookByIdQuery>;
 export type GetBookByIdLazyQueryHookResult = ReturnType<typeof useGetBookByIdLazyQuery>;
 export type GetBookByIdSuspenseQueryHookResult = ReturnType<typeof useGetBookByIdSuspenseQuery>;
 export type GetBookByIdQueryResult = Apollo.QueryResult<GetBookByIdQuery, GetBookByIdQueryVariables>;
-export const RunChatGptQueryDocument = gql`
-    query RunChatGptQuery($reviewer: Int!, $bookTitle: String!) {
-  runChatGptQuery(reviewer: $reviewer, bookTitle: $bookTitle)
+export const GenerateReviewDocument = gql`
+    query GenerateReview($reviewer: Int!, $bookId: String!) {
+  generateReview(reviewer: $reviewer, bookId: $bookId)
 }
     `;
 
 /**
- * __useRunChatGptQueryQuery__
+ * __useGenerateReviewQuery__
  *
- * To run a query within a React component, call `useRunChatGptQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useRunChatGptQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGenerateReviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGenerateReviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRunChatGptQueryQuery({
+ * const { data, loading, error } = useGenerateReviewQuery({
  *   variables: {
  *      reviewer: // value for 'reviewer'
- *      bookTitle: // value for 'bookTitle'
+ *      bookId: // value for 'bookId'
  *   },
  * });
  */
-export function useRunChatGptQueryQuery(baseOptions: Apollo.QueryHookOptions<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>) {
+export function useGenerateReviewQuery(baseOptions: Apollo.QueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>(RunChatGptQueryDocument, options);
+        return Apollo.useQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
       }
-export function useRunChatGptQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>) {
+export function useGenerateReviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>(RunChatGptQueryDocument, options);
+          return Apollo.useLazyQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
         }
-export function useRunChatGptQuerySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>) {
+export function useGenerateReviewSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>(RunChatGptQueryDocument, options);
+          return Apollo.useSuspenseQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
         }
-export type RunChatGptQueryQueryHookResult = ReturnType<typeof useRunChatGptQueryQuery>;
-export type RunChatGptQueryLazyQueryHookResult = ReturnType<typeof useRunChatGptQueryLazyQuery>;
-export type RunChatGptQuerySuspenseQueryHookResult = ReturnType<typeof useRunChatGptQuerySuspenseQuery>;
-export type RunChatGptQueryQueryResult = Apollo.QueryResult<RunChatGptQueryQuery, RunChatGptQueryQueryVariables>;
+export type GenerateReviewQueryHookResult = ReturnType<typeof useGenerateReviewQuery>;
+export type GenerateReviewLazyQueryHookResult = ReturnType<typeof useGenerateReviewLazyQuery>;
+export type GenerateReviewSuspenseQueryHookResult = ReturnType<typeof useGenerateReviewSuspenseQuery>;
+export type GenerateReviewQueryResult = Apollo.QueryResult<GenerateReviewQuery, GenerateReviewQueryVariables>;
 export const CreateBookReviewDocument = gql`
     mutation CreateBookReview($input: CreateBookReviewInput!) {
   createBookReview(input: $input) {

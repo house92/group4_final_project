@@ -1,1 +1,1 @@
-export { default } from './ChatGptReviewerPanel';
+export { default } from './ReviewContainer';

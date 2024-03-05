@@ -4,24 +4,9 @@ import BookDetails from 'app/components/compounds/BookDetails/BookDetails';
 import { useParams } from 'react-router-dom';
 import useBook from './useBook';
 import { BookReviewForm, BookReviewIndex } from 'app/components';
-import { useCreateBookReviewMutation } from 'generated/graphql';
+import { useCreateBookReviewMutation, useGenerateReviewLazyQuery } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';
-import ChatGptReviewerPanel, { Reviewer } from 'app/components/compounds/ChatGptDetails/ChatGptReviewerPanel';
-import { useRunChatGptQueryLazyQuery } from 'generated/graphql';
-
-let bookTitle: string;
-
-// async function CallChatGptHook(reviewer: number): Promise<string> {
-
-//     const s: string = await useChatGpt(reviewer, bookTitle);
-
-//     return s;
-// }
-
-async function tester(title: string, reviewer: Reviewer): Promise<string> {
-
-    return 'Button clicked for reviewer ' + reviewer + ' for title ' + title + '.';
-}
+import ReviewContainer, { Reviewer, ReviewContainerProps } from 'app/components/compounds/ChatGptDetails/ReviewContainer';
 
 export default function BookPage() {
     const { bookId } = useParams();
@@ -29,11 +14,24 @@ export default function BookPage() {
     const userSession = useUserSession();
 
     const [createBookReview] = useCreateBookReviewMutation();
+    const [generateReview, {loading: isGeneratedReviewLoading}] = useGenerateReviewLazyQuery();
 
     if (!bookId) return null;
     if (!book) return null;
 
-    bookTitle = book.title;
+    async function onReviewRequest(reviewer: Reviewer): Promise<string> {
+        if (!bookId) {
+            throw new Error('trying to generate a review without a book ID');
+        }
+
+        const { data } = await generateReview({ variables: { reviewer, bookId } });
+
+        if (!data) {
+            throw new Error('could not generate review');
+        }
+
+        return data.generateReview;
+    }
 
     const canReview = userSession && book.bookReviews.every((review) => review.reviewerId !== userSession.id);
 
@@ -60,7 +58,7 @@ export default function BookPage() {
                 <BookReviewIndex bookReviews={book.bookReviews} />
 
                 <Box marginLeft={4} marginBottom={4}>
-                    <ChatGptReviewerPanel clicked={tester} title={bookTitle} />
+                    <ReviewContainer onReviewRequest={onReviewRequest} isLoading={isGeneratedReviewLoading} />
                 </Box>
             </Box>
         </Stack>
