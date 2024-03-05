@@ -6,8 +6,8 @@ import useBook from './useBook';
 import { BookReviewForm, BookReviewIndex } from 'app/components';
 import { useCreateBookReviewMutation } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';
-import { runGpt } from './useChatGpt';
 import ChatGptDetails from 'app/components/compounds/ChatGptDetails/ChatGptDetails';
+import { useRunChatGptQueryLazyQuery } from 'generated/graphql';
 
 let bookTitle: string;
 
@@ -52,11 +52,11 @@ export default function BookPage() {
                         }}
                     />
                 )}
-                    <BookReviewIndex bookReviews={book.bookReviews} />
+                <BookReviewIndex bookReviews={book.bookReviews} />
 
-                    <Box marginLeft={4} marginBottom={4}>
-                        <ChatGptDetails clicked={runGpt} title={bookTitle} />
-                    </Box>
+                <Box marginLeft={4} marginBottom={4}>
+                    <ChatGptDetails clicked={runGpt} title={bookTitle} />
+                </Box>
             </Box>
         </Stack>
     );

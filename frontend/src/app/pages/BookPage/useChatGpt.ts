@@ -1,18 +1,11 @@
-// import { useRunChatGptQueryQuery } from 'generated/graphql';
+import { useRunChatGptQueryLazyQuery } from 'generated/graphql';
 
-interface ChatGptResponse {
-    index: number;
-    message: {
-        role: string | null;
-        content: string | null;
-    };
-    logprobs: null | any;
-    finish_reason: string | null;
+export async function useChatGpt(bookTitle: string, reviewer: number): Promise<string> {
+    const [chatGptCall, { loading, error, data }] = useRunChatGptQueryLazyQuery({ variables: { reviewer, bookTitle } });
+
+    if (data?.runChatGptQuery) {
+        return data.runChatGptQuery;
+    } else {
+        return "Hasn't read it yet.";
+    }
 }
-
-// export default function useChatGpt(book: string, reviewer: number): Promise<string> {
-
-
-
-
-// }

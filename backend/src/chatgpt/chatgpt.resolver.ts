@@ -15,7 +15,7 @@ export class ChatGptResolver {
     @Public()
     @Query(() => String)
     async runChatGptQuery(@Args('reviewer', { type: () => Int }) reviewer: number, @Args('bookTitle') bookTitle: string): Promise<string> {
-        return this.chatGptService.callChatGpt(reviewer, bookTitle);
+        return await this.chatGptService.callChatGpt(reviewer, bookTitle);
     }
 
 }

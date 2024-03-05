@@ -4,11 +4,14 @@ import { Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Image } from 'mui-image';
 import { sizing } from '@mui/system'
+import { useRunChatGptQueryLazyQuery } from 'generated/graphql';
 
 export default function ChatGptDetails({ clicked, title }) {
     const [value, setValue] = React.useState('0');
 
     const bookTitle = title;
+
+    const [chatGptCall, { loading, error, data }] = useRunChatGptQueryLazyQuery();
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
