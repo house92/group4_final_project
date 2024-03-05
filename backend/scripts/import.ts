@@ -64,8 +64,6 @@ interface AuthorMap {
     [key: string]: string;
 }
 
-const testArr2: number[] = [];
-
 async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
     let getter: BulkAuthorsReturn;
     let names: string[] = [];
@@ -90,7 +88,6 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
     }
 
     names = names.reverse();
-    console.log('There are ' + names.length + ' names.');
 
     let round = 1;
 
@@ -108,10 +105,8 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
             }
         }
         getter = null;
-        tempNames = [];
         console.log('Finished round' + round + ' of ChatGpt calls (20 authors per round)..');
-        console.log('Responses length: ' + responses.length);
-        testArr2.push(responses.length);
+        tempNames = [];
         round += 1;
         if (names.length == 0) {
             break;
@@ -147,6 +142,7 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
     }
 
     return lastList;
+    // return inputArray;
 }
 
 function transformGutendexPersonToAuthor(gutendexPerson: GutendexPerson): CreateAuthorInput {
@@ -243,6 +239,8 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
 
     console.log('authors created');
 
+    console.log('Adding author hometown and bio data...');
+
     const finAuthorInputs: CreateAuthorInput[] = await augmentAuthors(authorInputArr);
 
     for (let i = 0; i < finAuthorInputs.length; i++) {
@@ -269,10 +267,6 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     await app.close();
 
     console.log('finished');
-
-    console.log(finAuthorInputs);
-    console.log('final author total: ' + finAuthorInputs.length);
-    console.log(testArr2);
 
 }
 
