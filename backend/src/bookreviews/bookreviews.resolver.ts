@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { BookReviewsService } from './bookreviews.service';
 import { BookReview } from './bookreview.entity';
 import { Book } from 'src/books/book.entity';
@@ -24,13 +24,13 @@ export class BookReviewsResolver {
     @Public()
     @Query(() => [BookReview])
     listReviewsByBook(@Args('id', { type: () => String }) bookId: string) {
-        return this.bookReviewsService.findAllByBook(bookId);        
+        return this.bookReviewsService.findAllByBook(bookId);
     }
-    
+
 
     @Public()
     @Query(() => BookReview)
-    getReviewByUser(@Args('userId', { type: () => String } )userId: string, 
+    getReviewByUser(@Args('userId', { type: () => String } )userId: string,
     @Args('bookId', { type: () => String } )bookId: string) {
         return this.bookReviewsService.findOneByUser(userId, bookId);
     }
@@ -53,5 +53,19 @@ export class BookReviewsResolver {
     @Mutation(() => Book)
     removeBookReview(@Args('id') id: string) {
         return this.bookReviewsService.remove(id);
+    }
+
+    ////////////////////////////////
+    // FIELD RESOLVERS
+    ////////////////////////////////
+
+    @ResolveField(() => [BookReview])
+    async bookReviews(@Parent() book: Book) {
+        return this.bookReviewsService.findAllByBook(book.id);
+    }
+
+    @ResolveField(() => Number)
+    async aggregateScore(@Parent() book: Book) {
+        return this.bookReviewsService.calculateAggregateScore(book.id);
     }
 }
