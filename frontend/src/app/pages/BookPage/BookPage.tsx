@@ -6,7 +6,10 @@ import useBook from './useBook';
 import { BookReviewForm, BookReviewIndex } from 'app/components';
 import { useCreateBookReviewMutation, useGenerateReviewLazyQuery } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';
-import ReviewContainer, { Reviewer, ReviewContainerProps } from 'app/components/compounds/ChatGptDetails/ReviewContainer';
+import ReviewContainer, {
+    Reviewer,
+    ReviewContainerProps,
+} from 'app/components/compounds/ChatGptDetails/ReviewContainer';
 
 export default function BookPage() {
     const { bookId } = useParams();
@@ -14,7 +17,7 @@ export default function BookPage() {
     const userSession = useUserSession();
 
     const [createBookReview] = useCreateBookReviewMutation();
-    const [generateReview, {loading: isGeneratedReviewLoading}] = useGenerateReviewLazyQuery();
+    const [generateReview, { loading: isGeneratedReviewLoading }] = useGenerateReviewLazyQuery();
 
     if (!bookId) return null;
     if (!book) return null;

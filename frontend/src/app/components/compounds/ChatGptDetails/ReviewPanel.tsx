@@ -10,13 +10,7 @@ interface ReviewPanelProps {
     heading: string;
 }
 
-export default function ReviewPanel({
-    onReviewRequest,
-    reviewer,
-    placeholder,
-    body,
-    heading,
-}: ReviewPanelProps) {
+export default function ReviewPanel({ onReviewRequest, reviewer, placeholder, body, heading }: ReviewPanelProps) {
     return (
         <Box>
             <Typography variant="h5" component="p">

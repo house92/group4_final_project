@@ -7,7 +7,6 @@ export default {
 };
 
 async function tester(reviewer: Reviewer): Promise<string> {
-
     return 'Button clicked for reviewer ' + reviewer + ' for a title.';
 }
 

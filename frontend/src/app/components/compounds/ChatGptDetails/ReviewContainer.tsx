@@ -23,7 +23,10 @@ export interface ReviewContainerProps {
     isLoading?: boolean;
 }
 
-export default function ReviewContainer({ onReviewRequest: handleReviewRequest, isLoading = false }: ReviewContainerProps) {
+export default function ReviewContainer({
+    onReviewRequest: handleReviewRequest,
+    isLoading = false,
+}: ReviewContainerProps) {
     const [reviewerTab, setReviewerTab] = useState<Reviewer>(Reviewer.MaryPoppins);
     const [savedReviewMap, setSavedReviewMap] = useState<{ [key: string]: string }>({});
 
