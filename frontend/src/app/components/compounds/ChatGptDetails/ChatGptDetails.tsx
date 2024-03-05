@@ -79,14 +79,6 @@ export default function ChatGptDetails({ clicked, title }) {
                 </Box>
                 <TabPanel value="0">
                     <Box display="flex" alignItems="center">
-                        <Image
-                            src={process.env.PUBLIC_URL + '/mary.jpg'}
-                            sx={{
-                                mr: 4,
-                            }}
-                            width={100}
-                            height={100}
-                        />
                         <Typography variant="h5">Mary Poppins' Spoonful of Sugar:</Typography>
                         <Button
                             variant="contained"
@@ -104,14 +96,6 @@ export default function ChatGptDetails({ clicked, title }) {
                 </TabPanel>
                 <TabPanel value="1">
                     <Box display="flex" alignItems="center">
-                        <Image
-                            src={process.env.PUBLIC_URL + '/ball.jpg'}
-                            sx={{
-                                mr: 4,
-                            }}
-                            width={100}
-                            height={100}
-                        />
                         <Typography variant="h5">Baseball Joe's Grand Slam:</Typography>
                         <Button
                             variant="contained"
@@ -128,14 +112,6 @@ export default function ChatGptDetails({ clicked, title }) {
                 </TabPanel>
                 <TabPanel value="2">
                     <Box display="flex" alignItems="center">
-                        <Image
-                            src={process.env.PUBLIC_URL + '/caveman.jpg'}
-                            sx={{
-                                mr: 4,
-                            }}
-                            width={100}
-                            height={100}
-                        />
                         <Typography variant="h5">Caveman's Chronicle:</Typography>
                         <Button
                             variant="contained"
@@ -152,14 +128,6 @@ export default function ChatGptDetails({ clicked, title }) {
                 </TabPanel>
                 <TabPanel value="3">
                     <Box display="flex" alignItems="center">
-                        <Image
-                            src={process.env.PUBLIC_URL + '/popeye.jpg'}
-                            sx={{
-                                mr: 4,
-                            }}
-                            width={100}
-                            height={100}
-                        />
                         <Typography variant="h5">Popeye's Piece:</Typography>
                         <Button
                             variant="contained"
