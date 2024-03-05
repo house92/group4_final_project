@@ -17,8 +17,6 @@ export interface FetchedAuthorData {
     name: string;
     bio: string;
     hometown: string;
-    death: string;
-    birth: string;
 }
 
 export interface BulkAuthorsReturn {
@@ -27,7 +25,7 @@ export interface BulkAuthorsReturn {
 
 export async function getAuthorData(names: string[]): Promise<BulkAuthorsReturn> {
     let s =
-        'Please create an array with one JSON for each of the authors (ignoring repeats) in this list that contains their name as "name" (which is the inputted name), a "bio" (one-paragraph biography of the author), a "hometown" (the home town of the author), a "birth" (the Author\'s date of birth in "YYYY" format, if it is circa then leave out the word circa and if it is unknown or cannot fit into the "YYYY" format then birth=null), and a "death" (the Author\'s date of death in "YYYY" format, if it is circa then leave out the word circa and if it is unknown or cannot fit into the "YYYY" format then death=null). The array is: ';
+        'Please create an array with one JSON for each of the authors in this list that contains their name as "name" (which is the inputted name), a "bio" (one-paragraph biography of the author), and a "hometown" (the home town of the author). The array is: ';
     s += names;
     const completion = await openai.chat.completions.create({
         messages: [

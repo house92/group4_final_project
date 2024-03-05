@@ -64,7 +64,7 @@ interface AuthorMap {
     [key: string]: string;
 }
 
-const testArr: string[] = [];
+const testArr2: number[] = [];
 
 async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
     let getter: BulkAuthorsReturn;
@@ -95,7 +95,7 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
     let round = 1;
 
     while (true) {
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 20; i++) {
             tempNames.push(names.pop());
             if (names.length == 0) {
                 break;
@@ -109,8 +109,9 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
         }
         getter = null;
         tempNames = [];
-        console.log('Finished round' + round + ' of ChatGpt calls (25 authors per round)..');
+        console.log('Finished round' + round + ' of ChatGpt calls (20 authors per round)..');
         console.log('Responses length: ' + responses.length);
+        testArr2.push(responses.length);
         round += 1;
         if (names.length == 0) {
             break;
@@ -130,22 +131,15 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
             s = inputArray[inputCounter].firstName + ' ' + inputArray[inputCounter].lastName;
             s = s.substring(1);
         }
-        testArr.push(' input: ' + inputCounter + 'response: ' + responseCounter);
-        testArr.push('input: ' + s + ' response: ' + responses.at(responseCounter).name);
+
         if (s === responses.at(responseCounter).name) {
 
-            if (responses[responseCounter].death != null && responses[responseCounter].birth != null) {
+            tempAuthorInput = inputArray.at(inputCounter);
 
-                tempAuthorInput = inputArray.at(inputCounter);
+            tempAuthorInput.bio = responses[responseCounter].bio;
+            tempAuthorInput.hometown = responses[responseCounter].hometown;
 
-                tempAuthorInput.bio = responses[responseCounter].bio;
-                tempAuthorInput.hometown = responses[responseCounter].hometown;
-
-                tempAuthorInput.dateOfDeath = DateTime.fromISO(responses[responseCounter].death).toJSDate();
-                tempAuthorInput.dateOfBirth = DateTime.fromISO(responses[responseCounter].birth).toJSDate();
-
-                lastList.push(tempAuthorInput);
-            }
+            lastList.push(tempAuthorInput);
 
             responseCounter += 1;
         }
@@ -276,7 +270,9 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
 
     console.log('finished');
 
-    console.log(testArr);
+    console.log(finAuthorInputs);
+    console.log('final author total: ' + finAuthorInputs.length);
+    console.log(testArr2);
 
 }
 

@@ -22,8 +22,16 @@ export default function AuthorIndex({ authors }: AuthorIndexProps) {
                     <Link to={`/authors/${author.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <AuthorIndexItem
                             name={author.name}
-                            birthYear={author.dateOfBirth?.get('year')}
-                            deathYear={author.dateOfDeath?.get('year')}
+                            birthYear={
+                                author.dateOfBirth?.get('year') === 2024
+                                    ? 'Unknown'
+                                    : String(author.dateOfBirth?.get('year'))
+                            }
+                            deathYear={
+                                author.dateOfDeath?.get('year') === 2024
+                                    ? 'Unknown'
+                                    : String(author.dateOfDeath?.get('year'))
+                            }
                         />
                     </Link>
                 </Paper>

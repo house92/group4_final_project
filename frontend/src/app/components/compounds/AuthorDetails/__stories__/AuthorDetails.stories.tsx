@@ -5,5 +5,5 @@ export default {
 };
 
 export const Default = () => (
-    <AuthorDetails name="John Doe" birthYear={2002} hometown="Chicago" bio="This is the bio..." />
+    <AuthorDetails name="John Doe" birthYear={'2002'} hometown="Chicago" bio="This is the bio..." />
 );

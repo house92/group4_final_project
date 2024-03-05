@@ -3,8 +3,8 @@ import { Box, Paper, Typography } from '@mui/material';
 
 interface AuthorDetailsProps {
     name?: string;
-    birthYear?: number;
-    deathYear?: number;
+    birthYear?: string;
+    deathYear?: string;
     hometown?: string;
     bio?: string;
 }
