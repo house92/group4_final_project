@@ -12,18 +12,20 @@ interface ReviewPanelProps {
 
 export default function ReviewPanel({ onReviewRequest, reviewer, placeholder, body, heading }: ReviewPanelProps) {
     return (
-        <Box>
-            <Typography variant="h5" component="p">
+        <Box sx={{ width: 600, height: 400 }}>
+            <Typography variant="h5" component="p" sx={{ m: 4 }}>
                 {heading}
             </Typography>
-            <Box display="flex" justifyContent="center" alignItems="center">
+            <Box display="flex" justifyContent="center" alignItems="center" sx={{ m: 4 }}>
                 <Button variant="contained" onClick={() => onReviewRequest(reviewer)} disabled={!!body}>
                     See Review
                 </Button>
             </Box>
-            <Typography variant="body1" style={{ marginTop: '16px' }}>
-                {body ?? placeholder}
-            </Typography>
+            <Box sx={{ width: 600, height: 250, overflowY: 'auto' }}>
+                <Typography variant="body1" sx={{ m: 4, whiteSpace: 'pre-wrap' }}>
+                    {body ?? placeholder}
+                </Typography>
+            </Box>
         </Box>
     );
 }

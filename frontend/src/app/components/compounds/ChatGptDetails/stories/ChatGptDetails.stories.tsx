@@ -7,7 +7,54 @@ export default {
 };
 
 async function tester(reviewer: Reviewer): Promise<string> {
-    return 'Button clicked for reviewer ' + reviewer + ' for a title.';
+    return (
+        "(This is meant to repeat don't worry) " +
+        'Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.Button clicked for reviewer ' +
+        reviewer +
+        ' for a title.'
+    );
 }
 
 export const Default = () => <ReviewContainer onReviewRequest={tester} />;

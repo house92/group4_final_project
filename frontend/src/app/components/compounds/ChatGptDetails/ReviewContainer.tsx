@@ -73,7 +73,7 @@ export default function ReviewContainer({
     }
 
     return (
-        <Box sx={{ width: 600, typography: 'body1' }}>
+        <Box sx={{ width: 600, typography: 'body1', height: 500 }}>
             <TabContext value={reviewerTab}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="Reviewer Changed">

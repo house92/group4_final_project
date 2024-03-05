@@ -37,7 +37,10 @@ export async function runGpt(book: string, reviewer: number) {
                 'You are Mary Poppins. Speak in her manner of speaking, including references to the film Mary Poppins.';
             break;
     }
-    const prompt = 'Write me a two-paragraph review of ' + book;
+    const prompt =
+        'Write me a two-paragraph review of ' +
+        book +
+        '. Make sure you use proper formatting such as indents and new lines.';
 
     const completion = await openai.chat.completions.create({
         messages: [
