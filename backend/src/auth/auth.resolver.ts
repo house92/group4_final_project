@@ -73,16 +73,18 @@ export class AuthResolver {
             token,
         };
     }
-
-
+    @Public()
     @Mutation(() => UserSession)
-    async signOutUser(
-        @Context('res') res: Response,
-    ): Promise<UserSession> {
-        
-        res.clearCookie;
+    async signOutUser(@Context('res') res: Response): Promise<object> {
+        res.cookie(AUTHENTICATION_COOKIE_NAME, null, {
+            httpOnly: true,
+            maxAge: 1,
+            path: '/',
+            sameSite: 'lax',
+            secure: true,
+        });
 
-        return this.service.signOut();
+        return { success: true };
     }
 
     @Query(() => UserSession)
