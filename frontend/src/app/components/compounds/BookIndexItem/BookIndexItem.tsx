@@ -1,4 +1,4 @@
-import { Pagination, Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 
 interface BookIndexItemProps {
@@ -20,7 +20,6 @@ export default function BookIndexItem({ coverImage, title, authorNames, publicat
                     Publication Date: {publicationDate.toLocaleString(DateTime.DATETIME_SHORT)}
                 </Typography>
             )}
-            <Pagination count={10} size="small" />
         </Paper>
     );
 }
