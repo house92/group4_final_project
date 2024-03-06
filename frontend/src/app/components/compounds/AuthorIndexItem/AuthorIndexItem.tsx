@@ -1,4 +1,4 @@
-import { Pagination, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 interface AuthorIndexItemProps {
     authorId: string;
@@ -13,7 +13,6 @@ export default function AuthorIndexItem({ authorId, authorName, birthYear, homet
             <Typography variant="h5">{authorName}</Typography>
             <Typography variant="body1">{birthYear}</Typography>
             <Typography variant="body1">{hometown}</Typography>
-            <Pagination count={10} size="small" />
         </Stack>
     );
 }
