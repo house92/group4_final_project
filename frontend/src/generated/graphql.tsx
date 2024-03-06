@@ -25,9 +25,9 @@ export type Author = {
   bio?: Maybe<Scalars['String']['output']>;
   books: Array<Book>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['output'];
+  dateOfBirth?: Maybe<Scalars['DateTime']['output']>;
   /** Author year of death */
-  dateOfDeath?: Maybe<Scalars['String']['output']>;
+  dateOfDeath?: Maybe<Scalars['DateTime']['output']>;
   /** Author first name */
   firstName?: Maybe<Scalars['String']['output']>;
   /** Author hometown */
@@ -78,9 +78,9 @@ export type CreateAuthorInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth: Scalars['String']['input'];
+  dateOfBirth: Scalars['DateTime']['input'];
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName: Scalars['String']['input'];
   /** Author hometown */
@@ -261,9 +261,9 @@ export type UpdateAuthorInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   bookIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Author year of death */
-  dateOfBirth?: InputMaybe<Scalars['String']['input']>;
+  dateOfBirth?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author year of death */
-  dateOfDeath?: InputMaybe<Scalars['String']['input']>;
+  dateOfDeath?: InputMaybe<Scalars['DateTime']['input']>;
   /** Author first name */
   firstName?: InputMaybe<Scalars['String']['input']>;
   /** Author hometown */
@@ -336,14 +336,14 @@ export type GetUserSessionQuery = { __typename?: 'Query', getUserSession: { __ty
 export type GetAuthorsListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
+export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null }> };
 
 export type GetAuthorByIdQueryVariables = Exact<{
   authorId: Scalars['String']['input'];
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth: string, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
 
 export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -370,6 +370,13 @@ export type GetUserFriendsQueryVariables = Exact<{
 
 
 export type GetUserFriendsQuery = { __typename?: 'Query', getUser: { __typename?: 'User', friends?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> | null } };
+
+export type RegisterUserMutationVariables = Exact<{
+  input: CreateUserAuthInput;
+}>;
+
+
+export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'UserSession', id: string, firstName?: string | null, lastName?: string | null, token?: string | null } };
 
 export type SignInUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -703,6 +710,42 @@ export type GetUserFriendsQueryHookResult = ReturnType<typeof useGetUserFriendsQ
 export type GetUserFriendsLazyQueryHookResult = ReturnType<typeof useGetUserFriendsLazyQuery>;
 export type GetUserFriendsSuspenseQueryHookResult = ReturnType<typeof useGetUserFriendsSuspenseQuery>;
 export type GetUserFriendsQueryResult = Apollo.QueryResult<GetUserFriendsQuery, GetUserFriendsQueryVariables>;
+export const RegisterUserDocument = gql`
+    mutation RegisterUser($input: CreateUserAuthInput!) {
+  registerUser(input: $input) {
+    id
+    firstName
+    lastName
+    token
+  }
+}
+    `;
+export type RegisterUserMutationFn = Apollo.MutationFunction<RegisterUserMutation, RegisterUserMutationVariables>;
+
+/**
+ * __useRegisterUserMutation__
+ *
+ * To run a mutation, you first call `useRegisterUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerUserMutation, { data, loading, error }] = useRegisterUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterUserMutation(baseOptions?: Apollo.MutationHookOptions<RegisterUserMutation, RegisterUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, options);
+      }
+export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
+export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutation>;
+export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
 export const SignInUserDocument = gql`
     mutation SignInUser($email: String!, $password: String!) {
   signInUser(email: $email, password: $password) {
