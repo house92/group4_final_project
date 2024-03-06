@@ -44,4 +44,14 @@ export class BooksService {
     remove(id: number) {
         return `This action removes a #${id} book`;
     }
+    async averageRating(bookId: string) {
+        const book = await this.repo.findOne({ where: { id: bookId }, relations: ['bookReviews'] });
+        if (!book) {
+            return 0;
+        }
+        const totalRating = book.bookReviews.reduce((acc, review) => acc + review.rating, 0);
+        book.rating = totalRating / book.bookReviews.length;
+        await this.repo.save(book);
+        return book.rating;
+    }
 }

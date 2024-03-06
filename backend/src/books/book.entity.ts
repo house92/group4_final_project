@@ -50,4 +50,8 @@ export class Book {
     @OneToMany(() => BookReview, (bookReview) => bookReview.book)
     @Field(() => [BookReview])
     bookReviews?: BookReview[];
+
+    @Column({ nullable: true })
+    @Field(() => Number, { description: 'Average rating based on reviews', nullable: true })
+    rating: number;
 }

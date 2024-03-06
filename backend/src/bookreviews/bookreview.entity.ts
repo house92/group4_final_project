@@ -35,8 +35,4 @@ export class BookReview {
     @JoinColumn({ name: 'book_id', referencedColumnName: 'id' })
     @Field(() => Book)
     book: Book;
-
-    @Column({ default: 0 })
-    @Field(() => Number, { description: 'Aggregate score based on ratings', nullable: true })
-    aggregateScore: number;
 }

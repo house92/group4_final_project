@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthorsService } from './authors.service';
 import { Author } from './author.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
@@ -48,5 +48,14 @@ export class AuthorsResolver {
     @Mutation(() => Author)
     removeAuthor(@Args('id', { type: () => String }) id: number) {
         return this.authorsService.remove(id);
+    }
+
+    ////////////////////////////////
+    // FIELD RESOLVERS
+    ////////////////////////////////
+
+    @ResolveField(() => Number)
+    async rating(@Parent() author: Author) {
+        return this.authorsService.averageRating(author.id);
     }
 }

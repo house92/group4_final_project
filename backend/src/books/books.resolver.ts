@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { BooksService } from './books.service';
 import { Book } from './book.entity';
 import { CreateBookInput } from './inputs/create-book.input';
@@ -56,5 +56,13 @@ export class BooksResolver {
     @Mutation(() => Book)
     removeBook(@Args('id', { type: () => Int }) id: number) {
         return this.booksService.remove(id);
+    }
+    ////////////////////////////////
+    // FIELD RESOLVERS
+    ////////////////////////////////
+
+    @ResolveField(() => Number)
+    async rating(@Parent() book: Book) {
+        return this.booksService.averageRating(book.id);
     }
 }

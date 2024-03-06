@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { BookReviewsService } from './bookreviews.service';
 import { BookReview } from './bookreview.entity';
 import { Book } from 'src/books/book.entity';
@@ -53,19 +53,5 @@ export class BookReviewsResolver {
     @Mutation(() => Book)
     removeBookReview(@Args('id') id: string) {
         return this.bookReviewsService.remove(id);
-    }
-
-    ////////////////////////////////
-    // FIELD RESOLVERS
-    ////////////////////////////////
-
-    @ResolveField(() => [BookReview])
-    async bookReviews(@Parent() book: Book) {
-        return this.bookReviewsService.findAllByBook(book.id);
-    }
-
-    @ResolveField(() => Number)
-    async aggregateScore(@Parent() book: Book) {
-        return this.bookReviewsService.calculateAggregateScore(book.id);
     }
 }

@@ -13,13 +13,12 @@ export class BookReviewsService {
         private repo: Repository<BookReview>,
         @InjectRepository(Book) private bookRepo: Repository<Book>,
         @InjectRepository(User) private userRepo: Repository<User>,
-        @InjectRepository(BookReview) private reviewRepo: Repository<BookReview>,
     ) {}
     findAllByUser(userId: string) {
         return this.repo.find({ where: { user: { id: Equal(userId) } }, relations: { book: true } });
     }
     findOneByUser(userId: string, bookId: string) {
-        return this.repo.findOne({ where: { user: { id: Equal(userId) }, book: { id: Equal(bookId) }} });
+        return this.repo.findOne({ where: { user: { id: Equal(userId) }, book: { id: Equal(bookId) } } });
     }
     findAllByBook(bookId: string) {
         return this.repo.find({ where: { book: { id: Equal(bookId) } }, relations: { user: true } });
@@ -53,14 +52,5 @@ export class BookReviewsService {
 
     remove(id: string) {
         return `This action removes a #${id} bookreview`;
-    }
-
-    async calculateAggregateScore(bookId: string) {
-        const reviews = await this.reviewRepo.find({ where: { bookId } });
-        if (reviews.length == 0) {
-            return 0;
-        }
-        const totalScore = reviews.reduce((acc, review) => acc + review.rating, 0);
-        return totalScore / reviews.length;
     }
 }
