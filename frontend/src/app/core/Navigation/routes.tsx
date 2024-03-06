@@ -3,6 +3,7 @@ import { AuthorIndexPage, AuthorPage, BookIndexPage, UserPage, BookPage } from '
 import { Layout } from 'app/components';
 import SignInPage from 'app/pages/SignInPage';
 import FriendPage from 'app/pages/FriendPage';
+import RegisterPage from 'app/pages/RegistrationPage/RegistrationPage';
 
 export function generateRouter() {
     return createBrowserRouter([
@@ -37,6 +38,10 @@ export function generateRouter() {
                 {
                     path: '/users/:userId/friends',
                     element: <FriendPage />,
+                },
+                {
+                    path: '/registerPage',
+                    element: <RegisterPage />,
                 },
             ],
         },
