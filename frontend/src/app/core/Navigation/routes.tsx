@@ -39,6 +39,10 @@ export function generateRouter() {
                     path: '/users/:userId/friends',
                     element: <FriendPage />,
                 },
+                {
+                    path: '/',
+                    element: <HomePage />,
+                },
             ],
         },
     ]);
