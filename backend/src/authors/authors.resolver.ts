@@ -6,7 +6,7 @@ import { CreateAuthorInput } from './inputs/create-author.input';
 import { UpdateAuthorInput } from './inputs/update-author.input';
 import { AuthorConnection, AuthorConnectionArgs, AuthorConnectionBuilder } from './pagination/authors.pagination';
 
-@Resolver()
+@Resolver(() => Author)
 export class AuthorsResolver {
     constructor(private readonly authorsService: AuthorsService) {}
     @Public()

@@ -53,5 +53,5 @@ export class Book {
 
     @Column({ nullable: true })
     @Field(() => Number, { description: 'Average rating based on reviews', nullable: true })
-    rating: number;
+    rating?: number;
 }
