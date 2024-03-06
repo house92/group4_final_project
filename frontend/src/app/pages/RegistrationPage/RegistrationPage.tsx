@@ -1,6 +1,6 @@
 import { Typography, Stack } from '@mui/material';
 import RegistrationForm from 'app/components/compounds/RegistrationForm';
-import useRegister from './useRegister'; // Path adjusted to where your useRegister hook is located
+import useRegister from './useRegister';
 
 export default function RegisterPage() {
     const { register, error } = useRegister();
