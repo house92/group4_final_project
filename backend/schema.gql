@@ -86,6 +86,10 @@ type User {
   userAuth: UserAuth!
   bookReviews: [BookReview!]
   friends: [User!]
+  friendInvitations: [User!]
+  isAccepted: Boolean
+  sentFriendInvitations: [User!]!
+  pendingFriendInvitations: [User!]!
 }
 
 type UserAuth {
@@ -190,6 +194,7 @@ type Mutation {
   removeUser(id: Int!): User!
   addFriend(friendId: String!): User!
   inviteFriend(friendId: String!): Boolean!
+  acceptFriendInvitation(friendId: String!): Boolean!
   createBook(input: CreateBookInput!): Book!
   updateBook(input: UpdateBookInput!): Book!
   removeBook(id: Int!): Book!

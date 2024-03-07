@@ -1,4 +1,4 @@
-import { useGetUserByIdQuery } from 'generated/graphql';
+import { useGetUserByIdQuery, useGetUserSessionQuery } from 'generated/graphql';
 import { DateTime } from 'luxon';
 
 interface User {
