@@ -46,7 +46,7 @@ export default function BookPage() {
 
             <BookDetails {...book} />
 
-            <Box display="flex" alignItems="flex-start">
+            <Stack display="flex" alignItems="flex-start" gap={4}>
                 {canReview && (
                     <BookReviewForm
                         title={book.title}
@@ -63,7 +63,7 @@ export default function BookPage() {
                 <Box marginLeft={4} marginBottom={4}>
                     <ReviewContainer onReviewRequest={onReviewRequest} isLoading={isGeneratedReviewLoading} />
                 </Box>
-            </Box>
+            </Stack>
         </Stack>
     );
 }
