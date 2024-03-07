@@ -7,3 +7,7 @@ query GetUserFriends($userId: String!) {
     }
   }
 }
+
+mutation AcceptFriendInvite($userId: String!) {
+    acceptFriendInvitation(friendId: $userId)
+}

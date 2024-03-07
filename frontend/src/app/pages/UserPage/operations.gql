@@ -21,13 +21,15 @@ query GetUserById($userId: String!) {
 
 query GetMySentFriendInvites($userId: String!) {
     sentFriendInvitations(userId: $userId) {
-        id
+        id        
     }
 }
 
 query GetMyReceivedFriendInvites($userId: String!) {
     pendingFriendInvitations(userId: $userId) {
         id
+        firstName
+        lastName
     }
 }
 

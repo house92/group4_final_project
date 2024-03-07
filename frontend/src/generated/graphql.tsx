@@ -452,6 +452,13 @@ export type GetUserFriendsQueryVariables = Exact<{
 
 export type GetUserFriendsQuery = { __typename?: 'Query', getUser: { __typename?: 'User', friends?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> | null } };
 
+export type AcceptFriendInviteMutationVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type AcceptFriendInviteMutation = { __typename?: 'Mutation', acceptFriendInvitation: boolean };
+
 export type GetHomePageDataQueryVariables = Exact<{
   userId: Scalars['String']['input'];
   authenticated: Scalars['Boolean']['input'];
@@ -487,7 +494,7 @@ export type GetMyReceivedFriendInvitesQueryVariables = Exact<{
 }>;
 
 
-export type GetMyReceivedFriendInvitesQuery = { __typename?: 'Query', pendingFriendInvitations: Array<{ __typename?: 'User', id: string }> };
+export type GetMyReceivedFriendInvitesQuery = { __typename?: 'Query', pendingFriendInvitations: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
 
 export type SendFriendInviteMutationVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -829,6 +836,37 @@ export type GetUserFriendsQueryHookResult = ReturnType<typeof useGetUserFriendsQ
 export type GetUserFriendsLazyQueryHookResult = ReturnType<typeof useGetUserFriendsLazyQuery>;
 export type GetUserFriendsSuspenseQueryHookResult = ReturnType<typeof useGetUserFriendsSuspenseQuery>;
 export type GetUserFriendsQueryResult = Apollo.QueryResult<GetUserFriendsQuery, GetUserFriendsQueryVariables>;
+export const AcceptFriendInviteDocument = gql`
+    mutation AcceptFriendInvite($userId: String!) {
+  acceptFriendInvitation(friendId: $userId)
+}
+    `;
+export type AcceptFriendInviteMutationFn = Apollo.MutationFunction<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>;
+
+/**
+ * __useAcceptFriendInviteMutation__
+ *
+ * To run a mutation, you first call `useAcceptFriendInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptFriendInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptFriendInviteMutation, { data, loading, error }] = useAcceptFriendInviteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useAcceptFriendInviteMutation(baseOptions?: Apollo.MutationHookOptions<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>(AcceptFriendInviteDocument, options);
+      }
+export type AcceptFriendInviteMutationHookResult = ReturnType<typeof useAcceptFriendInviteMutation>;
+export type AcceptFriendInviteMutationResult = Apollo.MutationResult<AcceptFriendInviteMutation>;
+export type AcceptFriendInviteMutationOptions = Apollo.BaseMutationOptions<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>;
 export const GetHomePageDataDocument = gql`
     query GetHomePageData($userId: String!, $authenticated: Boolean!) {
   friendReviews: getUser(id: $userId) @include(if: $authenticated) {
@@ -1033,6 +1071,8 @@ export const GetMyReceivedFriendInvitesDocument = gql`
     query GetMyReceivedFriendInvites($userId: String!) {
   pendingFriendInvitations(userId: $userId) {
     id
+    firstName
+    lastName
   }
 }
     `;

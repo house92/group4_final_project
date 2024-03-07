@@ -1,4 +1,10 @@
-import { useGetUserFriendsQuery } from 'generated/graphql';
+import {
+    useGetUserFriendsQuery,
+    useGetUserSessionQuery,
+    useAcceptFriendInviteMutation,
+    useGetMyReceivedFriendInvitesQuery,
+} from 'generated/graphql';
+import { inviteProps } from 'app/components/compounds/FriendInvites/InviteItem';
 
 interface Friend {
     id: any;
@@ -22,4 +28,31 @@ export default function useUsersFriends(userId: string = ''): Response {
     }
 
     return res;
+}
+
+export function useGetSession(): string {
+    const { data } = useGetUserSessionQuery();
+
+    if (data?.getUserSession.id) {
+        return data.getUserSession.id;
+    }
+    return '';
+}
+
+export function useGetReceivedInvites(accept, userId: string): inviteProps[] {
+    const { data } = useGetMyReceivedFriendInvitesQuery({ variables: { userId } });
+
+    let returnMe: inviteProps[] = [];
+
+    if (data?.pendingFriendInvitations) {
+        for (let i = 0; i < data.pendingFriendInvitations.length; i++) {
+            returnMe.push({
+                accept,
+                id: data.pendingFriendInvitations[i].id,
+                name: data.pendingFriendInvitations[i].firstName + ' ' + data.pendingFriendInvitations[i].lastName,
+            });
+        }
+        return returnMe;
+    }
+    return [];
 }
