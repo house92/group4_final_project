@@ -30,6 +30,16 @@ export class UserResolver {
         return user;
     }
 
+    @Query(() => [User])
+    async sentFriendInvitations(@Args('userId') userId: string) {
+        return this.userService.sentFriendInvitations(userId);
+    }
+    
+    @Query(() => [User])
+    async pendingFriendInvitations(@Args('userId') userId: string) {
+        return this.userService.pendingFriendInvitations(userId);
+    }
+
     @Mutation(() => User)
     updateUser(@Args('input') input: UpdateUserInput) {
         return this.userService.update(input);
@@ -77,13 +87,13 @@ export class UserResolver {
         }
     }
 
-    @ResolveField(() => [User])
-    async sentFriendInvitations(user: User) {
-        return this.userService.sentFriendInvitations(user.id);
-    }
+    // @ResolveField(() => [User])
+    // async sentFriendInvitations(userId: string) {
+    //     return this.userService.sentFriendInvitations(userId);
+    // }
 
-    @ResolveField(() => [User])
-    async pendingFriendInvitations(user: User) {
-        return this.userService.pendingFriendInvitations(user.id);
-    }
+    // @ResolveField(() => [User])
+    // async pendingFriendInvitations(userId: string) {
+    //     return this.userService.pendingFriendInvitations(userId);
+    // }
 }

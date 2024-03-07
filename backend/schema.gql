@@ -88,8 +88,6 @@ type User {
   friends: [User!]
   friendInvitations: [User!]
   isAccepted: Boolean
-  sentFriendInvitations: [User!]!
-  pendingFriendInvitations: [User!]!
 }
 
 type UserAuth {
@@ -147,6 +145,8 @@ type Query {
   getUserSession: UserSession!
   listUsers: [User!]!
   getUser(id: String!): User!
+  sentFriendInvitations(userId: String!): [User!]!
+  pendingFriendInvitations(userId: String!): [User!]!
   listBooks(
     """Retrieve page of edges by fixed offset page number."""
     page: Int
