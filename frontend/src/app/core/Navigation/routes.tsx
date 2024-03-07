@@ -43,6 +43,10 @@ export function generateRouter() {
                     path: '/',
                     element: <HomePage />,
                 },
+                {
+                    path: '/register',
+                    element: <RegisterPage />,
+                },
             ],
         },
     ]);
