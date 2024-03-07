@@ -73,19 +73,6 @@ export class AuthResolver {
             token,
         };
     }
-    @Public()
-    @Mutation(() => UserSession)
-    async signOutUser(@Context('res') res: Response): Promise<object> {
-        res.cookie(AUTHENTICATION_COOKIE_NAME, null, {
-            httpOnly: true,
-            maxAge: 1,
-            path: '/',
-            sameSite: 'lax',
-            secure: true,
-        });
-
-        return { success: true };
-    }
 
     @Query(() => UserSession)
     async getUserSession(@CurrentRequestContext() ctx: RequestContext): Promise<UserSession> {

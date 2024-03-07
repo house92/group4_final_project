@@ -186,7 +186,6 @@ type Query {
 type Mutation {
   registerUser(input: CreateUserAuthInput!): UserSession!
   signInUser(email: String!, password: String!): UserSession!
-  signOutUser: UserSession!
   updateUser(input: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   addFriend(friendId: String!): User!

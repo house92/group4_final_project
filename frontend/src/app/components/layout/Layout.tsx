@@ -44,7 +44,7 @@ export default function Layout() {
 
                     {userSession ? (
                         // we need to make this actually sign the user out
-                        <Button href="/sign-out" variant="contained">
+                        <Button href="/" variant="contained">
                             Sign out
                         </Button>
                     ) : (
