@@ -22,7 +22,7 @@ export default function useSignIn() {
             console.log({ data });
 
             if (data?.signInUser) {
-                navigate('/authors');
+                navigate('/');
             } else {
                 const errorMessage = 'Invalid email or password.';
                 setError(errorMessage);
