@@ -4,7 +4,7 @@ import {
     useAcceptFriendInviteMutation,
     useGetMyReceivedFriendInvitesQuery,
 } from 'generated/graphql';
-import { inviteProps } from 'app/components/compounds/FriendInvites/InviteItem';
+import { inviteProps } from 'app/components/compounds/InviteContainer/InviteItem';
 
 interface Friend {
     id: any;

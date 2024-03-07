@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 
 export interface inviteProps {
     accept;
-    name;
-    id;
+    name: string;
+    id: string;
 }
 
 let pressed: boolean = false;
@@ -17,12 +17,10 @@ async function handleAccept(accept, id) {
 export default function InviteItem({ accept, name, id }: inviteProps) {
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" sx={{ m: 4 }}>
-            (
+        <Box display="flex" justifyContent="left" sx={{ m: 4 }}>
             <Button variant="contained" onClick={async () => handleAccept(accept, id)} disabled={pressed}>
                 Accept
             </Button>
-            )
             <Typography variant="h5" component="p" sx={{ m: 4 }}>
                 {name}
             </Typography>

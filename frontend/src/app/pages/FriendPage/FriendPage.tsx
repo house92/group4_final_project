@@ -3,8 +3,8 @@ import FriendIndex from 'app/components/compounds/FriendIndex';
 import { Box, Typography } from '@mui/material';
 import useUsersFriends, { useGetSession, useGetReceivedInvites } from './useUserFriends';
 import { useAcceptFriendInviteMutation } from 'generated/graphql';
-import InviteContainer from 'app/components/compounds/FriendInvites/InviteContainer';
-import InviteItem, { inviteProps } from 'app/components/compounds/FriendInvites/InviteItem';
+import InviteContainer from 'app/components/compounds/InviteContainer/InviteContainer';
+import InviteItem, { inviteProps } from 'app/components/compounds/InviteContainer/InviteItem';
 
 export default function FriendPage() {
     const { userId } = useParams();
@@ -26,7 +26,11 @@ export default function FriendPage() {
 
     return (
         <Box>
-            <InviteContainer props={pending}></InviteContainer>
+            <InviteContainer {...{ props: pending }}></InviteContainer>
+            <Box>
+                <FriendIndex friends={friends} />
+            </Box>
         </Box>
+        
     );
 }
