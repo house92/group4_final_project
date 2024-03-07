@@ -10,19 +10,16 @@ export interface InviteContainerProps {
 
 export default function InviteContainer(inputProps: InviteContainerProps) {
     let e: inviteProps[] = [];
-    const props = inputProps.props;
-    console.log('Props: ' + props.length);
+    // const props = inputProps.props;
 
-    for (let i = 0; i < props.length; i++) {
-        e.push(props[i]);
-    }
-
-    console.log('E: ' + e.length);
+    // for (let i = 0; i < props.length; i++) {
+    //     e.push(props[i]);
+    // }
 
     return (
         <Box sx={{ width: 600, height: 300, overflowY: 'auto' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                {e.map(({ accept, name, id }) => (
+                {inputProps.props.map(({ accept, name, id }) => (
                     <InviteItem name={name} id={id} accept={accept} />
                 ))}
             </Box>

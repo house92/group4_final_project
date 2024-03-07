@@ -24,6 +24,8 @@ export default function FriendPage() {
         );
     }
 
+    console.log(pending);
+
     return (
         <Box>
             <InviteContainer {...{ props: pending }}></InviteContainer>
