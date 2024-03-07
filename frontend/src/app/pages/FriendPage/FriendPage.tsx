@@ -25,6 +25,7 @@ export default function FriendPage() {
     }
 
     console.log(pending);
+    console.log('my id: ' + myId);
 
     return (
         <Box>

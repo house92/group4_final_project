@@ -9,9 +9,10 @@ export interface inviteProps {
 
 let pressed: boolean = false;
 
-async function handleAccept(accept, id) {
+async function handleAccept(accept, userId) {
+    console.log('button clicked for id ' + userId);
     pressed = true;
-    await accept(id);
+    await accept({values: {userId}});
 }
 
 export default function InviteItem({ accept, name, id }: inviteProps) {
