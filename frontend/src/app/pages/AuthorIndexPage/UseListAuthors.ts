@@ -1,31 +1,29 @@
 import { useGetAuthorsListQuery } from 'generated/graphql';
+import { DateTime } from 'luxon';
 
 interface Author {
     id: string;
     name: string;
-    dateOfBirth: string;
-    dateOfDeath: string | null | undefined;
-    hometown: string | null | undefined;
-    bio: string | null | undefined;
+    dateOfBirth?: DateTime;
+    dateOfDeath?: DateTime;
 }
 
-export default function useAuthors() {
+interface Response {
+    authors: Author[];
+}
+
+export default function useAuthors(): Response {
     const { data } = useGetAuthorsListQuery();
 
     let authors: Author[] = [];
 
     if (data?.listAuthors) {
-        authors = data.listAuthors.map((author) => ({
+        authors = data.listAuthors.edges.map(({ node: author }) => ({
             id: author.id,
             name: `${author.firstName} ${author.lastName}`,
-            dateOfBirth: author.dateOfBirth,
-            dateOfDeath: author.dateOfDeath,
-            hometown: author.hometown,
-            bio: author.bio,
+            dateOfBirth: author.dateOfBirth ? DateTime.fromISO(author.dateOfBirth) : undefined,
+            dateOfDeath: author.dateOfDeath ? DateTime.fromISO(author.dateOfDeath) : undefined,
         }));
-        if (data.listAuthors) {
-            console.log(data.listAuthors.at(0)?.id);
-        }
     }
 
     return { authors };

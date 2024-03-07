@@ -4,6 +4,7 @@ query GetBookById($bookId: String!) {
         title
         coverImage
         authors {
+            id
             firstName
             lastName
         }

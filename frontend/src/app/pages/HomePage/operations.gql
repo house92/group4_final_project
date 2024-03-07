@@ -1,0 +1,42 @@
+query GetHomePageData($userId: String!, $authenticated: Boolean!) {
+  # If user is authenticated, fetch friend reviews
+  friendReviews: getUser(id: $userId) @include(if: $authenticated) {
+    friends{
+        id
+        bookReviews {
+            id
+            body
+            rating
+
+            book {
+                id
+                title
+            }
+
+            user {
+                id
+                firstName
+                lastName
+            }
+        }
+    }
+}
+
+  # If user is not authenticated, fetch all reviews
+  allReviews: listAllReviews @skip(if: $authenticated) {
+    id
+    body
+    rating
+
+    book {
+        id
+        title
+    }
+
+    user {
+      id
+      firstName
+      lastName
+    }
+  }
+}

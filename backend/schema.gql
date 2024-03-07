@@ -12,10 +12,10 @@ type Author {
   lastName: String!
 
   """Author year of death"""
-  dateOfBirth: String!
+  dateOfBirth: DateTime
 
   """Author year of death"""
-  dateOfDeath: String
+  dateOfDeath: DateTime
 
   """Author hometown"""
   hometown: String
@@ -24,6 +24,11 @@ type Author {
   bio: String
   books: [Book!]!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Book {
   id: ID!
@@ -83,11 +88,6 @@ type User {
   friends: [User!]
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type UserAuth {
   id: ID!
   email: String!
@@ -101,13 +101,81 @@ type UserSession {
   token: String
 }
 
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  totalEdges: Int
+}
+
+type BookEdge {
+  """The node object (belonging to type Book) attached to the edge."""
+  node: Book!
+
+  """
+  An opaque cursor that can be used to retrieve further pages of edges before or after this one.
+  """
+  cursor: String!
+}
+
+type BookConnection {
+  pageInfo: PageInfo!
+  edges: [BookEdge!]!
+}
+
+type AuthorEdge {
+  """The node object (belonging to type Author) attached to the edge."""
+  node: Author!
+
+  """
+  An opaque cursor that can be used to retrieve further pages of edges before or after this one.
+  """
+  cursor: String!
+}
+
+type AuthorConnection {
+  pageInfo: PageInfo!
+  edges: [AuthorEdge!]!
+}
+
 type Query {
   getUserSession: UserSession!
   listUsers: [User!]!
   getUser(id: String!): User!
-  listBooks: [Book!]!
+  listBooks(
+    """Retrieve page of edges by fixed offset page number."""
+    page: Int
+
+    """Retrieve page of edges before opaque cursor."""
+    before: String
+
+    """Retrieve page of edges after opaque cursor."""
+    after: String
+
+    """Retrieve first `n` edges."""
+    first: Int
+
+    """Retrieve last `n` edges."""
+    last: Int
+  ): BookConnection!
   getBook(id: String!): Book!
-  listAuthors: [Author!]!
+  listAuthors(
+    """Retrieve page of edges by fixed offset page number."""
+    page: Int
+
+    """Retrieve page of edges before opaque cursor."""
+    before: String
+
+    """Retrieve page of edges after opaque cursor."""
+    after: String
+
+    """Retrieve first `n` edges."""
+    first: Int
+
+    """Retrieve last `n` edges."""
+    last: Int
+  ): AuthorConnection!
   getAuthor(id: String!): Author!
   listReviewsByUser(userId: String!): [BookReview!]!
   listReviewsByBook(id: String!): [BookReview!]!
@@ -206,10 +274,10 @@ input CreateAuthorInput {
   lastName: String!
 
   """Author year of death"""
-  dateOfBirth: String!
+  dateOfBirth: DateTime!
 
   """Author year of death"""
-  dateOfDeath: String
+  dateOfDeath: DateTime
 
   """Author hometown"""
   hometown: String
@@ -227,10 +295,10 @@ input UpdateAuthorInput {
   lastName: String
 
   """Author year of death"""
-  dateOfBirth: String
+  dateOfBirth: DateTime
 
   """Author year of death"""
-  dateOfDeath: String
+  dateOfDeath: DateTime
 
   """Author hometown"""
   hometown: String
