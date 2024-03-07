@@ -16,8 +16,18 @@ export class UserResolver {
 
     @Public()
     @Query(() => User)
-    getUser(@Args('id', { type: () => String }) id: string) {
-        return this.userService.findById(id, { friends: true, bookReviews: { book: true } });
+    async getUser(@Args('id', { type: () => String }) id: string) {
+        const user = await this.userService.findById(id, {
+            friends: { bookReviews: { book: true } },
+            bookReviews: { book: true },
+        });
+
+        // doing this avoids an additional join on the user table
+        user.friends.forEach((friend) => {
+            friend.bookReviews = friend.bookReviews.map((review) => ({ ...review, user: friend }));
+        });
+
+        return user;
     }
 
     @Mutation(() => User)
