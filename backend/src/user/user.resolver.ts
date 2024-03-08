@@ -59,6 +59,15 @@ export class UserResolver {
         return this.userService.addUserToCurrentUserFriends(currentUserId, friendId);
     }
 
+    @Mutation(() => User)
+    removeFriend(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ) {
+        const currentUserId = ctx.userId;
+        return this.userService.unFriend(currentUserId, friendId);
+    }
+
     @Mutation(() => Boolean)
     async inviteFriend(
         @Args('friendId', { type: () => String }) friendId: string,

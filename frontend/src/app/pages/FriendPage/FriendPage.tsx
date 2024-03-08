@@ -37,7 +37,7 @@ export default function FriendPage() {
                 <Autocomplete
                     disablePortal
                     options={searchOptions}
-                    sx={{ width: 300, m: 4 }}
+                    sx={{ width: 300, ml: 4 }}
                     renderInput={(params) => <TextField {...params} label="Users" />}
                     onChange={(event: any, newValue: string | null) => {
                         for (let i = 0; i < searchOptions.length; i++) {

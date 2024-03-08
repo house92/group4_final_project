@@ -17,11 +17,11 @@ export default function InviteContainer(inputProps: InviteContainerProps) {
     // }
 
     return (
-        <Box sx={{ width: 400, height: 300 }}>
+        <Box sx={{ width: 400, height: 400 }}>
             <Typography variant="h5" component="p" textAlign="center" m={2}>
                 Friend Requests
             </Typography>
-            <Box sx={{ width: 400, height: 200, overflowY: 'auto' }}>
+            <Box sx={{ width: 400, height: 300, overflowY: 'auto' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     {inputProps.props.map(({ accept, name, id }) => (
                         <InviteItem name={name} id={id} accept={accept} />

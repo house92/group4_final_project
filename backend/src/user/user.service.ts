@@ -73,6 +73,31 @@ export class UserService {
         return currentUser;
     }
 
+    async unFriend(friend1: string, friend2: string) {
+        const currentUser = await this.repo.findOne({ where: { id: friend1 }, relations: { friends: true } });
+
+        if (!currentUser) {
+            throw new Error(
+                `UserService::addUserToCurrentUserFriends() - could not find current user (ID: ${friend1})`,
+            );
+        }
+
+        const friend = await this.repo.findOne({ where: { id: friend2 }, relations: { friends: true } });
+
+        if (!friend) {
+            throw new Error(`UserService::addUserToCurrentUserFriends() - could not find friend (ID: ${friend2})`);
+        }
+
+        currentUser.friends = currentUser.friends.filter((friend) => friend.id !== friend2);
+
+        friend.friends = friend.friends.filter((friend) => friend.id !== friend1);
+
+        await this.repo.save(currentUser);
+        await this.repo.save(friend);
+
+        return currentUser;
+    }
+
     async inviteFriend(currentUserId: string, friendUserId: string) {
         const currentUser = await this.repo.findOne({
             where: { id: currentUserId },
@@ -87,11 +112,15 @@ export class UserService {
             currentUser.sentInvitations = [];
         }
 
-        const friend = await this.repo.findOne({ where: { id: friendUserId }, relations: { friends: true } });
+        const friend = await this.repo.findOne({
+            where: { id: friendUserId },
+            relations: { receivedInvitations: true },
+        });
 
         if (!friend) {
             throw new Error(`UserService::inviteFriend() - could not find friend (ID: ${friendUserId})`);
         }
+        console.log('before null check on my pending invitations: ' + friend.receivedInvitations);
 
         if (friend.receivedInvitations === null || friend.receivedInvitations === undefined) {
             friend.receivedInvitations = [];
@@ -149,7 +178,7 @@ export class UserService {
         );
         console.log('checking invitations before filter: ' + friend.sentInvitations);
         friend.sentInvitations = friend.sentInvitations.filter((invitation) => invitation.id !== currentUser.id);
-        
+
         await this.repo.save(currentUser);
         await this.repo.save(friend);
     }
