@@ -30,9 +30,7 @@ export default function FriendPage() {
     return (
         <Box>
             <InviteContainer {...{ props: pending }}></InviteContainer>
-            <Box>
-                <FriendIndex friends={friends} />
-            </Box>
+            <FriendIndex friends={friends} />
         </Box>
         
     );

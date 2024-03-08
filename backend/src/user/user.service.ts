@@ -109,8 +109,13 @@ export class UserService {
                 `UserService::acceptFriendInvitation() - could not find current user (ID: ${currentUserId})`,
             );
         }
-
-        const friend = currentUser.friendInvitations.find((invitation) => invitation.id === friendUserId);
+        let friend: User;
+        for (let i = 0; i < currentUser.friendInvitations.length; i++) {
+            console.log(currentUser.friendInvitations[i]);
+            if (currentUser.friendInvitations[i].id === friendUserId) {
+                 friend = currentUser.friendInvitations[i];
+            }
+        }
         if (!friend) {
             throw new Error(
                 `UserService::acceptFriendInvitation() - could not find friend invitation (ID: ${friendUserId})`,
@@ -118,6 +123,13 @@ export class UserService {
         }
 
         friend.isAccepted = true;
+
+        if (currentUser.friends === null || currentUser.friends === undefined) {
+            currentUser.friends = [];
+        }
+        if (friend.friends === null || friend.friends === undefined) {
+            friend.friends = [];
+        }
 
         currentUser.friends.push(friend);
         friend.friends.push(currentUser);
