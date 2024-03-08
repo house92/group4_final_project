@@ -154,9 +154,6 @@ export class UserService {
 
         await this.repo.save(currentUser);
         await this.repo.save(friend);
-
-
-
     }
 
     async sentFriendInvitations(userId: string) {

@@ -23,15 +23,14 @@ export class AuthService {
 
         return { user: userAuth.user };
     }
-    
-    async signOut(){
+
+    async signOut() {
         return {
-            id: "",
+            id: '',
             firstName: null,
             lastName: null,
-            token: null
-        }
-
+            token: null,
+        };
     }
 
     async generateToken(userId: string) {

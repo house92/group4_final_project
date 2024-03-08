@@ -34,7 +34,7 @@ export class UserResolver {
     async sentFriendInvitations(@Args('userId') userId: string) {
         return this.userService.sentFriendInvitations(userId);
     }
-    
+
     @Query(() => [User])
     async pendingFriendInvitations(@Args('userId') userId: string) {
         return this.userService.pendingFriendInvitations(userId);
