@@ -1,10 +1,18 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSignInUserMutation, useSignOutUserMutation } from 'generated/graphql';
+import React from 'react';
+import { useSignOutUserMutation } from 'generated/graphql';
 
-export default function useSignIn() {
-    const navigate = useNavigate();
+const useSignOut = () => {
     const [signOutUserMutation] = useSignOutUserMutation();
-    const data = signOutUserMutation();
-    navigate('/authors');
-}
+
+    const handleSignOut = async () => {
+        try {
+            await signOutUserMutation();
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
+
+    return { handleSignOut };
+};
+
+export default useSignOut;
