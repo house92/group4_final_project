@@ -88,7 +88,6 @@ type User {
   friends: [User!]
   sentInvitations: [User!]
   receivedInvitations: [User!]
-  isAccepted: Boolean
 }
 
 type UserAuth {

@@ -387,11 +387,11 @@ export type User = {
   /** Author year of death */
   dateOfBirth: Scalars['DateTime']['output'];
   firstName: Scalars['String']['output'];
-  friendInvitations?: Maybe<Array<User>>;
   friends?: Maybe<Array<User>>;
   id: Scalars['ID']['output'];
-  isAccepted?: Maybe<Scalars['Boolean']['output']>;
   lastName: Scalars['String']['output'];
+  receivedInvitations?: Maybe<Array<User>>;
+  sentInvitations?: Maybe<Array<User>>;
   userAuth: UserAuth;
 };
 

@@ -61,7 +61,4 @@ export class User {
     @Field(() => [User], { nullable: true })
     receivedInvitations?: User[];
 
-    @Column({ name: 'is_accepted', default: false })
-    @Field({ nullable: true })
-    isAccepted: boolean;
 }

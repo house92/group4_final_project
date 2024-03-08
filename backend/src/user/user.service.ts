@@ -156,15 +156,11 @@ export class UserService {
 
     async sentFriendInvitations(userId: string) {
         const user = await this.repo.findOne({ where: { id: userId }, relations: { sentInvitations: true } });
-        console.log(user.sentInvitations.length);
-        console.log(user.firstName);
-
         return user.sentInvitations;
     }
 
     async pendingFriendInvitations(userId: string) {
         const user = await this.repo.findOne({ where: { id: userId }, relations: { receivedInvitations: true } });
-        const pendingInvitations: User[] = user.receivedInvitations.filter((invitation) => !invitation.isAccepted);
-        return pendingInvitations;
+        return user.receivedInvitations;
     }
 }
