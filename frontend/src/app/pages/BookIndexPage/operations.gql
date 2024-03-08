@@ -1,6 +1,6 @@
-query GetBooksList {
+query GetBooksList($limit: Int!, $offset: Int!) {
 
-    listBooks {
+    listBooks(limit: $limit, offset: $offset) {
         id
         coverImage
         title

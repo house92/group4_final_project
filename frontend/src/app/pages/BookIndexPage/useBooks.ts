@@ -9,8 +9,8 @@ interface Book {
     publicationDate: DateTime | undefined;
 }
 
-export default function useBooks() {
-    const { data } = useGetBooksListQuery();
+export default function useBooks(pageLimit: number, offset: number) {
+    const { data } = useGetBooksListQuery(/*  {variables: { limit, offset }}*/);
 
     let books: Book[] = [];
     if (data?.listBooks) {

@@ -12,10 +12,13 @@ dotenv.config();
 export function generateTypeORMModuleOptions(): DataSourceOptions {
     return {
         type: 'postgres',
-        host: process.env.POSTGRES_HOST,
+        host: 'db',
+        username: 'postgres',
+        password: '1234',
+        /* host: process.env.POSTGRES_HOST,
         port: Number(process.env.POSTGRES_PORT) ?? 5432,
         username: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
+        password: process.env.POSTGRES_PASSWORD, */
         database: process.env.POSTGRES_DATABASE,
         entities: [Book, UserAuth, User, Author, BookReview],
         synchronize: true,
