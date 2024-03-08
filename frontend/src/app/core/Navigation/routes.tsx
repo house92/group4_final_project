@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import { AuthorIndexPage, AuthorPage, BookIndexPage, UserPage, BookPage, HomePage } from 'app/pages';
 import { Layout } from 'app/components';
 import SignInPage from 'app/pages/SignInPage';
-import SignOutPage from 'app/pages/SignOutPage';
 import FriendPage from 'app/pages/FriendPage';
 
 export function generateRouter() {
@@ -22,10 +21,6 @@ export function generateRouter() {
                 {
                     path: 'sign-in',
                     element: <SignInPage />,
-                },
-                {
-                    path: 'sign-out',
-                    element: <SignOutPage />,
                 },
                 {
                     path: 'books',
