@@ -1,4 +1,4 @@
-import RegistrationForm from "../RegistrationForm";
+import RegistrationForm from '../RegistrationForm';
 
 export default {
     title: 'Compounds/RegistrationForm',

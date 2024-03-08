@@ -181,6 +181,7 @@ type Query {
   listReviewsByBook(id: String!): [BookReview!]!
   getReviewByUser(userId: String!, bookId: String!): BookReview!
   listAllReviews: [BookReview!]!
+  generateReview(reviewer: Int!, bookId: String!): String!
 }
 
 type Mutation {

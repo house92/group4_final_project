@@ -250,6 +250,7 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  generateReview: Scalars['String']['output'];
   getAuthor: Author;
   getBook: Book;
   getReviewByUser: BookReview;
@@ -261,6 +262,12 @@ export type Query = {
   listReviewsByBook: Array<BookReview>;
   listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
+};
+
+
+export type QueryGenerateReviewArgs = {
+  bookId: Scalars['String']['input'];
+  reviewer: Scalars['Int']['input'];
 };
 
 
@@ -412,6 +419,14 @@ export type GetBookByIdQueryVariables = Exact<{
 
 
 export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+
+export type GenerateReviewQueryVariables = Exact<{
+  reviewer: Scalars['Int']['input'];
+  bookId: Scalars['String']['input'];
+}>;
+
+
+export type GenerateReviewQuery = { __typename?: 'Query', generateReview: string };
 
 export type CreateBookReviewMutationVariables = Exact<{
   input: CreateBookReviewInput;
@@ -709,6 +724,45 @@ export type GetBookByIdQueryHookResult = ReturnType<typeof useGetBookByIdQuery>;
 export type GetBookByIdLazyQueryHookResult = ReturnType<typeof useGetBookByIdLazyQuery>;
 export type GetBookByIdSuspenseQueryHookResult = ReturnType<typeof useGetBookByIdSuspenseQuery>;
 export type GetBookByIdQueryResult = Apollo.QueryResult<GetBookByIdQuery, GetBookByIdQueryVariables>;
+export const GenerateReviewDocument = gql`
+    query GenerateReview($reviewer: Int!, $bookId: String!) {
+  generateReview(reviewer: $reviewer, bookId: $bookId)
+}
+    `;
+
+/**
+ * __useGenerateReviewQuery__
+ *
+ * To run a query within a React component, call `useGenerateReviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGenerateReviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGenerateReviewQuery({
+ *   variables: {
+ *      reviewer: // value for 'reviewer'
+ *      bookId: // value for 'bookId'
+ *   },
+ * });
+ */
+export function useGenerateReviewQuery(baseOptions: Apollo.QueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
+      }
+export function useGenerateReviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
+        }
+export function useGenerateReviewSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
+        }
+export type GenerateReviewQueryHookResult = ReturnType<typeof useGenerateReviewQuery>;
+export type GenerateReviewLazyQueryHookResult = ReturnType<typeof useGenerateReviewLazyQuery>;
+export type GenerateReviewSuspenseQueryHookResult = ReturnType<typeof useGenerateReviewSuspenseQuery>;
+export type GenerateReviewQueryResult = Apollo.QueryResult<GenerateReviewQuery, GenerateReviewQueryVariables>;
 export const CreateBookReviewDocument = gql`
     mutation CreateBookReview($input: CreateBookReviewInput!) {
   createBookReview(input: $input) {
