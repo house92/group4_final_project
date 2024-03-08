@@ -34,7 +34,7 @@ export class UserService {
     }
 
     findAll() {
-        return `This action returns all user`;
+        return this.repo.find();
     }
 
     findById(id: string, relations: FindOneOptions<User>['relations'] = {}) {

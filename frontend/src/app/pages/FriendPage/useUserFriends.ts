@@ -58,14 +58,21 @@ export function useGetReceivedInvites(accept, userId: string): inviteProps[] {
     return [];
 }
 
-export function useListUsers() {
+export function useListUsers(myId: string) {
     const { data } = useListUsersQuery();
 
     if (data?.listUsers) {
         let returnMe: Friend[] = [];
-        data.listUsers.map((id, firstName, lastName) => {
-            returnMe.push({ id: id, name: firstName + ' ' + lastName });
-        });
+
+        for (let i = 0; i < data.listUsers.length; i++) {
+            if (data.listUsers[i].id === myId) {
+                continue;
+            }
+            returnMe.push({
+                id: data.listUsers[i].id,
+                name: data.listUsers[i].firstName + ' ' + data.listUsers[i].lastName,
+            });
+        }
         return returnMe;
     }
     return [];

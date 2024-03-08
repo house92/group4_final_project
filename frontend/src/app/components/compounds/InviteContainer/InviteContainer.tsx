@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Tab } from '@mui/material';
 import { TabContext, TabList } from '@mui/lab';
 import InviteItem, { inviteProps } from './InviteItem';
@@ -17,11 +17,16 @@ export default function InviteContainer(inputProps: InviteContainerProps) {
     // }
 
     return (
-        <Box sx={{ width: 600, height: 300, overflowY: 'auto' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                {inputProps.props.map(({ accept, name, id }) => (
-                    <InviteItem name={name} id={id} accept={accept} />
-                ))}
+        <Box sx={{ width: 400, height: 300 }}>
+            <Typography variant="h5" component="p" textAlign="center" m={2}>
+                Friend Requests
+            </Typography>
+            <Box sx={{ width: 400, height: 200, overflowY: 'auto' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    {inputProps.props.map(({ accept, name, id }) => (
+                        <InviteItem name={name} id={id} accept={accept} />
+                    ))}
+                </Box>
             </Box>
         </Box>
     );

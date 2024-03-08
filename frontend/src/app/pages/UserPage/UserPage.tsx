@@ -32,10 +32,13 @@ export default function UserPage() {
         return null;
     }
 
+    const doWeWantToPutAButtonToSendAFriendRequest: boolean =
+        userId != null && !isFriends && !isSent && !isReceived && myId.length !== 0 && userId !== myId;
+
     return (
         <Stack p={2} gap={4}>
             <UserDetails name={user?.name} age={user?.age} bio={user?.bio} />
-            {userId && !isFriends && !isSent && !isReceived && myId.length != 0 && (
+            {doWeWantToPutAButtonToSendAFriendRequest && (
                 <Button
                     type="submit"
                     variant="contained"
