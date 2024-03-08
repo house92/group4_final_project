@@ -1,6 +1,6 @@
-query GetAuthorsList {
+query GetAuthorsList ($limit: Int!, $offset: Int!) {
 
-  listAuthors {
+  listAuthors (limit: $limit, offset: $offset) {
     id
     firstName
     lastName

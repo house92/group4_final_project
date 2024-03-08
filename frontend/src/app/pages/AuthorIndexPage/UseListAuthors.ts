@@ -9,8 +9,9 @@ interface Author {
     bio: string | null | undefined;
 }
 
-export default function useAuthors() {
-    const { data } = useGetAuthorsListQuery();
+export default function useAuthors(pageLimit: number, offset: number) {
+    //issue here
+    const { data } = useGetAuthorsListQuery(/* { variables: { pageLimit, offset } } */);
 
     let authors: Author[] = [];
 
