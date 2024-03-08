@@ -167,6 +167,7 @@ export type Mutation = {
   removeBookReview: Book;
   removeUser: User;
   signInUser: UserSession;
+  signOutUser: UserSession;
   updateAuthor: Author;
   updateBook: Book;
   updateUser: User;
@@ -441,6 +442,11 @@ export type SignInUserMutationVariables = Exact<{
 
 
 export type SignInUserMutation = { __typename?: 'Mutation', signInUser: { __typename?: 'UserSession', id: string, firstName?: string | null, lastName?: string | null } };
+
+export type SignOutUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SignOutUserMutation = { __typename?: 'Mutation', signOutUser: { __typename?: 'UserSession', firstName?: string | null, lastName?: string | null } };
 
 export type GetUserByIdQueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -889,6 +895,39 @@ export function useSignInUserMutation(baseOptions?: Apollo.MutationHookOptions<S
 export type SignInUserMutationHookResult = ReturnType<typeof useSignInUserMutation>;
 export type SignInUserMutationResult = Apollo.MutationResult<SignInUserMutation>;
 export type SignInUserMutationOptions = Apollo.BaseMutationOptions<SignInUserMutation, SignInUserMutationVariables>;
+export const SignOutUserDocument = gql`
+    mutation SignOutUser {
+  signOutUser {
+    firstName
+    lastName
+  }
+}
+    `;
+export type SignOutUserMutationFn = Apollo.MutationFunction<SignOutUserMutation, SignOutUserMutationVariables>;
+
+/**
+ * __useSignOutUserMutation__
+ *
+ * To run a mutation, you first call `useSignOutUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignOutUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signOutUserMutation, { data, loading, error }] = useSignOutUserMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSignOutUserMutation(baseOptions?: Apollo.MutationHookOptions<SignOutUserMutation, SignOutUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignOutUserMutation, SignOutUserMutationVariables>(SignOutUserDocument, options);
+      }
+export type SignOutUserMutationHookResult = ReturnType<typeof useSignOutUserMutation>;
+export type SignOutUserMutationResult = Apollo.MutationResult<SignOutUserMutation>;
+export type SignOutUserMutationOptions = Apollo.BaseMutationOptions<SignOutUserMutation, SignOutUserMutationVariables>;
 export const GetUserByIdDocument = gql`
     query GetUserById($userId: String!) {
   getUser(id: $userId) {
