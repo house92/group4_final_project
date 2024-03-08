@@ -8,6 +8,14 @@ query GetUserFriends($userId: String!) {
   }
 }
 
+query ListUsers {
+  listUsers {
+    id
+    firstName
+    lastName
+  }
+}
+
 mutation AcceptFriendInvite($userId: String!) {
     acceptFriendInvitation(friendId: $userId)
 }

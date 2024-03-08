@@ -3,6 +3,7 @@ import {
     useGetUserSessionQuery,
     useAcceptFriendInviteMutation,
     useGetMyReceivedFriendInvitesQuery,
+    useListUsersQuery,
 } from 'generated/graphql';
 import { inviteProps } from 'app/components/compounds/InviteContainer/InviteItem';
 
@@ -52,6 +53,19 @@ export function useGetReceivedInvites(accept, userId: string): inviteProps[] {
                 name: data.pendingFriendInvitations[i].firstName + ' ' + data.pendingFriendInvitations[i].lastName,
             });
         }
+        return returnMe;
+    }
+    return [];
+}
+
+export function useListUsers() {
+    const { data } = useListUsersQuery();
+
+    if (data?.listUsers) {
+        let returnMe: Friend[] = [];
+        data.listUsers.map((id, firstName, lastName) => {
+            returnMe.push({ id: id, name: firstName + ' ' + lastName });
+        });
         return returnMe;
     }
     return [];
