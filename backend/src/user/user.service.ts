@@ -115,7 +115,11 @@ export class UserService {
     async acceptFriendInvitation(currentUserId: string, friendUserId: string): Promise<void> {
         const currentUser = await this.repo.findOne({
             where: { id: currentUserId },
-            relations: { receivedInvitations: true },
+            relations: { receivedInvitations: true, friends: true },
+        });
+        const friend = await this.repo.findOne({
+            where: { id: friendUserId },
+            relations: { sentInvitations: true, friends: true },
         });
 
         if (!currentUser) {
@@ -123,20 +127,12 @@ export class UserService {
                 `UserService::acceptFriendInvitation() - could not find current user (ID: ${currentUserId})`,
             );
         }
-        let friend: User;
-        for (let i = 0; i < currentUser.receivedInvitations.length; i++) {
-            console.log(currentUser.receivedInvitations[i]);
-            if (currentUser.receivedInvitations[i].id === friendUserId) {
-                friend = currentUser.receivedInvitations[i];
-            }
-        }
+
         if (!friend) {
             throw new Error(
                 `UserService::acceptFriendInvitation() - could not find friend invitation (ID: ${friendUserId})`,
             );
         }
-
-        friend.isAccepted = true;
 
         if (currentUser.friends === null || currentUser.friends === undefined) {
             currentUser.friends = [];
@@ -151,7 +147,9 @@ export class UserService {
         currentUser.receivedInvitations = currentUser.receivedInvitations.filter(
             (invitation) => invitation.id !== friendUserId,
         );
-
+        console.log('checking invitations before filter: ' + friend.sentInvitations);
+        friend.sentInvitations = friend.sentInvitations.filter((invitation) => invitation.id !== currentUser.id);
+        
         await this.repo.save(currentUser);
         await this.repo.save(friend);
     }
