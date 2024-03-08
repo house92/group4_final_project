@@ -10,7 +10,7 @@ interface Book {
 }
 
 export default function useBooks(pageLimit: number, offset: number) {
-    //issue here
+    //issue here "cannot assign type number to type never"
     const { data } = useGetBooksListQuery(/*  {variables: { limit, offset }}*/);
 
     let books: Book[] = [];
