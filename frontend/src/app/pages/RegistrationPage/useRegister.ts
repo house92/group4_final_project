@@ -10,12 +10,14 @@ interface NewUser {
     password: string;
 }
 
+function authenticateUser(token) {
+    localStorage.setItem('token', token);
+}
+
 export default function useRegister() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [registerUserMutation] = useRegisterUserMutation();
-
-    console.log('useRegister() - starting..');
 
     const register = async (
         firstName: string,
@@ -24,7 +26,6 @@ export default function useRegister() {
         email: string,
         password: string
     ) => {
-        console.log('register() - starting..');
         try {
             const { data } = await registerUserMutation({
                 variables: {
@@ -32,9 +33,8 @@ export default function useRegister() {
                 },
             });
 
-            console.log({ data });
-
             if (data?.registerUser) {
+                authenticateUser(data.registerUser.token);
                 navigate('/');
             } else {
                 const errorMessage = 'Registration failed. Please check your inputs.';
