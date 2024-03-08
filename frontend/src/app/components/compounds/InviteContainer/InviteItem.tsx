@@ -16,7 +16,6 @@ async function handleAccept(accept, userId) {
 }
 
 export default function InviteItem({ accept, name, id }: inviteProps) {
-
     return (
         <Box display="flex" justifyContent="left" sx={{ m: 4 }}>
             <Button variant="contained" onClick={async () => handleAccept(accept, id)} disabled={pressed}>

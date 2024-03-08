@@ -60,5 +60,4 @@ export class User {
     })
     @Field(() => [User], { nullable: true })
     receivedInvitations?: User[];
-
 }

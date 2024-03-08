@@ -72,11 +72,9 @@ export function useIsFriends(userId: string = '', myId: string): boolean {
         }
     }
     return false;
-
 }
 
 export function useIsInviteSentAlready(userId: string = '', myId: string): boolean {
-
     const { data } = useGetMyReceivedFriendInvitesQuery({ variables: { userId } });
 
     if (data?.pendingFriendInvitations) {
@@ -90,7 +88,6 @@ export function useIsInviteSentAlready(userId: string = '', myId: string): boole
 }
 
 export function useIsInviteReceivedAlready(userId: string = '', myId: string): boolean {
-
     const { data } = useGetMySentFriendInvitesQuery({ variables: { userId } });
 
     if (data?.sentFriendInvitations) {
