@@ -120,7 +120,6 @@ export class UserService {
         if (!friend) {
             throw new Error(`UserService::inviteFriend() - could not find friend (ID: ${friendUserId})`);
         }
-        console.log('before null check on my pending invitations: ' + friend.receivedInvitations);
 
         if (friend.receivedInvitations === null || friend.receivedInvitations === undefined) {
             friend.receivedInvitations = [];
@@ -131,12 +130,6 @@ export class UserService {
 
         await this.repo.save(friend);
         await this.repo.save(currentUser);
-
-        console.log('number of sent invites: ' + currentUser.sentInvitations.length);
-        console.log('number of invitee invitations: ' + friend.receivedInvitations.length);
-        for (let i = 0; i < currentUser.sentInvitations.length; i++) {
-            console.log(currentUser.sentInvitations[i].firstName);
-        }
 
         return true;
     }
@@ -176,7 +169,6 @@ export class UserService {
         currentUser.receivedInvitations = currentUser.receivedInvitations.filter(
             (invitation) => invitation.id !== friendUserId,
         );
-        console.log('checking invitations before filter: ' + friend.sentInvitations);
         friend.sentInvitations = friend.sentInvitations.filter((invitation) => invitation.id !== currentUser.id);
 
         await this.repo.save(currentUser);

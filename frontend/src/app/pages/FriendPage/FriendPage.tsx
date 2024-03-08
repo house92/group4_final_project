@@ -19,7 +19,7 @@ export default function FriendPage() {
         searchOptions.push(value.name);
     });
 
-    if (userId != myId) {
+    if (userId !== myId) {
         if (friends.length === 0) {
             return <p>No friends found. Please make some.</p>;
         }
@@ -37,7 +37,7 @@ export default function FriendPage() {
                 <Autocomplete
                     disablePortal
                     options={searchOptions}
-                    sx={{ width: 300, ml: 4 }}
+                    sx={{ width: 300, ml: 6 }} // margin set past 4 to match 'Friend Requests' vertically
                     renderInput={(params) => <TextField {...params} label="Users" />}
                     onChange={(event: any, newValue: string | null) => {
                         for (let i = 0; i < searchOptions.length; i++) {

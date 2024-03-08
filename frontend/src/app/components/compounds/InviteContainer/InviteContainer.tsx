@@ -1,7 +1,4 @@
-import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { Tab } from '@mui/material';
-import { TabContext, TabList } from '@mui/lab';
 import InviteItem, { inviteProps } from './InviteItem';
 
 export interface InviteContainerProps {
@@ -9,12 +6,6 @@ export interface InviteContainerProps {
 }
 
 export default function InviteContainer(inputProps: InviteContainerProps) {
-    let e: inviteProps[] = [];
-    // const props = inputProps.props;
-
-    // for (let i = 0; i < props.length; i++) {
-    //     e.push(props[i]);
-    // }
 
     return (
         <Box sx={{ width: 400, height: 400 }}>

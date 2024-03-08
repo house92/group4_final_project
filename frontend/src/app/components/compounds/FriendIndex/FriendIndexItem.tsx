@@ -12,7 +12,7 @@ interface FriendsIndexItemProps {
 export default function FriendIndexItem({ name }: Friend) {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
-            <Typography variant="h5">Name: {name}</Typography>
+            <Typography variant="h5">{name}</Typography>
         </Paper>
     );
 }

@@ -87,9 +87,6 @@ export class UserResolver {
         @Args('friendId', { type: () => String }) friendId: string,
         @CurrentRequestContext() ctx: RequestContext,
     ): Promise<boolean> {
-        console.log('in accept request');
-        console.log(ctx.userId);
-        console.log(friendId);
         try {
             const currentUserId = ctx.userId;
             await this.userService.acceptFriendInvitation(currentUserId, friendId);

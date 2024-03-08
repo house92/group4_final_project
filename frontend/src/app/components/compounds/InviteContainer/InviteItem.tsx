@@ -7,18 +7,19 @@ export interface inviteProps {
     id: string;
 }
 
-let pressed: boolean = false;
 
-async function handleAccept(accept, userId) {
-    console.log('button clicked for id ' + userId);
-    pressed = true;
-    await accept({ variables: { userId } });
-}
 
 export default function InviteItem({ accept, name, id }: inviteProps) {
+    const [pressed, setPressed] = useState(false);
+    
+    async function handleAccept(userId) {
+        setPressed(true);
+        await accept({ variables: { userId } });
+    }
+
     return (
         <Box display="flex" justifyContent="left" sx={{ m: 4 }}>
-            <Button variant="contained" onClick={async () => handleAccept(accept, id)} disabled={pressed}>
+            <Button variant="contained" onClick={async () => handleAccept(id)} disabled={pressed}>
                 Accept
             </Button>
             <Typography variant="h5" component="p" sx={{ m: 4 }}>
