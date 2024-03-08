@@ -45,12 +45,21 @@ export class User {
 
     @ManyToMany(() => User)
     @JoinTable({
-        name: 'friend_invitation',
+        name: 'sent_invitation',
         joinColumn: { name: 'inviting_user_id', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'invited_user_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'receiving_user_id', referencedColumnName: 'id' },
     })
     @Field(() => [User], { nullable: true })
-    friendInvitations: User[];
+    sentInvitations?: User[];
+
+    @ManyToMany(() => User)
+    @JoinTable({
+        name: 'received_invitation',
+        joinColumn: { name: 'receiving_user_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'inviting_user_id', referencedColumnName: 'id' },
+    })
+    @Field(() => [User], { nullable: true })
+    receivedInvitations?: User[];
 
     @Column({ name: 'is_accepted', default: false })
     @Field({ nullable: true })

@@ -25,13 +25,12 @@ export default function FriendPage() {
     }
 
     console.log(pending);
-    console.log('my id: ' + myId);
+    console.log('friends: ' + friends.length);
 
     return (
         <Box>
             <InviteContainer {...{ props: pending }}></InviteContainer>
             <FriendIndex friends={friends} />
         </Box>
-        
     );
 }
