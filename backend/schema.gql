@@ -56,11 +56,11 @@ type Book {
 
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
-  authors: [Author!]!
-  bookReviews: [BookReview!]!
 
   """Average rating based on reviews"""
   rating: Float
+  authors: [Author!]!
+  bookReviews: [BookReview!]!
 }
 
 type BookReview {

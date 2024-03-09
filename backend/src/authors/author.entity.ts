@@ -33,7 +33,6 @@ export class Author {
     @Field(() => String, { description: 'Bio of author', nullable: true })
     bio?: string;
 
-    @Column({ nullable: true })
     @Field(() => Number, { description: 'Average rating based on reviews', nullable: true })
     rating?: number;
 

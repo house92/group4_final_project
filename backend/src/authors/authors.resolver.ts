@@ -5,6 +5,7 @@ import { Public } from 'src/auth/decorators/public.decorator';
 import { CreateAuthorInput } from './inputs/create-author.input';
 import { UpdateAuthorInput } from './inputs/update-author.input';
 import { AuthorConnection, AuthorConnectionArgs, AuthorConnectionBuilder } from './pagination/authors.pagination';
+import { Book } from 'src/books/book.entity';
 
 @Resolver(() => Author)
 export class AuthorsResolver {
@@ -56,6 +57,15 @@ export class AuthorsResolver {
 
     @ResolveField(() => Number)
     async rating(@Parent() author: Author) {
-        return this.authorsService.averageRating(author.id);
+        const books: Book[] = author.books;
+        if (!books || books.length === 0) {
+            return 0;
+        }
+        const ratedBooks = books.filter((book) => typeof book.rating === 'number');
+        if (ratedBooks.length === 0) {
+            return 0;
+        }
+        const totalRating = ratedBooks.reduce((acc, book) => acc + book.rating, 0);
+        return totalRating / ratedBooks.length;
     }
 }

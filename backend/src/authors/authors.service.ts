@@ -42,7 +42,7 @@ export class AuthorsService {
     async update(_input: UpdateAuthorInput) {
         const { id, ...input } = _input;
 
-        const author = await this.repo.findOne({ where: { id } });
+        const author = await this.repo.findOne({ where: { id }, relations: ['books'] });
 
         if (!author) {
             throw new Error(`Author with ID ${id} not found`);
@@ -54,15 +54,5 @@ export class AuthorsService {
 
     remove(id: number) {
         return this.repo.delete(id);
-    }
-
-    async averageRating(authorId: string) {
-        const author = await this.repo.findOne({ where: { id: authorId }, relations: ['books'] });
-
-        if (!author || !author.books || author.books.length == 0) {
-            return 0;
-        }
-        const totalRating = author.books.reduce((acc, book) => acc + book.rating, 0);
-        return totalRating / author.books.length;
     }
 }

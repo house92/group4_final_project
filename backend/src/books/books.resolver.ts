@@ -6,6 +6,7 @@ import { CreateBookInput } from './inputs/create-book.input';
 import { UpdateBookInput } from './inputs/update-book.input';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { BookConnection, BookConnectionArgs, BookConnectionBuilder } from './pagination/books.pagination';
+import { BookReview } from 'src/bookreviews/bookreview.entity';
 
 @Resolver(() => Book)
 export class BooksResolver {
@@ -63,6 +64,11 @@ export class BooksResolver {
 
     @ResolveField(() => Number)
     async rating(@Parent() book: Book) {
-        return this.booksService.averageRating(book.id);
+        const reviews: BookReview[] = book.bookReviews;
+        if (!reviews || reviews.length === 0) {
+            return 0;
+        }
+        const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+        return totalRating / reviews.length
     }
 }

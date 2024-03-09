@@ -33,8 +33,7 @@ export class BooksService {
             const authors = await this.authorRepo.find({ where: { id: In(input.authorIds) } });
             newBook.authors = authors;
         }
-
-        return this.repo.save(newBook);
+        await this.repo.save(newBook);
     }
 
     update(id: number, input: UpdateBookInput) {
@@ -43,13 +42,5 @@ export class BooksService {
 
     remove(id: number) {
         return `This action removes a #${id} book`;
-    }
-    async averageRating(bookId: string) {
-        const book = await this.repo.findOne({ where: { id: bookId }, relations: ['bookReviews'] });
-        if (!book || !book.bookReviews || book.bookReviews.length == 0) {
-            return 0;
-        }
-        const totalRating = book.bookReviews.reduce((acc, review) => acc + review.rating, 0);
-        return totalRating / book.bookReviews.length;
     }
 }
