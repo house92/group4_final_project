@@ -38,10 +38,7 @@ export class UserService {
     }
 
     findById(id: string, relations: FindOneOptions<User>['relations'] = {}) {
-        return this.repo.findOne({
-            where: { id },
-            relations: { friends: true, sentInvitations: true, receivedInvitations: true },
-        });
+        return this.repo.findOne({ where: { id }, relations });
     }
 
     update(input: UpdateUserInput) {
@@ -104,7 +101,7 @@ export class UserService {
     async inviteFriend(currentUserId: string, friendUserId: string) {
         const currentUser = await this.repo.findOne({
             where: { id: currentUserId },
-            relations: { sentInvitations: true, receivedInvitations: true },
+            relations: { sentInvitations: true },
         });
 
         if (!currentUser) {
@@ -112,16 +109,12 @@ export class UserService {
         }
 
         if (currentUser.sentInvitations === null || currentUser.sentInvitations === undefined) {
-            console.log('just set new sentInvitations arr');
             currentUser.sentInvitations = [];
-        } else {
-            console.log('sent invitations was already ' + currentUser.sentInvitations);
-            console.log('length: ' + currentUser.sentInvitations.length);
         }
 
         const friend = await this.repo.findOne({
             where: { id: friendUserId },
-            relations: { sentInvitations: true, receivedInvitations: true },
+            relations: { receivedInvitations: true },
         });
 
         if (!friend) {
@@ -129,16 +122,16 @@ export class UserService {
         }
 
         if (friend.receivedInvitations === null || friend.receivedInvitations === undefined) {
-            console.log('just set new receivedInvitations arr');
             friend.receivedInvitations = [];
-        } else {
-            console.log('received invitations was already ' + friend.receivedInvitations);
-            console.log('length: ' + friend.receivedInvitations.length);
         }
 
         currentUser.sentInvitations.push(friend);
+        friend.receivedInvitations.push(currentUser);
 
-        return await this.repo.save(currentUser);
+        await this.repo.save(friend);
+        await this.repo.save(currentUser);
+
+        return true;
     }
 
     async acceptFriendInvitation(currentUserId: string, friendUserId: string): Promise<void> {
@@ -150,7 +143,6 @@ export class UserService {
             where: { id: friendUserId },
             relations: { sentInvitations: true, friends: true },
         });
-
 
         if (!currentUser) {
             throw new Error(

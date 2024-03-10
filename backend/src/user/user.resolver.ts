@@ -20,9 +20,6 @@ export class UserResolver {
         const user = await this.userService.findById(id, {
             friends: { bookReviews: { book: true } },
             bookReviews: { book: true },
-            sentInvitations: {},
-            receivedInvitations: {},
-
         });
 
         // doing this avoids an additional join on the user table
