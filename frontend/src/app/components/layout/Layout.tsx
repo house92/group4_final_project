@@ -48,9 +48,14 @@ export default function Layout() {
                             Sign out
                         </Button>
                     ) : (
-                        <Button href="/sign-in" variant="contained">
-                            Sign in
-                        </Button>
+                        <>
+                            <Button href="/sign-in" variant="contained">
+                                Sign in
+                            </Button>
+                            <Button href="/register" variant="contained">
+                                Register
+                            </Button>
+                        </>
                     )}
                 </Box>
             </Box>
