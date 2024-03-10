@@ -20,10 +20,16 @@ export class BooksResolver {
         // Create builder instance
         const connectionBuilder = new BookConnectionBuilder(connectionArgs);
 
+        const { title } = connectionBuilder;
+
         // EXAMPLE: Do whatever you need to do to fetch the current page of books
         const [books, count] = await this.booksService.findAll({
             limit: connectionBuilder.edgesPerPage, // how many rows to fetch
             from: connectionBuilder.startOffset, // row offset at which to start
+
+            filter: {
+                title,
+            },
         });
 
         // Return resolved BookConnection with edges and pageInfo

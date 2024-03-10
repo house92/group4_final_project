@@ -158,6 +158,7 @@ type Query {
 
     """Retrieve last `n` edges."""
     last: Int
+    filter: ListBooksFilter
   ): BookConnection!
   getBook(id: String!): Book!
   listAuthors(
@@ -182,6 +183,11 @@ type Query {
   getReviewByUser(userId: String!, bookId: String!): BookReview!
   listAllReviews: [BookReview!]!
   generateReview(reviewer: Int!, bookId: String!): String!
+}
+
+input ListBooksFilter {
+  """substring against which to match titles"""
+  title: String
 }
 
 type Mutation {
