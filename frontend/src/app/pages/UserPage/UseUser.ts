@@ -26,7 +26,7 @@ interface Response {
     user?: User;
 }
 
-export interface inviteProps {
+export interface InviteProps {
     friendAlready: boolean;
     pendingAlready: boolean;
 }

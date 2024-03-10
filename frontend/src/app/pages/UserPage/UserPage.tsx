@@ -1,15 +1,9 @@
 import { Button, Stack } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import useUser, {
-    useIsFriends,
-    useIsInviteSentAlready,
-    useIsInviteReceivedAlready,
-    useSendInvite,
-} from './UseUser';
+import useUser, { useIsFriends, useIsInviteSentAlready, useIsInviteReceivedAlready, useSendInvite } from './UseUser';
 import { BookReviewIndex, UserDetails } from 'app/components';
 import { useSendFriendInviteMutation } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';
-
 
 let sent: boolean = false;
 
@@ -26,8 +20,7 @@ export default function UserPage() {
     let myId;
     if (mySession) {
         myId = mySession.id;
-    }
-    else {
+    } else {
         myId = '';
     }
     const isFriends: boolean = useIsFriends(userId, myId);
@@ -41,7 +34,7 @@ export default function UserPage() {
     }
 
     const doWeWantToPutAButtonToSendAFriendRequest: boolean =
-        userId != null && !isFriends && !isSent && !isReceived && myId.length !== 0 && userId !== myId;
+        !!userId && userId !== myId && !isFriends && !isSent && !isReceived;
 
     return (
         <Stack p={2} gap={4}>

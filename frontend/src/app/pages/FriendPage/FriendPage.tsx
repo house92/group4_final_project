@@ -23,10 +23,6 @@ export default function FriendPage() {
     const [acceptInvite] = useAcceptFriendInviteMutation();
     const pending = useGetReceivedInvites(acceptInvite, myId);
     const users = useListUsers(myId);
-    let searchOptions: string[] = [];
-    users.map((value) => {
-        searchOptions.push(value.name);
-    });
 
     if (userId !== myId) {
         if (friends.length === 0) {
@@ -45,14 +41,14 @@ export default function FriendPage() {
                 <InviteContainer {...{ props: pending }}></InviteContainer>
                 <Autocomplete
                     disablePortal
-                    options={searchOptions}
+                    options={users.map((user) => user.id)}
+                    getOptionLabel={(option) => users.find((user) => user.id === option)?.name ?? ''}
                     sx={{ width: 300, ml: 6 }} // margin set past 4 to match 'Friend Requests' vertically
                     renderInput={(params) => <TextField {...params} label="Users" />}
-                    onChange={(event: any, newValue: string | null) => {
-                        for (let i = 0; i < searchOptions.length; i++) {
-                            if (searchOptions[i] === newValue) {
-                                navigate('/users/' + users[i].id);
-                            }
+                    onChange={(event: any, userId: string | null) => {
+                        const user = users.find((user) => user.id === userId);
+                        if (user) {
+                            navigate(`/users/${user.id}`);
                         }
                     }}
                 />
