@@ -73,24 +73,24 @@ export class UserService {
         return currentUser;
     }
 
-    async unFriend(friend1: string, friend2: string) {
-        const currentUser = await this.repo.findOne({ where: { id: friend1 }, relations: { friends: true } });
+    async unFriend(currentUserId: string, friendId: string) {
+        const currentUser = await this.repo.findOne({ where: { id: currentUserId }, relations: { friends: true } });
 
         if (!currentUser) {
             throw new Error(
-                `UserService::addUserToCurrentUserFriends() - could not find current user (ID: ${friend1})`,
+                `UserService::addUserToCurrentUserFriends() - could not find current user (ID: ${currentUserId})`,
             );
         }
 
-        const friend = await this.repo.findOne({ where: { id: friend2 }, relations: { friends: true } });
+        const friend = await this.repo.findOne({ where: { id: friendId }, relations: { friends: true } });
 
         if (!friend) {
-            throw new Error(`UserService::addUserToCurrentUserFriends() - could not find friend (ID: ${friend2})`);
+            throw new Error(`UserService::addUserToCurrentUserFriends() - could not find friend (ID: ${friendId})`);
         }
 
-        currentUser.friends = currentUser.friends.filter((friend) => friend.id !== friend2);
+        currentUser.friends = currentUser.friends.filter((friend) => friend.id !== friendId);
 
-        friend.friends = friend.friends.filter((friend) => friend.id !== friend1);
+        friend.friends = friend.friends.filter((friend) => friend.id !== currentUserId);
 
         await this.repo.save(currentUser);
         await this.repo.save(friend);
