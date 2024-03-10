@@ -13,8 +13,12 @@ export class BooksService {
         @InjectRepository(Author) private authorRepo: Repository<Author>,
     ) {}
 
-    findAll() {
-        return this.repo.find({ relations: { authors: true } });
+    findAll(limit: number, offset: number) {
+        return this.repo.find({
+            relations: { authors: true },
+            take: limit,
+            skip: offset,
+        });
     }
 
     findById(id: string, relations: FindOneOptions<Book>['relations'] = {}) {

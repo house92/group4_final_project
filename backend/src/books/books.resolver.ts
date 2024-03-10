@@ -15,8 +15,11 @@ export class BooksResolver {
     ////////////////////////////////
     @Public()
     @Query(() => [Book])
-    listBooks() {
-        return this.booksService.findAll();
+    listBooks(
+        @Args('limit', {type: () => Int }) limit: number,
+        @Args('offset', {type: () => Int }) offset: number
+    ) {
+        return this.booksService.findAll(limit, offset);
     }
 
     @Public()
