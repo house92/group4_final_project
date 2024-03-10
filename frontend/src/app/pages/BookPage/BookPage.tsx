@@ -1,11 +1,15 @@
 import React from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Box } from '@mui/material';
 import BookDetails from 'app/components/compounds/BookDetails/BookDetails';
 import { useParams } from 'react-router-dom';
 import useBook from './useBook';
 import { BookReviewForm, BookReviewIndex } from 'app/components';
-import { useCreateBookReviewMutation } from 'generated/graphql';
+import { useCreateBookReviewMutation, useGenerateReviewLazyQuery } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';
+import ReviewContainer, {
+    Reviewer,
+    ReviewContainerProps,
+} from 'app/components/compounds/ChatGptDetails/ReviewContainer';
 
 export default function BookPage() {
     const { bookId } = useParams();
@@ -13,9 +17,24 @@ export default function BookPage() {
     const userSession = useUserSession();
 
     const [createBookReview] = useCreateBookReviewMutation();
+    const [generateReview, { loading: isGeneratedReviewLoading }] = useGenerateReviewLazyQuery();
 
     if (!bookId) return null;
     if (!book) return null;
+
+    async function onReviewRequest(reviewer: Reviewer): Promise<string> {
+        if (!bookId) {
+            throw new Error('trying to generate a review without a book ID');
+        }
+
+        const { data } = await generateReview({ variables: { reviewer, bookId } });
+
+        if (!data) {
+            throw new Error('could not generate review');
+        }
+
+        return data.generateReview;
+    }
 
     const canReview = userSession && book.bookReviews.every((review) => review.reviewerId !== userSession.id);
 
@@ -27,19 +46,24 @@ export default function BookPage() {
 
             <BookDetails {...book} />
 
-            {canReview && (
-                <BookReviewForm
-                    title={book.title}
-                    onSubmit={async ({ body, rating }) => {
-                        await createBookReview({
-                            variables: { input: { userId: userSession.id, bookId, body, rating } },
-                        });
-                        refetch();
-                    }}
-                />
-            )}
+            <Stack display="flex" alignItems="flex-start" gap={4}>
+                {canReview && (
+                    <BookReviewForm
+                        title={book.title}
+                        onSubmit={async ({ body, rating }) => {
+                            await createBookReview({
+                                variables: { input: { userId: userSession.id, bookId, body, rating } },
+                            });
+                            refetch();
+                        }}
+                    />
+                )}
+                <BookReviewIndex bookReviews={book.bookReviews} />
 
-            <BookReviewIndex bookReviews={book.bookReviews} />
+                <Box marginLeft={4} marginBottom={4}>
+                    <ReviewContainer onReviewRequest={onReviewRequest} isLoading={isGeneratedReviewLoading} />
+                </Box>
+            </Stack>
         </Stack>
     );
 }
