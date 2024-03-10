@@ -86,8 +86,8 @@ type User {
   userAuth: UserAuth!
   bookReviews: [BookReview!]
   friends: [User!]
-  sentInvitations: [User!]
   receivedInvitations: [User!]
+  sentInvitations: [User!]
 }
 
 type UserAuth {
