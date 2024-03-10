@@ -100,14 +100,6 @@ export function useIsInviteReceivedAlready(userId: string = '', myId: string): b
     return false;
 }
 
-export function useGetSession(): string {
-    const { data } = useGetUserSessionQuery();
-    if (data?.getUserSession) {
-        return data.getUserSession.id;
-    }
-    return '';
-}
-
 export function useSendInvite(userId: string) {
     useSendFriendInviteMutation({ variables: { userId } });
 }

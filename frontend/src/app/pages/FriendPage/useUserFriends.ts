@@ -31,15 +31,6 @@ export default function useUsersFriends(userId: string = ''): Response {
     return res;
 }
 
-export function useGetSession(): string {
-    const { data } = useGetUserSessionQuery();
-
-    if (data?.getUserSession.id) {
-        return data.getUserSession.id;
-    }
-    return '';
-}
-
 export function useGetReceivedInvites(accept, userId: string): inviteProps[] {
     const { data } = useGetMyReceivedFriendInvitesQuery({ variables: { userId } });
 

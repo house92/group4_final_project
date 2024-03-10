@@ -1,7 +1,6 @@
 import { Button, Stack } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import useUser, {
-    useGetSession,
     useIsFriends,
     useIsInviteSentAlready,
     useIsInviteReceivedAlready,
@@ -9,6 +8,8 @@ import useUser, {
 } from './UseUser';
 import { BookReviewIndex, UserDetails } from 'app/components';
 import { useSendFriendInviteMutation } from 'generated/graphql';
+import { useUserSession } from 'app/core/Session';
+
 
 let sent: boolean = false;
 
@@ -21,7 +22,14 @@ export default function UserPage() {
     const { userId } = useParams();
     const { user } = useUser(userId);
 
-    const myId: string = useGetSession(); // returns empty string if user is unauth
+    const mySession = useUserSession();
+    let myId;
+    if (mySession) {
+        myId = mySession.id;
+    }
+    else {
+        myId = '';
+    }
     const isFriends: boolean = useIsFriends(userId, myId);
     const isSent: boolean = useIsInviteSentAlready(userId, myId);
     const isReceived: boolean = useIsInviteReceivedAlready(userId, myId);

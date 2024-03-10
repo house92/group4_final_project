@@ -1,16 +1,25 @@
 import { Link, useParams } from 'react-router-dom';
 import FriendIndex from 'app/components/compounds/FriendIndex';
 import { Autocomplete, Box, TextField, Typography } from '@mui/material';
-import useUsersFriends, { useGetSession, useGetReceivedInvites, useListUsers } from './useUserFriends';
+import useUsersFriends, { useGetReceivedInvites, useListUsers } from './useUserFriends';
 import { useAcceptFriendInviteMutation } from 'generated/graphql';
 import InviteContainer from 'app/components/compounds/InviteContainer/InviteContainer';
 import { useNavigate } from 'react-router-dom';
+import { useUserSession } from 'app/core/Session';
+
 
 export default function FriendPage() {
     const { userId } = useParams();
     const navigate = useNavigate();
     const { friends } = useUsersFriends(userId);
-    const myId = useGetSession(); // returns empty string if user is unauth
+    const mySession = useUserSession();
+    let myId;
+    if (mySession) {
+        myId = mySession.id;
+    }
+    else {
+        myId = '';
+    }
     const [acceptInvite] = useAcceptFriendInviteMutation();
     const pending = useGetReceivedInvites(acceptInvite, myId);
     const users = useListUsers(myId);
