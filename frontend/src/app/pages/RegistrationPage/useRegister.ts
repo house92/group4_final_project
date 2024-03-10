@@ -12,7 +12,6 @@ interface NewUser {
 
 export default function useRegister() {
     const [error, setError] = useState('');
-    const [userAuthenticated, setUserAuthenticated] = useState(false);
     const navigate = useNavigate();
     const [registerUserMutation] = useRegisterUserMutation();
     const [signInUserMutation] = useSignInUserMutation();
