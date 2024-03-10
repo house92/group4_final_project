@@ -14,12 +14,12 @@ interface Friend {
 
 interface Response {
     friends: Friend[];
+    name: string;
 }
 
 export default function useUsersFriends(userId: string = ''): Response {
     const { data } = useGetUserFriendsQuery({ variables: { userId } });
-
-    let res: Response = { friends: [] };
+    let res: Response = { friends: [], name: 'This Person' };
 
     if (data?.getUser?.friends) {
         res.friends = data.getUser.friends.map((friend) => ({
@@ -27,7 +27,9 @@ export default function useUsersFriends(userId: string = ''): Response {
             name: `${friend.firstName} ${friend.lastName}`,
         }));
     }
-
+    if (data?.getUser?.firstName) {
+        res.name = data.getUser.firstName;
+    }
     return res;
 }
 
