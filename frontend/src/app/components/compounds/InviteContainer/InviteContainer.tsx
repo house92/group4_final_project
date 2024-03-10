@@ -6,7 +6,6 @@ export interface InviteContainerProps {
 }
 
 export default function InviteContainer(inputProps: InviteContainerProps) {
-
     return (
         <Box sx={{ width: 400, height: 400 }}>
             <Typography variant="h5" component="p" textAlign="center" m={2}>

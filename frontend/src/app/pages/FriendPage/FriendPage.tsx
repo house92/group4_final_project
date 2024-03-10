@@ -7,7 +7,6 @@ import InviteContainer from 'app/components/compounds/InviteContainer/InviteCont
 import { useNavigate } from 'react-router-dom';
 import { useUserSession } from 'app/core/Session';
 
-
 export default function FriendPage() {
     const { userId } = useParams();
     const navigate = useNavigate();
@@ -16,8 +15,7 @@ export default function FriendPage() {
     let myId;
     if (mySession) {
         myId = mySession.id;
-    }
-    else {
+    } else {
         myId = '';
     }
     const [acceptInvite] = useAcceptFriendInviteMutation();

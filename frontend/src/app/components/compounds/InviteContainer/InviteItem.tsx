@@ -7,11 +7,9 @@ export interface inviteProps {
     id: string;
 }
 
-
-
 export default function InviteItem({ accept, name, id }: inviteProps) {
     const [pressed, setPressed] = useState(false);
-    
+
     async function handleAccept(userId) {
         setPressed(true);
         await accept({ variables: { userId } });
