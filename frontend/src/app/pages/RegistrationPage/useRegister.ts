@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRegisterUserMutation } from 'generated/graphql';
-import { useSignInUserMutation } from 'generated/graphql';
+import { useRegisterUserMutation, useSignInUserMutation } from 'generated/graphql';
 
 interface NewUser {
     firstName: string;
@@ -16,6 +15,7 @@ export default function useRegister() {
     const [userAuthenticated, setUserAuthenticated] = useState(false);
     const navigate = useNavigate();
     const [registerUserMutation] = useRegisterUserMutation();
+    const [signInUserMutation] = useSignInUserMutation();
 
     const register = async (
         firstName: string,
@@ -32,7 +32,13 @@ export default function useRegister() {
             });
 
             if (data?.registerUser) {
-                navigate('/');
+                const { data: signInData } = await signInUserMutation({
+                    variables: { email, password },
+                });
+
+                if (signInData?.signInUser) {
+                    navigate('/');
+                }
             } else {
                 const errorMessage = 'Registration failed. Please check your inputs.';
                 setError(errorMessage);
