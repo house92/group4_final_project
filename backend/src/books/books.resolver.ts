@@ -64,11 +64,6 @@ export class BooksResolver {
 
     @ResolveField(() => Number)
     async rating(@Parent() book: Book) {
-        const reviews: BookReview[] = book.bookReviews;
-        if (!reviews || reviews.length === 0) {
-            return 0;
-        }
-        const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
-        return totalRating / reviews.length
+        return this.booksService.averageRating(book.id);
     }
 }
