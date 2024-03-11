@@ -35,6 +35,8 @@ export type Author = {
   id: Scalars['ID']['output'];
   /** Author last name */
   lastName: Scalars['String']['output'];
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
 };
 
 export type AuthorConnection = {
@@ -66,6 +68,8 @@ export type Book = {
   publicationDate?: Maybe<Scalars['String']['output']>;
   /** URL to a page where the book can be purchased */
   purchaseUrl?: Maybe<Scalars['String']['output']>;
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
   /** Synopsis of the book */
   synopsis?: Maybe<Scalars['String']['output']>;
   /** Title of the book */
@@ -153,6 +157,11 @@ export type CreateUserAuthInput = {
   firstName: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type ListBooksFilter = {
+  /** substring against which to match titles */
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Mutation = {
@@ -304,6 +313,7 @@ export type QueryListAuthorsArgs = {
 export type QueryListBooksArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<ListBooksFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -406,7 +416,7 @@ export type GetAuthorByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null, rating?: number | null } };
 
 export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -418,7 +428,7 @@ export type GetBookByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, rating?: number | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
 
 export type GenerateReviewQueryVariables = Exact<{
   reviewer: Scalars['Int']['input'];
@@ -581,6 +591,7 @@ export const GetAuthorByIdDocument = gql`
     dateOfDeath
     hometown
     bio
+    rating
   }
 }
     `;
@@ -684,6 +695,7 @@ export const GetBookByIdDocument = gql`
       lastName
     }
     publicationDate
+    rating
     synopsis
     bookReviews {
       id
