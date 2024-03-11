@@ -1,6 +1,6 @@
 query GetAuthorsList ($first: Int!, $page: Int!) {
 
-  listAuthors ( first: $first, page: $page) {
+  listAuthors (first: $first, page: $page) {
     pageInfo {
             totalEdges
             hasNextPage
