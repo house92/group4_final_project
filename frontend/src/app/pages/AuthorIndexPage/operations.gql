@@ -1,14 +1,16 @@
-query GetAuthorsList ($limit: Int!, $offset: Int!) {
+query GetAuthorsList ($pageLimit: Int!, $startOffset: Int!) {
 
-  listAuthors (limit: $limit, offset: $offset) {
-    id
-    firstName
-    lastName
-    dateOfBirth
-    dateOfDeath
-    hometown
-    bio
-
+  listAuthors (connectionBuilder: { edgesPerPage: $pageLimit, startOffset: $startOffset }) {
+    edges {
+        node {
+            id
+            firstName
+            lastName
+            dateOfBirth
+            dateOfDeath
+            hometown
+            bio
+          }
+    }
   }
-
 }

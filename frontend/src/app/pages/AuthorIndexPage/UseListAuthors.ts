@@ -11,18 +11,20 @@ interface Author {
 
 export default function useAuthors(pageLimit: number, offset: number) {
     //issue here "cannot assign type number to type never"
-    const { data } = useGetAuthorsListQuery(/* { variables: { pageLimit, offset } } */);
+    const { data } = useGetAuthorsListQuery({
+        variables: { pageLimit: pageLimit, startOffset: offset }
+    })};
 
     let authors: Author[] = [];
 
     if (data?.listAuthors) {
-        authors = data.listAuthors.map((author) => ({
-            id: author.id,
-            name: `${author.firstName} ${author.lastName}`,
-            dateOfBirth: author.dateOfBirth,
-            dateOfDeath: author.dateOfDeath,
-            hometown: author.hometown,
-            bio: author.bio,
+        authors = data.listAuthors.edges.map(edge => ({
+            id: edge.node.id,
+            name: `${edge.node.firstName} ${edge.node.lastName}`,
+            dateOfBirth: edge.node.dateOfBirth,
+            dateOfDeath: edge.node.dateOfDeath,
+            hometown: edge.node.hometown,
+            bio: edge.node.bio,
         }));
         if (data.listAuthors) {
             console.log(data.listAuthors.at(0)?.id);

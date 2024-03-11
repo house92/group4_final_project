@@ -1,15 +1,18 @@
-query GetBooksList($limit: Int!, $offset: Int!) {
+query GetBooksList($pageLimit: Int!, $startOffset: Int!) {
 
-    listBooks(limit: $limit, offset: $offset) {
-        id
-        coverImage
-        title
-        authors {
-            firstName
-            lastName
+    listBooks(connectionBuilder: { edgesPerPage: $pageLimit, startOffset: $startOffset }) {
+        edges {
+            node {
+                id
+                coverImage
+                title
+                authors {
+                    firstName
+                    lastName
+                 }
+                publicationDate
+            }
         }
-        publicationDate
-
     }
 
 }
