@@ -23,7 +23,7 @@ export class AuthorsService {
     }
 
     findById(id: string) {
-        return this.repo.findOne({ where: { id }, relations: { books: true } });
+        return this.repo.findOne({ where: { id }, relations: { books: {bookReviews : true} } });
     }
 
     async create(input: CreateAuthorInput) {

@@ -5,11 +5,14 @@ import { Public } from 'src/auth/decorators/public.decorator';
 import { CreateAuthorInput } from './inputs/create-author.input';
 import { UpdateAuthorInput } from './inputs/update-author.input';
 import { AuthorConnection, AuthorConnectionArgs, AuthorConnectionBuilder } from './pagination/authors.pagination';
-import { Book } from 'src/books/book.entity';
+import { BooksService } from 'src/books/books.service';
 
 @Resolver(() => Author)
 export class AuthorsResolver {
-    constructor(private readonly authorsService: AuthorsService) {}
+    constructor(
+        private readonly authorsService: AuthorsService,
+        private readonly booksService: BooksService,
+    ) {}
     @Public()
     @Query(() => AuthorConnection)
     async listAuthors(@Args() connectionArgs: AuthorConnectionArgs): Promise<AuthorConnection> {
@@ -57,15 +60,10 @@ export class AuthorsResolver {
 
     @ResolveField(() => Number)
     async rating(@Parent() author: Author) {
-        const books: Book[] = author.books;
-        if (!books || books.length === 0) {
-            return 0;
-        }
-        const ratedBooks = books.filter((book) => typeof book.rating === 'number');
-        if (ratedBooks.length === 0) {
-            return 0;
-        }
-        const totalRating = ratedBooks.reduce((acc, book) => acc + book.rating, 0);
-        return totalRating / ratedBooks.length;
+        const bookRating = await Promise.all(
+            author.books.map(async (book) => await this.booksService.averageRating(book.id)),
+        );
+        const totalRating = bookRating.reduce((acc, rating) => acc + rating, 0);
+        return totalRating / author.books.length;
     }
 }
