@@ -12,13 +12,13 @@ interface Author {
 export default function useAuthors(pageLimit: number, offset: number) {
     //issue here "cannot assign type number to type never"
     const { data } = useGetAuthorsListQuery({
-        variables: { pageLimit: pageLimit, startOffset: offset }
+        variables: { pageLimit: pageLimit, startOffset: offset },
     });
 
     let authors: Author[] = [];
 
     if (data?.listAuthors) {
-        authors = data.listAuthors.edges.map(edge => ({
+        authors = data.listAuthors.edges.map((edge) => ({
             id: edge.node.id,
             name: `${edge.node.firstName} ${edge.node.lastName}`,
             dateOfBirth: edge.node.dateOfBirth,

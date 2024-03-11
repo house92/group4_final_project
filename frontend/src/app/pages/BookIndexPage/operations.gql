@@ -1,6 +1,6 @@
-query GetBooksList($pageLimit: Int!, $startOffset: Int!) {
+query GetBooksList($first: Int!, $page: Int!) {
 
-    listBooks(connectionBuilder: { edgesPerPage: $pageLimit, startOffset: $startOffset }) {
+    listBooks(first: $first, page: $page ) {
         edges {
             node {
                 id

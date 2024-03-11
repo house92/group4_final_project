@@ -12,19 +12,14 @@ export default function AuthorIndexPage() {
     const [page, setPage] = useState(1);
     const pageLimit = 10;
 
-    const { loading, error, data } = useQuery(useGetAuthorsListQuery, {
-        variables: {
-            page: page,
-            pageLimit: pageLimit,
-        },
-    });
+    const { data } = useGetAuthorsListQuery();
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+   /*  if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>; */
 
     const authors = data.listAuthors.nodes;
 

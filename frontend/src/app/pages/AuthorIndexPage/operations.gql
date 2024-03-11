@@ -1,6 +1,6 @@
-query GetAuthorsList ($pageLimit: Int!, $startOffset: Int!) {
+query GetAuthorsList ($first: Int!, $page: Int!) {
 
-  listAuthors (connectionBuilder: { edgesPerPage: $pageLimit, startOffset: $startOffset }) {
+  listAuthors ( first: $first, page: $page) {
     edges {
         node {
             id

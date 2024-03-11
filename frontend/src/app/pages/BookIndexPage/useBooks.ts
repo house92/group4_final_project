@@ -9,10 +9,10 @@ interface Book {
     publicationDate: DateTime | undefined;
 }
 
-export default function useBooks(pageLimit: number, offset: number) {
+export default function useBooks(pageLimit: number, page: number) {
     //issue here "cannot assign type number to type never"
     const { data } = useGetBooksListQuery({
-        variables: { pageLimit: pageLimit, startOffset: offset }
+        variables: { first: pageLimit, page }
     });
 
     let books: Book[] = [];
