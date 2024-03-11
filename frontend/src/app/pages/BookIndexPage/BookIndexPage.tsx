@@ -1,10 +1,15 @@
-import { BookIndex, SearchBar } from 'app/components';
-import { Stack, Typography } from '@mui/material';
-import useBooks from './useBooks';
 import { useState } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
+
+import { BookIndex, SearchBar } from 'app/components';
+import useBooks from './useBooks';
+
+const TITLE_SEARCH_TERM_PARAM_NAME = 'search-term';
 
 export default function BookIndexPage() {
-    const [titleSearchTerm, setTitleSearchTerm] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [titleSearchTerm, setTitleSearchTerm] = useState(searchParams.get(TITLE_SEARCH_TERM_PARAM_NAME) ?? '');
 
     const { books } = useBooks({ titleSearchTerm });
 
@@ -16,7 +21,13 @@ export default function BookIndexPage() {
 
             <SearchBar
                 initialValue={titleSearchTerm}
-                onSubmit={(newTitleSearchTerm) => setTitleSearchTerm(newTitleSearchTerm)}
+                onSubmit={(newTitleSearchTerm) => {
+                    setTitleSearchTerm(newTitleSearchTerm);
+
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    newSearchParams.set(TITLE_SEARCH_TERM_PARAM_NAME, newTitleSearchTerm);
+                    setSearchParams(newSearchParams);
+                }}
             />
 
             <BookIndex books={books} />
