@@ -9,8 +9,16 @@ interface Book {
     publicationDate: DateTime | undefined;
 }
 
-export default function useBooks() {
-    const { data } = useGetBooksListQuery();
+interface UseBooksArgs {
+    titleSearchTerm?: string;
+}
+
+interface Response {
+    books: Book[];
+}
+
+export default function useBooks({ titleSearchTerm }: UseBooksArgs): Response {
+    const { data } = useGetBooksListQuery({ variables: { titleSearchTerm } });
 
     let books: Book[] = [];
     if (data?.listBooks) {

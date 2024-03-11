@@ -1,5 +1,5 @@
-query GetBooksList {
-    listBooks {
+query GetBooksList($titleSearchTerm: String) {
+    listBooks(filter: { title: $titleSearchTerm }) {
         pageInfo {
             totalEdges
             hasNextPage

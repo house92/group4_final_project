@@ -1,17 +1,25 @@
-import { BookIndex } from 'app/components';
-import { Box, Typography } from '@mui/material';
+import { BookIndex, SearchBar } from 'app/components';
+import { Stack, Typography } from '@mui/material';
 import useBooks from './useBooks';
+import { useState } from 'react';
 
 export default function BookIndexPage() {
-    const { books } = useBooks();
+    const [titleSearchTerm, setTitleSearchTerm] = useState('');
+
+    const { books } = useBooks({ titleSearchTerm });
 
     return (
-        <Box>
-            <Typography variant="h3" component="h1" mb={4}>
+        <Stack gap={4}>
+            <Typography variant="h3" component="h1">
                 Books
             </Typography>
 
+            <SearchBar
+                initialValue={titleSearchTerm}
+                onSubmit={(newTitleSearchTerm) => setTitleSearchTerm(newTitleSearchTerm)}
+            />
+
             <BookIndex books={books} />
-        </Box>
+        </Stack>
     );
 }
