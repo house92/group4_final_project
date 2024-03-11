@@ -18,7 +18,7 @@ export class BookReviewsService {
         return this.repo.find({ where: { user: { id: Equal(userId) } }, relations: { book: true } });
     }
     findOneByUser(userId: string, bookId: string) {
-        return this.repo.findOne({ where: { user: { id: Equal(userId) }, book: { id: Equal(bookId) }} });
+        return this.repo.findOne({ where: { user: { id: Equal(userId) }, book: { id: Equal(bookId) } } });
     }
     findAllByBook(bookId: string) {
         return this.repo.find({ where: { book: { id: Equal(bookId) } }, relations: { user: true } });
