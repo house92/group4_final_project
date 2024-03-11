@@ -13,7 +13,7 @@ export default function useAuthors(pageLimit: number, offset: number) {
     //issue here "cannot assign type number to type never"
     const { data } = useGetAuthorsListQuery({
         variables: { pageLimit: pageLimit, startOffset: offset }
-    })};
+    });
 
     let authors: Author[] = [];
 
