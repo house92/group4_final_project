@@ -42,10 +42,10 @@ export class BookConnectionBuilder extends OffsetPaginatedConnectionBuilder<
 > {
     public title?: string;
 
-    public constructor(connectionArgs: BookConnectionArgs, options: ConnectionBuilderOptions = {}) {
+    public constructor(connectionArgs: BookConnectionArgs | undefined, options: ConnectionBuilderOptions = {}) {
         super(connectionArgs, options);
 
-        const { title } = connectionArgs.filter;
+        const { title } = connectionArgs?.filter ?? {};
 
         if (title) {
             this.title = title;
@@ -61,7 +61,7 @@ export class BookConnectionBuilder extends OffsetPaginatedConnectionBuilder<
     }
 
     public createCursor(node: Book, index: number): BookCursor {
-        const { title } = this.connectionArgs.filter;
+        const { title } = this.connectionArgs?.filter ?? {};
 
         const cursor: BookCursor = new Cursor({ offset: this.startOffset + index });
 
