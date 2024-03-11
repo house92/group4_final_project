@@ -1,34 +1,27 @@
 import { useGetAuthorsListQuery } from 'generated/graphql';
+import { DateTime } from 'luxon';
 
 interface Author {
     id: string;
     name: string;
-    dateOfBirth: string;
-    dateOfDeath: string | null | undefined;
-    hometown: string | null | undefined;
-    bio: string | null | undefined;
+    dateOfBirth?: DateTime;
+    dateOfDeath?: DateTime;
 }
 
-export default function useAuthors(pageLimit: number, offset: number) {
-    //issue here "cannot assign type number to type never"
+export default function useAuthors(pageLimit: number, page: number) {
     const { data } = useGetAuthorsListQuery({
-        variables: { pageLimit: pageLimit, startOffset: offset },
+        variables: { first: pageLimit, page }
     });
 
     let authors: Author[] = [];
 
     if (data?.listAuthors) {
-        authors = data.listAuthors.edges.map((edge) => ({
-            id: edge.node.id,
-            name: `${edge.node.firstName} ${edge.node.lastName}`,
-            dateOfBirth: edge.node.dateOfBirth,
-            dateOfDeath: edge.node.dateOfDeath,
-            hometown: edge.node.hometown,
-            bio: edge.node.bio,
+        authors = data.listAuthors.edges.map(({ node: author }) => ({
+            id: author.id,
+            name: `${author.firstName} ${author.lastName}`,
+            dateOfBirth: author.dateOfBirth ? DateTime.fromISO(author.dateOfBirth) : undefined,
+            dateOfDeath: author.dateOfDeath ? DateTime.fromISO(author.dateOfDeath) : undefined,
         }));
-        if (data.listAuthors) {
-            console.log(data.listAuthors.at(0)?.id);
-        }
     }
 
     return { authors };

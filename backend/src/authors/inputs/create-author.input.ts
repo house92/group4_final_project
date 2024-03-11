@@ -8,11 +8,11 @@ export class CreateAuthorInput {
     @Field(() => String, { description: 'Author last name' })
     lastName: string;
 
-    @Field(() => String, { description: 'Author year of death' })
-    dateOfBirth: string;
+    @Field(() => Date, { description: 'Author year of death' })
+    dateOfBirth: Date;
 
-    @Field(() => String, { description: 'Author year of death', nullable: true })
-    dateOfDeath?: string;
+    @Field(() => Date, { description: 'Author year of death', nullable: true })
+    dateOfDeath?: Date;
 
     @Field(() => String, { description: 'Author hometown', nullable: true })
     hometown?: string;

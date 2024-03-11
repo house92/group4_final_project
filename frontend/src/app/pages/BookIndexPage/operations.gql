@@ -1,6 +1,11 @@
 query GetBooksList($first: Int!, $page: Int!) {
 
     listBooks(first: $first, page: $page ) {
+        pageInfo {
+            totalEdges
+            hasNextPage
+            hasPreviousPage
+        }
         edges {
             node {
                 id
@@ -14,5 +19,4 @@ query GetBooksList($first: Int!, $page: Int!) {
             }
         }
     }
-
 }

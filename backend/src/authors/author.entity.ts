@@ -17,13 +17,13 @@ export class Author {
     @Field(() => String, { description: 'Author last name' })
     lastName: string;
 
-    @Column()
-    @Field(() => String, { description: 'Author year of death' })
-    dateOfBirth: string;
+    @Column({ nullable: true, type: 'timestamptz' })
+    @Field(() => Date, { nullable: true, description: 'Author year of death' })
+    dateOfBirth?: Date;
 
-    @Column({ nullable: true })
-    @Field(() => String, { description: 'Author year of death', nullable: true })
-    dateOfDeath?: string;
+    @Column({ nullable: true, type: 'timestamptz' })
+    @Field(() => Date, { description: 'Author year of death', nullable: true })
+    dateOfDeath?: Date;
 
     @Column({ nullable: true })
     @Field(() => String, { description: 'Author hometown', nullable: true })
@@ -32,6 +32,10 @@ export class Author {
     @Column({ nullable: true })
     @Field(() => String, { description: 'Bio of author', nullable: true })
     bio?: string;
+
+    @Column({ nullable: true })
+    @Field(() => Number, { description: 'Average rating based on reviews', nullable: true })
+    rating?: number;
 
     @ManyToMany(() => Book, { cascade: true })
     @JoinTable({

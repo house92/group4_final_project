@@ -1,4 +1,4 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import SignInForm from 'app/components/compounds/SignInForm';
 import useSignIn from './useSignIn';
 
@@ -10,11 +10,10 @@ export default function SignInPage() {
     };
 
     return (
-        <Box>
-            <Typography variant="h1">Sign-in Page</Typography>
+        <Stack gap={2}>
             {error && <Typography color="error">{error}</Typography>}
-            <Box marginBottom="20px" />
+
             <SignInForm onSubmit={handleSubmit} />
-        </Box>
+        </Stack>
     );
 }

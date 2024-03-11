@@ -4,6 +4,7 @@ query GetBookById($bookId: String!) {
         title
         coverImage
         authors {
+            id
             firstName
             lastName
         }
@@ -22,6 +23,10 @@ query GetBookById($bookId: String!) {
             }
         }
     }
+}
+
+query GenerateReview($reviewer: Int!, $bookId: String!) {
+    generateReview(reviewer: $reviewer, bookId: $bookId)
 }
 
 mutation CreateBookReview($input: CreateBookReviewInput!) {

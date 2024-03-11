@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { BooksService } from './books.service';
 import { Book } from './book.entity';
 import { CreateBookInput } from './inputs/create-book.input';
 import { UpdateBookInput } from './inputs/update-book.input';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { BookConnection, BookConnectionArgs, BookConnectionBuilder } from './pagination/books.pagination';
+import { BookReview } from 'src/bookreviews/bookreview.entity';
 
 @Resolver(() => Book)
 export class BooksResolver {
@@ -31,7 +32,8 @@ export class BooksResolver {
                 title,
             },
         });
-        
+
+        // Return resolved BookConnection with edges and pageInfo
         return connectionBuilder.build({
             totalEdges: count,
             nodes: books,
@@ -62,5 +64,13 @@ export class BooksResolver {
     @Mutation(() => Book)
     removeBook(@Args('id', { type: () => Int }) id: number) {
         return this.booksService.remove(id);
+    }
+    ////////////////////////////////
+    // FIELD RESOLVERS
+    ////////////////////////////////
+
+    @ResolveField(() => Number)
+    async rating(@Parent() book: Book) {
+        return this.booksService.averageRating(book.id);
     }
 }

@@ -6,6 +6,11 @@ import { CreateAuthorInput } from './inputs/create-author.input';
 import { UpdateAuthorInput } from './inputs/update-author.input';
 import { Book } from 'src/books/book.entity';
 
+interface FindAllArgs {
+    limit?: number;
+    from?: number;
+}
+
 @Injectable()
 export class AuthorsService {
     constructor(
@@ -13,12 +18,12 @@ export class AuthorsService {
         @InjectRepository(Book) private bookRepo: Repository<Book>,
     ) {}
 
-    findAll() {
-        return this.repo.find();
+    findAll({ limit, from }: FindAllArgs) {
+        return this.repo.findAndCount({ take: limit, skip: from });
     }
 
     findById(id: string) {
-        return this.repo.findOne({ where: { id }, relations: { books: true } });
+        return this.repo.findOne({ where: { id }, relations: { books: {bookReviews : true} } });
     }
 
     async create(input: CreateAuthorInput) {
@@ -37,7 +42,7 @@ export class AuthorsService {
     async update(_input: UpdateAuthorInput) {
         const { id, ...input } = _input;
 
-        const author = await this.repo.findOne({ where: { id } });
+        const author = await this.repo.findOne({ where: { id }, relations: ['books'] });
 
         if (!author) {
             throw new Error(`Author with ID ${id} not found`);

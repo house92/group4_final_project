@@ -1,14 +1,18 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthorsService } from './authors.service';
 import { Author } from './author.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { CreateAuthorInput } from './inputs/create-author.input';
 import { UpdateAuthorInput } from './inputs/update-author.input';
 import { AuthorConnection, AuthorConnectionArgs, AuthorConnectionBuilder } from './pagination/authors.pagination';
+import { BooksService } from 'src/books/books.service';
 
-@Resolver()
+@Resolver(() => Author)
 export class AuthorsResolver {
-    constructor(private readonly authorsService: AuthorsService) {}
+    constructor(
+        private readonly authorsService: AuthorsService,
+        private readonly booksService: BooksService,
+    ) {}
     @Public()
     @Query(() => AuthorConnection)
     async listAuthors(@Args() connectionArgs: AuthorConnectionArgs): Promise<AuthorConnection> {
@@ -49,5 +53,18 @@ export class AuthorsResolver {
     @Mutation(() => Author)
     removeAuthor(@Args('id', { type: () => String }) id: number) {
         return this.authorsService.remove(id);
+    }
+
+    ////////////////////////////////
+    // FIELD RESOLVERS
+    ////////////////////////////////
+
+    @ResolveField(() => Number)
+    async rating(@Parent() author: Author) {
+        const bookRating = await Promise.all(
+            author.books.map(async (book) => await this.booksService.averageRating(book.id)),
+        );
+        const totalRating = bookRating.reduce((acc, rating) => acc + rating, 0);
+        return totalRating / author.books.length;
     }
 }

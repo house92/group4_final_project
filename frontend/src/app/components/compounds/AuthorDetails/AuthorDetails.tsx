@@ -1,20 +1,28 @@
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 interface AuthorDetailsProps {
-    name: string;
-    birthYear: number;
-    homeTown: string;
-    bio: string;
+    name?: string;
+    birthYear?: number;
+    deathYear?: number;
+    hometown?: string;
+    bio?: string;
 }
 
-const AuthorDetails = ({ name, birthYear, homeTown, bio }) => {
+const AuthorDetails = ({ name, birthYear, deathYear, hometown, bio }: AuthorDetailsProps) => {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
-            <Typography variant="h5">Author: {name}</Typography>
-            <Typography variant="body1">Date Of Birth: {birthYear}</Typography>
-            <Typography variant="body1">Home Town: {homeTown}</Typography>
-            <Typography variant="body1">Bio: {bio}</Typography>
+            {name && <Typography variant="h5">Author: {name}</Typography>}
+
+            <Box display="flex" flexDirection="row" gap={2}>
+                <Typography variant="body1">Born: {birthYear ?? 'Unknown'}</Typography>
+
+                {deathYear && <Typography variant="body1">Died: {deathYear}</Typography>}
+            </Box>
+
+            {hometown && <Typography variant="body1">Home Town: {hometown}</Typography>}
+
+            {bio && <Typography variant="body1">Bio: {bio}</Typography>}
         </Paper>
     );
 };

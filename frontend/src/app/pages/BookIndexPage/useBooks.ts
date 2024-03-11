@@ -10,19 +10,18 @@ interface Book {
 }
 
 export default function useBooks(pageLimit: number, page: number) {
-    //issue here "cannot assign type number to type never"
     const { data } = useGetBooksListQuery({
         variables: { first: pageLimit, page }
     });
 
     let books: Book[] = [];
     if (data?.listBooks) {
-        books = data.listBooks.edges.map(edge => ({
-            id: edge.node.id,
-            coverImage: edge.node.coverImage,
-            title: edge.node.title,
-            authorNames: edge.node.authors.map((author) => `${author.firstName} ${author.lastName}`),
-            publicationDate: edge.node.publicationDate ? DateTime.fromISO(edge.node.publicationDate) : undefined,
+        books = data.listBooks.edges.map(({ node: book }) => ({
+            id: book.id,
+            coverImage: book.coverImage,
+            title: book.title,
+            authorNames: book.authors.map((author) => `${author.firstName} ${author.lastName}`),
+            publicationDate: book.publicationDate ? DateTime.fromISO(book.publicationDate) : undefined,
         }));
     }
 
