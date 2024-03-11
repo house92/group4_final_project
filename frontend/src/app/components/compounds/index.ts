@@ -12,3 +12,5 @@ export { default as FriendsIndex } from './FriendIndex';
 export { default as SignInForm } from './SignInForm';
 
 export { default as UserDetails } from './UserDetails';
+
+export { default as ChatGptDetails } from './ChatGptDetails';

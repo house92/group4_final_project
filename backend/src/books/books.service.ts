@@ -3,12 +3,16 @@ import { CreateBookInput } from './inputs/create-book.input';
 import { UpdateBookInput } from './inputs/update-book.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './book.entity';
-import { FindOneOptions, In, Repository } from 'typeorm';
+import { FindOneOptions, FindOptionsWhere, ILike, In, Repository } from 'typeorm';
 import { Author } from 'src/authors/author.entity';
 
 interface FindAllArgs {
     limit?: number;
     from?: number;
+
+    filter?: {
+        title?: string;
+    };
 }
 
 @Injectable()
@@ -18,8 +22,10 @@ export class BooksService {
         @InjectRepository(Author) private authorRepo: Repository<Author>,
     ) {}
 
-    findAll({ limit, from }: FindAllArgs) {
-        return this.repo.findAndCount({ take: limit, skip: from, relations: { authors: true } });
+    findAll({ limit, from, filter = {} }: FindAllArgs) {
+        const where = this.buildFindWhereClause(filter);
+
+        return this.repo.findAndCount({ take: limit, skip: from, relations: { authors: true }, where });
     }
 
     findById(id: string, relations: FindOneOptions<Book>['relations'] = {}) {
@@ -42,6 +48,17 @@ export class BooksService {
 
     remove(id: number) {
         return `This action removes a #${id} book`;
+    }
+
+    private buildFindWhereClause(filters: FindAllArgs['filter']): FindOptionsWhere<Book> {
+        const where: FindOptionsWhere<Book> = {};
+        const { title } = filters;
+
+        if (title) {
+            where['title'] = ILike(`%${title}%`);
+        }
+
+        return where;
     }
 
     async averageRating(bookId: string) {
