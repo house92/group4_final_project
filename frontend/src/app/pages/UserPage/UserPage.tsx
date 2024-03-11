@@ -51,7 +51,7 @@ export default function UserPage() {
 
     // True if button is to accept, false if button is to send
 
-    if (!!userId && userId !== myId) {
+    if (!!userId && userId !== myId && myId.length > 0) {
         if (isSent) {
             buttonText = 'Friend Request Already Sent';
             disabled = true;
