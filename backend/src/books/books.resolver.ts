@@ -40,6 +40,7 @@ export class BooksResolver {
         });
     }
 
+
     @Public()
     @Query(() => Book)
     async getBook(@Args('id', { type: () => String }) id: string) {

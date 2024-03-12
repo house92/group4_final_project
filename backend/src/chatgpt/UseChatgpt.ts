@@ -2,7 +2,7 @@ import { OpenAI } from 'openai';
 import { getChatGptApiKey } from '../../environment';
 
 const openai = new OpenAI({ apiKey: getChatGptApiKey() });
-
+ 
 interface ChatGptResponse {
     index: number;
     message: {

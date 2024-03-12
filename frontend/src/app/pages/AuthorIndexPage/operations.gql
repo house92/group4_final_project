@@ -1,19 +1,22 @@
-query GetAuthorsList {
-    listAuthors {
-        pageInfo {
+query GetAuthorsList ($first: Int!, $page: Int!) {
+
+  listAuthors (first: $first, page: $page) {
+    pageInfo {
             totalEdges
             hasNextPage
             hasPreviousPage
-        }
-
-        edges {
-            node {
-                id
-                firstName
-                lastName
-                dateOfBirth
-                dateOfDeath
-            }
-        }
     }
+
+    edges {
+        node {
+            id
+            firstName
+            lastName
+            dateOfBirth
+            dateOfDeath
+            hometown
+            bio
+          }
+    }
+  }
 }

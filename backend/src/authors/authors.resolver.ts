@@ -32,6 +32,7 @@ export class AuthorsResolver {
         });
     }
 
+
     @Public()
     @Query(() => Author)
     async getAuthor(@Args('id', { type: () => String }) id: string) {

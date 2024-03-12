@@ -17,8 +17,8 @@ interface Response {
     books: Book[];
 }
 
-export default function useBooks({ titleSearchTerm }: UseBooksArgs): Response {
-    const { data } = useGetBooksListQuery({ variables: { titleSearchTerm } });
+export default function useBooks({ titleSearchTerm }: UseBooksArgs, pageLimit: number, page: number) {
+    const { data } = useGetBooksListQuery({ variables: { titleSearchTerm, first: pageLimit, page } });
 
     let books: Book[] = [];
     if (data?.listBooks) {
@@ -31,5 +31,11 @@ export default function useBooks({ titleSearchTerm }: UseBooksArgs): Response {
         }));
     }
 
-    return { books };
+    const pageInfo = {
+        totalPages: Math.ceil((data?.listBooks.pageInfo.totalEdges || 0) / pageLimit),
+        hasNextPage: data?.listBooks.pageInfo.hasNextPage || false,
+        hasPreviousPage: data?.listBooks.pageInfo.hasPreviousPage || false,
+    };
+
+    return { books, pageInfo };
 }

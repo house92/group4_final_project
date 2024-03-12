@@ -1,22 +1,21 @@
-query GetBooksList($titleSearchTerm: String) {
-    listBooks(filter: { title: $titleSearchTerm }) {
+query GetBooksList($titleSearchTerm: String, $first: Int!, $page: Int!) {
+
+    listBooks(filter: { title: $titleSearchTerm }, first: $first, page: $page ) {
         pageInfo {
             totalEdges
             hasNextPage
             hasPreviousPage
         }
-
         edges {
             node {
                 id
                 coverImage
                 title
-                publicationDate
-
                 authors {
                     firstName
                     lastName
-                }
+                 }
+                publicationDate
             }
         }
     }

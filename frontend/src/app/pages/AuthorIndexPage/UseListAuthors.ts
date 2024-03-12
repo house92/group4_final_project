@@ -8,12 +8,10 @@ interface Author {
     dateOfDeath?: DateTime;
 }
 
-interface Response {
-    authors: Author[];
-}
-
-export default function useAuthors(): Response {
-    const { data } = useGetAuthorsListQuery();
+export default function useAuthors(pageLimit: number, page: number) {
+    const { data } = useGetAuthorsListQuery({
+        variables: { first: pageLimit, page }
+    });
 
     let authors: Author[] = [];
 
@@ -26,5 +24,11 @@ export default function useAuthors(): Response {
         }));
     }
 
-    return { authors };
+    const pageInfo = {
+        totalPages: Math.ceil((data?.listAuthors.pageInfo.totalEdges || 0) / pageLimit),
+        hasNextPage: data?.listAuthors.pageInfo.hasNextPage || false,
+        hasPreviousPage: data?.listAuthors.pageInfo.hasPreviousPage || false,
+    };
+
+    return { authors, pageInfo };
 }
