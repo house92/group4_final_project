@@ -92,7 +92,7 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
     let round = 1;
 
     while (true) {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 8; i++) {
             tempNames.push(names.pop());
             if (names.length == 0) {
                 break;
@@ -105,7 +105,9 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
             }
         }
         getter = null;
-        console.log('Finished round' + round + ' of ChatGpt calls (20 authors per round)..');
+        console.log('Finished round ' + round + ' of ChatGpt calls (8 authors per round)');
+        console.log(names.length + ' authors left..');
+
         tempNames = [];
         round += 1;
         if (names.length == 0) {
