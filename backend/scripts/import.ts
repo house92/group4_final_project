@@ -64,7 +64,6 @@ interface AuthorMap {
     [key: string]: string;
 }
 
-const temp1: string[] = [];
 
 async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
     let getter: BulkAuthorsReturn;
@@ -94,7 +93,7 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
     let round = 1;
 
     while (true) {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 10; i++) {
             tempNames.push(names.pop());
             if (names.length == 0) {
                 break;
@@ -107,7 +106,7 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
             }
         }
         getter = null;
-        console.log('Finished round ' + round + ' of ChatGpt calls (20 authors per round)');
+        console.log('Finished round ' + round + ' of ChatGpt calls (10 authors per round)');
         console.log(names.length + ' authors left..');
 
         tempNames = [];
@@ -130,10 +129,7 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
             s = inputArray[inputCounter].firstName + ' ' + inputArray[inputCounter].lastName;
             s = s.substring(1);
         }
-        temp1.push('inputArray name: ' + s);
-        temp1.push('responses name: ' + responses.at(responseCounter).name);
         if (s === responses.at(responseCounter).name) {
-            temp1.push('valid');
             tempAuthorInput = inputArray.at(inputCounter);
 
             tempAuthorInput.bio = responses[responseCounter].bio;
@@ -144,7 +140,6 @@ async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAu
             responseCounter += 1;
         }
         else {
-            temp1.push('invalid');
         }
         inputCounter += 1;
     }
@@ -229,7 +224,6 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     const authorMap: AuthorMap = {};
     const authorInputArr: CreateAuthorInput[] = [];
     const hashes: string[] = [];
-    let temp2 = [];
     authorInputArr.push;
 
     console.log('creating authors..');
@@ -244,7 +238,6 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
             }
         }
     }
-    temp2 = authorInputArr;
 
     console.log('authors created');
 
@@ -276,8 +269,6 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     await app.close();
 
     console.log('finished');
-    // console.log(temp1);
-    console.log(temp2);
 
 }
 
