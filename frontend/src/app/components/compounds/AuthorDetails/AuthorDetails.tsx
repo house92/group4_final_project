@@ -26,8 +26,14 @@ const AuthorDetails = ({ name, birthYear, deathYear, hometown, bio, rating }: Au
             {bio && <Typography variant="body1">Bio: {bio}</Typography>}
 
             <Stack>
-                {rating && <Typography variant="body1"> Rating: {rating}</Typography>}
-                <Rating name="read-only" value={rating} readOnly />
+                {rating !== 0 ? (
+                    <>
+                        <Typography variant="body1">Rating: {rating}</Typography>
+                        <Rating name="read-only" value={rating} readOnly />
+                    </>
+                ) : (
+                    <Typography variant="body1">No Ratings</Typography>
+                )}
             </Stack>
         </Paper>
     );

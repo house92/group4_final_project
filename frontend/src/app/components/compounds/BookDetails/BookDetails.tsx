@@ -29,8 +29,14 @@ export default function BookDetails({ title, coverImage, authors, publicationDat
                 <Typography variant="body1">
                     Publication Date: {publicationDate ? publicationDate.toLocaleString(DateTime.DATE_MED) : 'Unknown'}
                 </Typography>
-                <Typography variant="body1">Rating: {rating?.toFixed(2)}</Typography>
-                <Rating name="read-only" value={rating} readOnly />
+                {rating !== 0 ? (
+                    <>
+                        <Typography variant="body1">Rating: {rating?.toFixed(2)}</Typography>
+                        <Rating name="read-only" value={rating} readOnly />
+                    </>
+                ) : (
+                    <Typography variant="body1">No Ratings</Typography>
+                )}
 
                 {synopsis && <Typography variant="body1">{synopsis}</Typography>}
             </Stack>
