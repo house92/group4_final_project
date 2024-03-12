@@ -25,7 +25,7 @@ export interface BulkAuthorsReturn {
 
 export async function getAuthorData(names: string[]): Promise<BulkAuthorsReturn> {
     let s =
-        'Please create an array with one JSON for each of the authors in this list that contains their name as "name" (which is the inputted name), a "bio" (one-paragraph biography of the author), and a "hometown" (the home town of the author). The array is: ';
+        'Please create an array with one JSON for each of the authors in this list that contains their name as "name" (the name of the author EXACTLY how it appears in the list), a "bio" (one-paragraph biography of the author), and a "hometown" (the home town of the author). The array is: ';
     s += names;
     const completion = await openai.chat.completions.create({
         messages: [
