@@ -12,6 +12,7 @@ import { Book } from 'src/books/book.entity';
 import { BooksService } from 'src/books/books.service';
 import { CreateBookInput } from 'src/books/inputs/create-book.input';
 import { generateTypeORMModuleOptions } from 'src/db/index';
+import { getAuthorData, BulkAuthorsReturn, FetchedAuthorData } from 'src/chatgpt/UseChatgpt';
 
 dotenv.config();
 
@@ -61,6 +62,90 @@ interface GutendexResponse {
  */
 interface AuthorMap {
     [key: string]: string;
+}
+
+
+async function augmentAuthors(inputArray: CreateAuthorInput[]): Promise<CreateAuthorInput[]> {
+    let getter: BulkAuthorsReturn;
+    let names: string[] = [];
+    let tempNames: string[] = [];
+    const responses: FetchedAuthorData[] = [];
+
+    let name: string;
+    for (let i = 0; i < inputArray.length; i++) {
+        if (inputArray[i].firstName != null) {
+            name = inputArray[i].firstName + ' ' + inputArray[i].lastName;
+            if (names.includes(name)) {
+                continue;
+            }
+            names.push(name);
+        } else {
+            name = inputArray[i].lastName;
+            if (names.includes(name)) {
+                continue;
+            }
+            names.push(name);
+        }
+    }
+
+    names = names.reverse();
+
+    let round = 1;
+
+    while (true) {
+        for (let i = 0; i < 10; i++) {
+            tempNames.push(names.pop());
+            if (names.length == 0) {
+                break;
+            }
+        }
+        if (tempNames.length > 0) {
+            getter = await getAuthorData(tempNames);
+            for (let i = 0; i < getter.authors.length; i++) {
+                responses.push(getter.authors.at(i));
+            }
+        }
+        getter = null;
+        console.log('Finished round ' + round + ' of ChatGpt calls (10 authors per round)');
+        console.log(names.length + ' authors left..');
+
+        tempNames = [];
+        round += 1;
+        if (names.length == 0) {
+            break;
+        }
+    }
+
+    const lastList: CreateAuthorInput[] = [];
+    let inputCounter = 0;
+    let responseCounter = 0;
+    let tempAuthorInput: CreateAuthorInput;
+
+    while (responseCounter < responses.length && inputCounter < inputArray.length) {
+        let s: string;
+        if (inputArray.at(inputCounter).firstName == null) {
+            s = inputArray.at(inputCounter).lastName;
+        } else {
+            s = inputArray[inputCounter].firstName + ' ' + inputArray[inputCounter].lastName;
+            s = s.substring(1);
+        }
+        if (s === responses.at(responseCounter).name) {
+            tempAuthorInput = inputArray.at(inputCounter);
+
+            tempAuthorInput.bio = responses[responseCounter].bio;
+            tempAuthorInput.hometown = responses[responseCounter].hometown;
+
+            lastList.push(tempAuthorInput);
+
+            responseCounter += 1;
+        }
+        else {
+        }
+        inputCounter += 1;
+    }
+
+    return lastList;
+    // return inputArray;
 }
 
 function transformGutendexPersonToAuthor(gutendexPerson: GutendexPerson): CreateAuthorInput {
@@ -137,6 +222,9 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     console.log('data fetched');
 
     const authorMap: AuthorMap = {};
+    const authorInputArr: CreateAuthorInput[] = [];
+    const hashes: string[] = [];
+    authorInputArr.push;
 
     console.log('creating authors..');
 
@@ -144,14 +232,24 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
         for (const gutendexAuthor of book.authors) {
             const hashId = hash(gutendexAuthor);
 
-            if (!authorMap[hashId]) {
-                const author = await ds.manager.save(Author, transformGutendexPersonToAuthor(gutendexAuthor));
-                authorMap[hashId] = author.id;
+            if (!authorMap[hashId] && !hashes.includes(hashId)) {
+                authorInputArr.push(transformGutendexPersonToAuthor(gutendexAuthor));
+                hashes.push(hashId);
             }
         }
     }
 
     console.log('authors created');
+
+    console.log('Adding author hometown and bio data...');
+
+    const finAuthorInputs: CreateAuthorInput[] = await augmentAuthors(authorInputArr);
+
+    for (let i = 0; i < finAuthorInputs.length; i++) {
+        const author = await ds.manager.save(Author, finAuthorInputs.at(i));
+        authorMap[hashes.at(i)] = author.id;
+    }
+    console.log('authors augmented');
 
     console.log('creating books..');
 
@@ -171,6 +269,7 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     await app.close();
 
     console.log('finished');
+
 }
 
 const run = async function () {

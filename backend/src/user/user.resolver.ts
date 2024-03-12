@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { UpdateUserInput } from './inputs/update-user.input';
@@ -30,6 +30,16 @@ export class UserResolver {
         return user;
     }
 
+    @Query(() => [User])
+    async sentFriendInvitations(@Args('userId') userId: string) {
+        return this.userService.sentFriendInvitations(userId);
+    }
+
+    @Query(() => [User])
+    async pendingFriendInvitations(@Args('userId') userId: string) {
+        return this.userService.pendingFriendInvitations(userId);
+    }
+
     @Mutation(() => User)
     updateUser(@Args('input') input: UpdateUserInput) {
         return this.userService.update(input);
@@ -48,4 +58,52 @@ export class UserResolver {
         const currentUserId = ctx.userId;
         return this.userService.addUserToCurrentUserFriends(currentUserId, friendId);
     }
+
+    @Mutation(() => User)
+    removeFriend(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ) {
+        const currentUserId = ctx.userId;
+        return this.userService.unFriend(currentUserId, friendId);
+    }
+
+    @Mutation(() => Boolean)
+    async inviteFriend(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ): Promise<boolean> {
+        try {
+            const currentUserId = ctx.userId;
+            await this.userService.inviteFriend(currentUserId, friendId);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    @Mutation(() => Boolean)
+    async acceptFriendInvitation(
+        @Args('friendId', { type: () => String }) friendId: string,
+        @CurrentRequestContext() ctx: RequestContext,
+    ): Promise<boolean> {
+        try {
+            const currentUserId = ctx.userId;
+            await this.userService.acceptFriendInvitation(currentUserId, friendId);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    // @ResolveField(() => [User])
+    // async sentFriendInvitations(userId: string) {
+    //     return this.userService.sentFriendInvitations(userId);
+    // }
+
+    // @ResolveField(() => [User])
+    // async pendingFriendInvitations(userId: string) {
+    //     return this.userService.pendingFriendInvitations(userId);
+    // }
 }

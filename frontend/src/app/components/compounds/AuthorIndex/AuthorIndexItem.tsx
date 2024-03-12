@@ -2,8 +2,8 @@ import { Box, Stack, Typography } from '@mui/material';
 
 interface AuthorIndexItemProps {
     name: string;
-    birthYear?: number;
-    deathYear?: number;
+    birthYear?: string;
+    deathYear?: string;
 }
 
 export default function AuthorIndexItem({ name, birthYear, deathYear }: AuthorIndexItemProps) {

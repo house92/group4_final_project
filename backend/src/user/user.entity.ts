@@ -42,4 +42,22 @@ export class User {
     })
     @Field(() => [User], { nullable: true })
     friends?: User[];
+
+    @ManyToMany(() => User)
+    @JoinTable({
+        name: 'sent_invitation',
+        joinColumn: { name: 'inviting_user_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'receiving_user_id', referencedColumnName: 'id' },
+    })
+    @Field(() => [User], { nullable: true })
+    sentInvitations?: User[];
+
+    @ManyToMany(() => User)
+    @JoinTable({
+        name: 'received_invitation',
+        joinColumn: { name: 'receiving_user_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'inviting_user_id', referencedColumnName: 'id' },
+    })
+    @Field(() => [User], { nullable: true })
+    receivedInvitations?: User[];
 }

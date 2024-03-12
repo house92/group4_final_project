@@ -11,6 +11,5 @@ import { AuthorsService } from 'src/authors/authors.service';
 @Module({
     imports: [TypeOrmModule.forFeature([OpenAI, Book, Author])],
     providers: [ChatGptResolver, ChatGptService, BooksService, AuthorsService],
-
 })
 export class ChatGptModule {}

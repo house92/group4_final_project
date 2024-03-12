@@ -1,9 +1,22 @@
 query GetUserFriends($userId: String!) {
   getUser(id: $userId) {
+    firstName
     friends{
       id
       firstName
       lastName
     }
   }
+}
+
+query ListUsers {
+  listUsers {
+    id
+    firstName
+    lastName
+  }
+}
+
+mutation AcceptFriendInvite($userId: String!) {
+    acceptFriendInvitation(friendId: $userId)
 }

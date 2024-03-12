@@ -35,6 +35,8 @@ export type Author = {
   id: Scalars['ID']['output'];
   /** Author last name */
   lastName: Scalars['String']['output'];
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
 };
 
 export type AuthorConnection = {
@@ -66,6 +68,8 @@ export type Book = {
   publicationDate?: Maybe<Scalars['String']['output']>;
   /** URL to a page where the book can be purchased */
   purchaseUrl?: Maybe<Scalars['String']['output']>;
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
   /** Synopsis of the book */
   synopsis?: Maybe<Scalars['String']['output']>;
   /** Title of the book */
@@ -155,22 +159,35 @@ export type CreateUserAuthInput = {
   password: Scalars['String']['input'];
 };
 
+export type ListBooksFilter = {
+  /** substring against which to match titles */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptFriendInvitation: Scalars['Boolean']['output'];
   addFriend: User;
   createAuthor: Author;
   createBook: Book;
   createBookReview: BookReview;
+  inviteFriend: Scalars['Boolean']['output'];
   registerUser: UserSession;
   removeAuthor: Author;
   removeBook: Book;
   removeBookReview: Book;
+  removeFriend: User;
   removeUser: User;
   signInUser: UserSession;
   signOutUser: UserSession;
   updateAuthor: Author;
   updateBook: Book;
   updateUser: User;
+};
+
+
+export type MutationAcceptFriendInvitationArgs = {
+  friendId: Scalars['String']['input'];
 };
 
 
@@ -194,6 +211,11 @@ export type MutationCreateBookReviewArgs = {
 };
 
 
+export type MutationInviteFriendArgs = {
+  friendId: Scalars['String']['input'];
+};
+
+
 export type MutationRegisterUserArgs = {
   input: CreateUserAuthInput;
 };
@@ -211,6 +233,11 @@ export type MutationRemoveBookArgs = {
 
 export type MutationRemoveBookReviewArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type MutationRemoveFriendArgs = {
+  friendId: Scalars['String']['input'];
 };
 
 
@@ -262,6 +289,8 @@ export type Query = {
   listReviewsByBook: Array<BookReview>;
   listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
+  pendingFriendInvitations: Array<User>;
+  sentFriendInvitations: Array<User>;
 };
 
 
@@ -304,6 +333,7 @@ export type QueryListAuthorsArgs = {
 export type QueryListBooksArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<ListBooksFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -316,6 +346,16 @@ export type QueryListReviewsByBookArgs = {
 
 
 export type QueryListReviewsByUserArgs = {
+  userId: Scalars['String']['input'];
+};
+
+
+export type QueryPendingFriendInvitationsArgs = {
+  userId: Scalars['String']['input'];
+};
+
+
+export type QuerySentFriendInvitationsArgs = {
   userId: Scalars['String']['input'];
 };
 
@@ -373,6 +413,8 @@ export type User = {
   friends?: Maybe<Array<User>>;
   id: Scalars['ID']['output'];
   lastName: Scalars['String']['output'];
+  receivedInvitations?: Maybe<Array<User>>;
+  sentInvitations?: Maybe<Array<User>>;
   userAuth: UserAuth;
 };
 
@@ -406,10 +448,11 @@ export type GetAuthorByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null, rating?: number | null } };
 
-export type GetBooksListQueryVariables = Exact<{ [key: string]: number; }>;
-
+export type GetBooksListQueryVariables = {
+  titleSearchTerm?: InputMaybe<Scalars['String']['input']>;
+} & { [key: string]: number; };
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: { __typename?: 'BookConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'BookEdge', node: { __typename?: 'Book', id: string, coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> } }> } };
 
@@ -418,7 +461,7 @@ export type GetBookByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, rating?: number | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
 
 export type GenerateReviewQueryVariables = Exact<{
   reviewer: Scalars['Int']['input'];
@@ -440,7 +483,19 @@ export type GetUserFriendsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserFriendsQuery = { __typename?: 'Query', getUser: { __typename?: 'User', friends?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> | null } };
+export type GetUserFriendsQuery = { __typename?: 'Query', getUser: { __typename?: 'User', firstName: string, friends?: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> | null } };
+
+export type ListUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListUsersQuery = { __typename?: 'Query', listUsers: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
+
+export type AcceptFriendInviteMutationVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type AcceptFriendInviteMutation = { __typename?: 'Mutation', acceptFriendInvitation: boolean };
 
 export type GetHomePageDataQueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -476,6 +531,27 @@ export type GetUserByIdQueryVariables = Exact<{
 
 
 export type GetUserByIdQuery = { __typename?: 'Query', getUser: { __typename?: 'User', id: string, firstName: string, lastName: string, bio?: string | null, dateOfBirth: string, bookReviews?: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, book: { __typename?: 'Book', id: string, title: string } }> | null } };
+
+export type GetMySentFriendInvitesQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetMySentFriendInvitesQuery = { __typename?: 'Query', sentFriendInvitations: Array<{ __typename?: 'User', id: string }> };
+
+export type GetMyReceivedFriendInvitesQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetMyReceivedFriendInvitesQuery = { __typename?: 'Query', pendingFriendInvitations: Array<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
+
+export type SendFriendInviteMutationVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type SendFriendInviteMutation = { __typename?: 'Mutation', inviteFriend: boolean };
 
 
 export const GetUserSessionDocument = gql`
@@ -581,6 +657,7 @@ export const GetAuthorByIdDocument = gql`
     dateOfDeath
     hometown
     bio
+    rating
   }
 }
     `;
@@ -618,8 +695,8 @@ export type GetAuthorByIdLazyQueryHookResult = ReturnType<typeof useGetAuthorByI
 export type GetAuthorByIdSuspenseQueryHookResult = ReturnType<typeof useGetAuthorByIdSuspenseQuery>;
 export type GetAuthorByIdQueryResult = Apollo.QueryResult<GetAuthorByIdQuery, GetAuthorByIdQueryVariables>;
 export const GetBooksListDocument = gql`
-    query GetBooksList {
-  listBooks {
+    query GetBooksList($titleSearchTerm: String) {
+  listBooks(filter: {title: $titleSearchTerm}) {
     pageInfo {
       totalEdges
       hasNextPage
@@ -653,6 +730,7 @@ export const GetBooksListDocument = gql`
  * @example
  * const { data, loading, error } = useGetBooksListQuery({
  *   variables: {
+ *      titleSearchTerm: // value for 'titleSearchTerm'
  *   },
  * });
  */
@@ -684,6 +762,7 @@ export const GetBookByIdDocument = gql`
       lastName
     }
     publicationDate
+    rating
     synopsis
     bookReviews {
       id
@@ -808,6 +887,7 @@ export type CreateBookReviewMutationOptions = Apollo.BaseMutationOptions<CreateB
 export const GetUserFriendsDocument = gql`
     query GetUserFriends($userId: String!) {
   getUser(id: $userId) {
+    firstName
     friends {
       id
       firstName
@@ -849,6 +929,78 @@ export type GetUserFriendsQueryHookResult = ReturnType<typeof useGetUserFriendsQ
 export type GetUserFriendsLazyQueryHookResult = ReturnType<typeof useGetUserFriendsLazyQuery>;
 export type GetUserFriendsSuspenseQueryHookResult = ReturnType<typeof useGetUserFriendsSuspenseQuery>;
 export type GetUserFriendsQueryResult = Apollo.QueryResult<GetUserFriendsQuery, GetUserFriendsQueryVariables>;
+export const ListUsersDocument = gql`
+    query ListUsers {
+  listUsers {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+
+/**
+ * __useListUsersQuery__
+ *
+ * To run a query within a React component, call `useListUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListUsersQuery(baseOptions?: Apollo.QueryHookOptions<ListUsersQuery, ListUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListUsersQuery, ListUsersQueryVariables>(ListUsersDocument, options);
+      }
+export function useListUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListUsersQuery, ListUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListUsersQuery, ListUsersQueryVariables>(ListUsersDocument, options);
+        }
+export function useListUsersSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<ListUsersQuery, ListUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ListUsersQuery, ListUsersQueryVariables>(ListUsersDocument, options);
+        }
+export type ListUsersQueryHookResult = ReturnType<typeof useListUsersQuery>;
+export type ListUsersLazyQueryHookResult = ReturnType<typeof useListUsersLazyQuery>;
+export type ListUsersSuspenseQueryHookResult = ReturnType<typeof useListUsersSuspenseQuery>;
+export type ListUsersQueryResult = Apollo.QueryResult<ListUsersQuery, ListUsersQueryVariables>;
+export const AcceptFriendInviteDocument = gql`
+    mutation AcceptFriendInvite($userId: String!) {
+  acceptFriendInvitation(friendId: $userId)
+}
+    `;
+export type AcceptFriendInviteMutationFn = Apollo.MutationFunction<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>;
+
+/**
+ * __useAcceptFriendInviteMutation__
+ *
+ * To run a mutation, you first call `useAcceptFriendInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptFriendInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptFriendInviteMutation, { data, loading, error }] = useAcceptFriendInviteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useAcceptFriendInviteMutation(baseOptions?: Apollo.MutationHookOptions<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>(AcceptFriendInviteDocument, options);
+      }
+export type AcceptFriendInviteMutationHookResult = ReturnType<typeof useAcceptFriendInviteMutation>;
+export type AcceptFriendInviteMutationResult = Apollo.MutationResult<AcceptFriendInviteMutation>;
+export type AcceptFriendInviteMutationOptions = Apollo.BaseMutationOptions<AcceptFriendInviteMutation, AcceptFriendInviteMutationVariables>;
 export const GetHomePageDataDocument = gql`
     query GetHomePageData($userId: String!, $authenticated: Boolean!) {
   friendReviews: getUser(id: $userId) @include(if: $authenticated) {
@@ -1078,3 +1230,116 @@ export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
 export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
 export type GetUserByIdSuspenseQueryHookResult = ReturnType<typeof useGetUserByIdSuspenseQuery>;
 export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export const GetMySentFriendInvitesDocument = gql`
+    query GetMySentFriendInvites($userId: String!) {
+  sentFriendInvitations(userId: $userId) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetMySentFriendInvitesQuery__
+ *
+ * To run a query within a React component, call `useGetMySentFriendInvitesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMySentFriendInvitesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMySentFriendInvitesQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetMySentFriendInvitesQuery(baseOptions: Apollo.QueryHookOptions<GetMySentFriendInvitesQuery, GetMySentFriendInvitesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMySentFriendInvitesQuery, GetMySentFriendInvitesQueryVariables>(GetMySentFriendInvitesDocument, options);
+      }
+export function useGetMySentFriendInvitesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMySentFriendInvitesQuery, GetMySentFriendInvitesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMySentFriendInvitesQuery, GetMySentFriendInvitesQueryVariables>(GetMySentFriendInvitesDocument, options);
+        }
+export function useGetMySentFriendInvitesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMySentFriendInvitesQuery, GetMySentFriendInvitesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMySentFriendInvitesQuery, GetMySentFriendInvitesQueryVariables>(GetMySentFriendInvitesDocument, options);
+        }
+export type GetMySentFriendInvitesQueryHookResult = ReturnType<typeof useGetMySentFriendInvitesQuery>;
+export type GetMySentFriendInvitesLazyQueryHookResult = ReturnType<typeof useGetMySentFriendInvitesLazyQuery>;
+export type GetMySentFriendInvitesSuspenseQueryHookResult = ReturnType<typeof useGetMySentFriendInvitesSuspenseQuery>;
+export type GetMySentFriendInvitesQueryResult = Apollo.QueryResult<GetMySentFriendInvitesQuery, GetMySentFriendInvitesQueryVariables>;
+export const GetMyReceivedFriendInvitesDocument = gql`
+    query GetMyReceivedFriendInvites($userId: String!) {
+  pendingFriendInvitations(userId: $userId) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+
+/**
+ * __useGetMyReceivedFriendInvitesQuery__
+ *
+ * To run a query within a React component, call `useGetMyReceivedFriendInvitesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyReceivedFriendInvitesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyReceivedFriendInvitesQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetMyReceivedFriendInvitesQuery(baseOptions: Apollo.QueryHookOptions<GetMyReceivedFriendInvitesQuery, GetMyReceivedFriendInvitesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyReceivedFriendInvitesQuery, GetMyReceivedFriendInvitesQueryVariables>(GetMyReceivedFriendInvitesDocument, options);
+      }
+export function useGetMyReceivedFriendInvitesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyReceivedFriendInvitesQuery, GetMyReceivedFriendInvitesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyReceivedFriendInvitesQuery, GetMyReceivedFriendInvitesQueryVariables>(GetMyReceivedFriendInvitesDocument, options);
+        }
+export function useGetMyReceivedFriendInvitesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMyReceivedFriendInvitesQuery, GetMyReceivedFriendInvitesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMyReceivedFriendInvitesQuery, GetMyReceivedFriendInvitesQueryVariables>(GetMyReceivedFriendInvitesDocument, options);
+        }
+export type GetMyReceivedFriendInvitesQueryHookResult = ReturnType<typeof useGetMyReceivedFriendInvitesQuery>;
+export type GetMyReceivedFriendInvitesLazyQueryHookResult = ReturnType<typeof useGetMyReceivedFriendInvitesLazyQuery>;
+export type GetMyReceivedFriendInvitesSuspenseQueryHookResult = ReturnType<typeof useGetMyReceivedFriendInvitesSuspenseQuery>;
+export type GetMyReceivedFriendInvitesQueryResult = Apollo.QueryResult<GetMyReceivedFriendInvitesQuery, GetMyReceivedFriendInvitesQueryVariables>;
+export const SendFriendInviteDocument = gql`
+    mutation SendFriendInvite($userId: String!) {
+  inviteFriend(friendId: $userId)
+}
+    `;
+export type SendFriendInviteMutationFn = Apollo.MutationFunction<SendFriendInviteMutation, SendFriendInviteMutationVariables>;
+
+/**
+ * __useSendFriendInviteMutation__
+ *
+ * To run a mutation, you first call `useSendFriendInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendFriendInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendFriendInviteMutation, { data, loading, error }] = useSendFriendInviteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useSendFriendInviteMutation(baseOptions?: Apollo.MutationHookOptions<SendFriendInviteMutation, SendFriendInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendFriendInviteMutation, SendFriendInviteMutationVariables>(SendFriendInviteDocument, options);
+      }
+export type SendFriendInviteMutationHookResult = ReturnType<typeof useSendFriendInviteMutation>;
+export type SendFriendInviteMutationResult = Apollo.MutationResult<SendFriendInviteMutation>;
+export type SendFriendInviteMutationOptions = Apollo.BaseMutationOptions<SendFriendInviteMutation, SendFriendInviteMutationVariables>;

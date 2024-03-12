@@ -18,7 +18,7 @@ export class Author {
     lastName: string;
 
     @Column({ nullable: true, type: 'timestamptz' })
-    @Field(() => Date, { nullable: true, description: 'Author year of death' })
+    @Field(() => Date, { description: 'Author year of death', nullable: true })
     dateOfBirth?: Date;
 
     @Column({ nullable: true, type: 'timestamptz' })
