@@ -22,6 +22,9 @@ type Author {
 
   """Bio of author"""
   bio: String
+
+  """Average rating based on reviews"""
+  rating: Float
   books: [Book!]!
 }
 
@@ -53,6 +56,9 @@ type Book {
 
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
+
+  """Average rating based on reviews"""
+  rating: Float
   authors: [Author!]!
   bookReviews: [BookReview!]!
 }
@@ -158,6 +164,7 @@ type Query {
 
     """Retrieve last `n` edges."""
     last: Int
+    filter: ListBooksFilter
   ): BookConnection!
   getBook(id: String!): Book!
   listAuthors(
@@ -181,11 +188,18 @@ type Query {
   listReviewsByBook(id: String!): [BookReview!]!
   getReviewByUser(userId: String!, bookId: String!): BookReview!
   listAllReviews: [BookReview!]!
+  generateReview(reviewer: Int!, bookId: String!): String!
+}
+
+input ListBooksFilter {
+  """substring against which to match titles"""
+  title: String
 }
 
 type Mutation {
   registerUser(input: CreateUserAuthInput!): UserSession!
   signInUser(email: String!, password: String!): UserSession!
+  signOutUser: UserSession!
   updateUser(input: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   addFriend(friendId: String!): User!

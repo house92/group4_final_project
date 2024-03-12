@@ -23,7 +23,7 @@ export class AuthorsService {
     }
 
     findById(id: string) {
-        return this.repo.findOne({ where: { id }, relations: { books: true } });
+        return this.repo.findOne({ where: { id }, relations: { books: { bookReviews: true } } });
     }
 
     async create(input: CreateAuthorInput) {
@@ -42,7 +42,7 @@ export class AuthorsService {
     async update(_input: UpdateAuthorInput) {
         const { id, ...input } = _input;
 
-        const author = await this.repo.findOne({ where: { id } });
+        const author = await this.repo.findOne({ where: { id }, relations: ['books'] });
 
         if (!author) {
             throw new Error(`Author with ID ${id} not found`);

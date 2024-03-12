@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Rating, Stack, Typography } from '@mui/material';
 
 interface AuthorDetailsProps {
     name?: string;
@@ -7,9 +7,10 @@ interface AuthorDetailsProps {
     deathYear?: string;
     hometown?: string;
     bio?: string;
+    rating?: number;
 }
 
-const AuthorDetails = ({ name, birthYear, deathYear, hometown, bio }: AuthorDetailsProps) => {
+const AuthorDetails = ({ name, birthYear, deathYear, hometown, bio, rating }: AuthorDetailsProps) => {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
             {name && <Typography variant="h5">Author: {name}</Typography>}
@@ -23,6 +24,17 @@ const AuthorDetails = ({ name, birthYear, deathYear, hometown, bio }: AuthorDeta
             {hometown && <Typography variant="body1">Home Town: {hometown}</Typography>}
 
             {bio && <Typography variant="body1">Bio: {bio}</Typography>}
+
+            <Stack>
+                {rating !== 0 ? (
+                    <>
+                        <Typography variant="body1">Rating: {rating}</Typography>
+                        <Rating name="read-only" value={rating} readOnly />
+                    </>
+                ) : (
+                    <Typography variant="body1">No Ratings</Typography>
+                )}
+            </Stack>
         </Paper>
     );
 };

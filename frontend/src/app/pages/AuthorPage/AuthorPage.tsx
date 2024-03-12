@@ -31,6 +31,7 @@ export default function AuthorPage() {
                 }
                 hometown={author.hometown}
                 bio={author.bio}
+                rating={author.rating}
             />
         </Stack>
     );

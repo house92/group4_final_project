@@ -35,6 +35,8 @@ export type Author = {
   id: Scalars['ID']['output'];
   /** Author last name */
   lastName: Scalars['String']['output'];
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
 };
 
 export type AuthorConnection = {
@@ -66,6 +68,8 @@ export type Book = {
   publicationDate?: Maybe<Scalars['String']['output']>;
   /** URL to a page where the book can be purchased */
   purchaseUrl?: Maybe<Scalars['String']['output']>;
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
   /** Synopsis of the book */
   synopsis?: Maybe<Scalars['String']['output']>;
   /** Title of the book */
@@ -155,6 +159,11 @@ export type CreateUserAuthInput = {
   password: Scalars['String']['input'];
 };
 
+export type ListBooksFilter = {
+  /** substring against which to match titles */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addFriend: User;
@@ -167,6 +176,7 @@ export type Mutation = {
   removeBookReview: Book;
   removeUser: User;
   signInUser: UserSession;
+  signOutUser: UserSession;
   updateAuthor: Author;
   updateBook: Book;
   updateUser: User;
@@ -249,6 +259,7 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  generateReview: Scalars['String']['output'];
   getAuthor: Author;
   getBook: Book;
   getReviewByUser: BookReview;
@@ -260,6 +271,12 @@ export type Query = {
   listReviewsByBook: Array<BookReview>;
   listReviewsByUser: Array<BookReview>;
   listUsers: Array<User>;
+};
+
+
+export type QueryGenerateReviewArgs = {
+  bookId: Scalars['String']['input'];
+  reviewer: Scalars['Int']['input'];
 };
 
 
@@ -296,6 +313,7 @@ export type QueryListAuthorsArgs = {
 export type QueryListBooksArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<ListBooksFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -398,9 +416,11 @@ export type GetAuthorByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null, rating?: number | null } };
 
-export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetBooksListQueryVariables = Exact<{
+  titleSearchTerm?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: { __typename?: 'BookConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'BookEdge', node: { __typename?: 'Book', id: string, coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> } }> } };
@@ -410,7 +430,15 @@ export type GetBookByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, rating?: number | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+
+export type GenerateReviewQueryVariables = Exact<{
+  reviewer: Scalars['Int']['input'];
+  bookId: Scalars['String']['input'];
+}>;
+
+
+export type GenerateReviewQuery = { __typename?: 'Query', generateReview: string };
 
 export type CreateBookReviewMutationVariables = Exact<{
   input: CreateBookReviewInput;
@@ -434,6 +462,13 @@ export type GetHomePageDataQueryVariables = Exact<{
 
 export type GetHomePageDataQuery = { __typename?: 'Query', friendReviews: { __typename?: 'User', friends?: Array<{ __typename?: 'User', id: string, bookReviews?: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, book: { __typename?: 'Book', id: string, title: string }, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> | null }> | null }, allReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, book: { __typename?: 'Book', id: string, title: string }, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> };
 
+export type RegisterUserMutationVariables = Exact<{
+  input: CreateUserAuthInput;
+}>;
+
+
+export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'UserSession', id: string, firstName?: string | null, lastName?: string | null, token?: string | null } };
+
 export type SignInUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -441,6 +476,11 @@ export type SignInUserMutationVariables = Exact<{
 
 
 export type SignInUserMutation = { __typename?: 'Mutation', signInUser: { __typename?: 'UserSession', id: string, firstName?: string | null, lastName?: string | null } };
+
+export type SignOutUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SignOutUserMutation = { __typename?: 'Mutation', signOutUser: { __typename?: 'UserSession', firstName?: string | null, lastName?: string | null } };
 
 export type GetUserByIdQueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -553,6 +593,7 @@ export const GetAuthorByIdDocument = gql`
     dateOfDeath
     hometown
     bio
+    rating
   }
 }
     `;
@@ -590,8 +631,8 @@ export type GetAuthorByIdLazyQueryHookResult = ReturnType<typeof useGetAuthorByI
 export type GetAuthorByIdSuspenseQueryHookResult = ReturnType<typeof useGetAuthorByIdSuspenseQuery>;
 export type GetAuthorByIdQueryResult = Apollo.QueryResult<GetAuthorByIdQuery, GetAuthorByIdQueryVariables>;
 export const GetBooksListDocument = gql`
-    query GetBooksList {
-  listBooks {
+    query GetBooksList($titleSearchTerm: String) {
+  listBooks(filter: {title: $titleSearchTerm}) {
     pageInfo {
       totalEdges
       hasNextPage
@@ -625,6 +666,7 @@ export const GetBooksListDocument = gql`
  * @example
  * const { data, loading, error } = useGetBooksListQuery({
  *   variables: {
+ *      titleSearchTerm: // value for 'titleSearchTerm'
  *   },
  * });
  */
@@ -656,6 +698,7 @@ export const GetBookByIdDocument = gql`
       lastName
     }
     publicationDate
+    rating
     synopsis
     bookReviews {
       id
@@ -703,6 +746,45 @@ export type GetBookByIdQueryHookResult = ReturnType<typeof useGetBookByIdQuery>;
 export type GetBookByIdLazyQueryHookResult = ReturnType<typeof useGetBookByIdLazyQuery>;
 export type GetBookByIdSuspenseQueryHookResult = ReturnType<typeof useGetBookByIdSuspenseQuery>;
 export type GetBookByIdQueryResult = Apollo.QueryResult<GetBookByIdQuery, GetBookByIdQueryVariables>;
+export const GenerateReviewDocument = gql`
+    query GenerateReview($reviewer: Int!, $bookId: String!) {
+  generateReview(reviewer: $reviewer, bookId: $bookId)
+}
+    `;
+
+/**
+ * __useGenerateReviewQuery__
+ *
+ * To run a query within a React component, call `useGenerateReviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGenerateReviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGenerateReviewQuery({
+ *   variables: {
+ *      reviewer: // value for 'reviewer'
+ *      bookId: // value for 'bookId'
+ *   },
+ * });
+ */
+export function useGenerateReviewQuery(baseOptions: Apollo.QueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
+      }
+export function useGenerateReviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
+        }
+export function useGenerateReviewSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GenerateReviewQuery, GenerateReviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GenerateReviewQuery, GenerateReviewQueryVariables>(GenerateReviewDocument, options);
+        }
+export type GenerateReviewQueryHookResult = ReturnType<typeof useGenerateReviewQuery>;
+export type GenerateReviewLazyQueryHookResult = ReturnType<typeof useGenerateReviewLazyQuery>;
+export type GenerateReviewSuspenseQueryHookResult = ReturnType<typeof useGenerateReviewSuspenseQuery>;
+export type GenerateReviewQueryResult = Apollo.QueryResult<GenerateReviewQuery, GenerateReviewQueryVariables>;
 export const CreateBookReviewDocument = gql`
     mutation CreateBookReview($input: CreateBookReviewInput!) {
   createBookReview(input: $input) {
@@ -853,6 +935,42 @@ export type GetHomePageDataQueryHookResult = ReturnType<typeof useGetHomePageDat
 export type GetHomePageDataLazyQueryHookResult = ReturnType<typeof useGetHomePageDataLazyQuery>;
 export type GetHomePageDataSuspenseQueryHookResult = ReturnType<typeof useGetHomePageDataSuspenseQuery>;
 export type GetHomePageDataQueryResult = Apollo.QueryResult<GetHomePageDataQuery, GetHomePageDataQueryVariables>;
+export const RegisterUserDocument = gql`
+    mutation RegisterUser($input: CreateUserAuthInput!) {
+  registerUser(input: $input) {
+    id
+    firstName
+    lastName
+    token
+  }
+}
+    `;
+export type RegisterUserMutationFn = Apollo.MutationFunction<RegisterUserMutation, RegisterUserMutationVariables>;
+
+/**
+ * __useRegisterUserMutation__
+ *
+ * To run a mutation, you first call `useRegisterUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerUserMutation, { data, loading, error }] = useRegisterUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterUserMutation(baseOptions?: Apollo.MutationHookOptions<RegisterUserMutation, RegisterUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, options);
+      }
+export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
+export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutation>;
+export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
 export const SignInUserDocument = gql`
     mutation SignInUser($email: String!, $password: String!) {
   signInUser(email: $email, password: $password) {
@@ -889,6 +1007,39 @@ export function useSignInUserMutation(baseOptions?: Apollo.MutationHookOptions<S
 export type SignInUserMutationHookResult = ReturnType<typeof useSignInUserMutation>;
 export type SignInUserMutationResult = Apollo.MutationResult<SignInUserMutation>;
 export type SignInUserMutationOptions = Apollo.BaseMutationOptions<SignInUserMutation, SignInUserMutationVariables>;
+export const SignOutUserDocument = gql`
+    mutation SignOutUser {
+  signOutUser {
+    firstName
+    lastName
+  }
+}
+    `;
+export type SignOutUserMutationFn = Apollo.MutationFunction<SignOutUserMutation, SignOutUserMutationVariables>;
+
+/**
+ * __useSignOutUserMutation__
+ *
+ * To run a mutation, you first call `useSignOutUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignOutUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signOutUserMutation, { data, loading, error }] = useSignOutUserMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSignOutUserMutation(baseOptions?: Apollo.MutationHookOptions<SignOutUserMutation, SignOutUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignOutUserMutation, SignOutUserMutationVariables>(SignOutUserDocument, options);
+      }
+export type SignOutUserMutationHookResult = ReturnType<typeof useSignOutUserMutation>;
+export type SignOutUserMutationResult = Apollo.MutationResult<SignOutUserMutation>;
+export type SignOutUserMutationOptions = Apollo.BaseMutationOptions<SignOutUserMutation, SignOutUserMutationVariables>;
 export const GetUserByIdDocument = gql`
     query GetUserById($userId: String!) {
   getUser(id: $userId) {

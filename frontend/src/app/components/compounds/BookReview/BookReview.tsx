@@ -24,7 +24,7 @@ export default function BookReview({ title, bookHref, body, rating, reviewerName
             )}
 
             <Typography variant="body1">Review: {body}</Typography>
-            <Rating value={rating} />
+            <Rating name="read-only" value={rating} readOnly  />
 
             {reviewerName && (
                 <Typography variant="body1">

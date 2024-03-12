@@ -1,11 +1,13 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { useUserSession } from 'app/core/Session';
 import { Link, Outlet } from 'react-router-dom';
+import useSignOut from 'app/pages/SignOutPage/useSignOut';
 
 const NAV_WIDTH = 300;
 
 export default function Layout() {
     const userSession = useUserSession();
+    const { handleSignOut } = useSignOut();
 
     return (
         <Box display="flex" flexDirection="row">
@@ -44,13 +46,18 @@ export default function Layout() {
 
                     {userSession ? (
                         // we need to make this actually sign the user out
-                        <Button href="/" variant="contained">
+                        <Button href="/sign-in" variant="contained" onClick={handleSignOut}>
                             Sign out
                         </Button>
                     ) : (
-                        <Button href="/sign-in" variant="contained">
-                            Sign in
-                        </Button>
+                        <>
+                            <Button href="/sign-in" variant="contained">
+                                Sign in
+                            </Button>
+                            <Button href="/register" variant="contained">
+                                Register
+                            </Button>
+                        </>
                     )}
                 </Box>
             </Box>

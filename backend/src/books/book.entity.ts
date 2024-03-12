@@ -38,6 +38,10 @@ export class Book {
     @Field(() => String, { description: 'URL to a page where the book can be purchased', nullable: true })
     purchaseUrl?: string;
 
+    @Column({ nullable: true })
+    @Field(() => Number, { description: 'Average rating based on reviews', nullable: true })
+    rating?: number;
+
     @ManyToMany(() => Author)
     @JoinTable({
         name: 'author_books',
