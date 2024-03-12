@@ -35,6 +35,8 @@ export type Author = {
   id: Scalars['ID']['output'];
   /** Author last name */
   lastName: Scalars['String']['output'];
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
 };
 
 export type AuthorConnection = {
@@ -66,6 +68,8 @@ export type Book = {
   publicationDate?: Maybe<Scalars['String']['output']>;
   /** URL to a page where the book can be purchased */
   purchaseUrl?: Maybe<Scalars['String']['output']>;
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
   /** Synopsis of the book */
   synopsis?: Maybe<Scalars['String']['output']>;
   /** Title of the book */
@@ -153,6 +157,11 @@ export type CreateUserAuthInput = {
   firstName: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type ListBooksFilter = {
+  /** substring against which to match titles */
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Mutation = {
@@ -304,6 +313,7 @@ export type QueryListAuthorsArgs = {
 export type QueryListBooksArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<ListBooksFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -396,10 +406,13 @@ export type GetUserSessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetUserSessionQuery = { __typename?: 'Query', getUserSession: { __typename?: 'UserSession', id: string, firstName?: string | null, lastName?: string | null } };
 
-export type GetAuthorsListQueryVariables = Exact<{ [key: string]: number; }>;
+export type GetAuthorsListQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
 
 
-export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: { __typename?: 'AuthorConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'AuthorEdge', node: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null } }> } };
+export type GetAuthorsListQuery = { __typename?: 'Query', listAuthors: { __typename?: 'AuthorConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'AuthorEdge', node: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } }> } };
 
 export type GetAuthorByIdQueryVariables = Exact<{
   authorId: Scalars['String']['input'];
@@ -408,7 +421,10 @@ export type GetAuthorByIdQueryVariables = Exact<{
 
 export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
 
-export type GetBooksListQueryVariables = Exact<{ [key: string]: number; }>;
+export type GetBooksListQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
 
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: { __typename?: 'BookConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'BookEdge', node: { __typename?: 'Book', id: string, coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> } }> } };
@@ -520,8 +536,8 @@ export type GetUserSessionLazyQueryHookResult = ReturnType<typeof useGetUserSess
 export type GetUserSessionSuspenseQueryHookResult = ReturnType<typeof useGetUserSessionSuspenseQuery>;
 export type GetUserSessionQueryResult = Apollo.QueryResult<GetUserSessionQuery, GetUserSessionQueryVariables>;
 export const GetAuthorsListDocument = gql`
-    query GetAuthorsList {
-  listAuthors {
+    query GetAuthorsList($first: Int!, $page: Int!) {
+  listAuthors(first: $first, page: $page) {
     pageInfo {
       totalEdges
       hasNextPage
@@ -534,6 +550,8 @@ export const GetAuthorsListDocument = gql`
         lastName
         dateOfBirth
         dateOfDeath
+        hometown
+        bio
       }
     }
   }
@@ -552,10 +570,12 @@ export const GetAuthorsListDocument = gql`
  * @example
  * const { data, loading, error } = useGetAuthorsListQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetAuthorsListQuery(baseOptions?: Apollo.QueryHookOptions<GetAuthorsListQuery, GetAuthorsListQueryVariables>) {
+export function useGetAuthorsListQuery(baseOptions: Apollo.QueryHookOptions<GetAuthorsListQuery, GetAuthorsListQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAuthorsListQuery, GetAuthorsListQueryVariables>(GetAuthorsListDocument, options);
       }
@@ -618,8 +638,8 @@ export type GetAuthorByIdLazyQueryHookResult = ReturnType<typeof useGetAuthorByI
 export type GetAuthorByIdSuspenseQueryHookResult = ReturnType<typeof useGetAuthorByIdSuspenseQuery>;
 export type GetAuthorByIdQueryResult = Apollo.QueryResult<GetAuthorByIdQuery, GetAuthorByIdQueryVariables>;
 export const GetBooksListDocument = gql`
-    query GetBooksList {
-  listBooks {
+    query GetBooksList($first: Int!, $page: Int!) {
+  listBooks(first: $first, page: $page) {
     pageInfo {
       totalEdges
       hasNextPage
@@ -630,11 +650,11 @@ export const GetBooksListDocument = gql`
         id
         coverImage
         title
-        publicationDate
         authors {
           firstName
           lastName
         }
+        publicationDate
       }
     }
   }
@@ -653,10 +673,12 @@ export const GetBooksListDocument = gql`
  * @example
  * const { data, loading, error } = useGetBooksListQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      page: // value for 'page'
  *   },
  * });
  */
-export function useGetBooksListQuery(baseOptions?: Apollo.QueryHookOptions<GetBooksListQuery, GetBooksListQueryVariables>) {
+export function useGetBooksListQuery(baseOptions: Apollo.QueryHookOptions<GetBooksListQuery, GetBooksListQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetBooksListQuery, GetBooksListQueryVariables>(GetBooksListDocument, options);
       }
