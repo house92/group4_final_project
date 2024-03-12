@@ -35,6 +35,8 @@ export type Author = {
   id: Scalars['ID']['output'];
   /** Author last name */
   lastName: Scalars['String']['output'];
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
 };
 
 export type AuthorConnection = {
@@ -66,6 +68,8 @@ export type Book = {
   publicationDate?: Maybe<Scalars['String']['output']>;
   /** URL to a page where the book can be purchased */
   purchaseUrl?: Maybe<Scalars['String']['output']>;
+  /** Average rating based on reviews */
+  rating?: Maybe<Scalars['Float']['output']>;
   /** Synopsis of the book */
   synopsis?: Maybe<Scalars['String']['output']>;
   /** Title of the book */
@@ -444,9 +448,11 @@ export type GetAuthorByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null } };
+export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null, rating?: number | null } };
 
-export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetBooksListQueryVariables = Exact<{
+  titleSearchTerm?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: { __typename?: 'BookConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'BookEdge', node: { __typename?: 'Book', id: string, coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> } }> } };
@@ -456,7 +462,7 @@ export type GetBookByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
+export type GetBookByIdQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', id: string, title: string, coverImage: string, publicationDate?: string | null, rating?: number | null, synopsis?: string | null, authors: Array<{ __typename?: 'Author', id: string, firstName?: string | null, lastName: string }>, bookReviews: Array<{ __typename?: 'BookReview', id: string, body: string, rating: number, user: { __typename?: 'User', id: string, firstName: string, lastName: string } }> } };
 
 export type GenerateReviewQueryVariables = Exact<{
   reviewer: Scalars['Int']['input'];
@@ -652,6 +658,7 @@ export const GetAuthorByIdDocument = gql`
     dateOfDeath
     hometown
     bio
+    rating
   }
 }
     `;
@@ -689,8 +696,8 @@ export type GetAuthorByIdLazyQueryHookResult = ReturnType<typeof useGetAuthorByI
 export type GetAuthorByIdSuspenseQueryHookResult = ReturnType<typeof useGetAuthorByIdSuspenseQuery>;
 export type GetAuthorByIdQueryResult = Apollo.QueryResult<GetAuthorByIdQuery, GetAuthorByIdQueryVariables>;
 export const GetBooksListDocument = gql`
-    query GetBooksList {
-  listBooks {
+    query GetBooksList($titleSearchTerm: String) {
+  listBooks(filter: {title: $titleSearchTerm}) {
     pageInfo {
       totalEdges
       hasNextPage
@@ -724,6 +731,7 @@ export const GetBooksListDocument = gql`
  * @example
  * const { data, loading, error } = useGetBooksListQuery({
  *   variables: {
+ *      titleSearchTerm: // value for 'titleSearchTerm'
  *   },
  * });
  */
@@ -755,6 +763,7 @@ export const GetBookByIdDocument = gql`
       lastName
     }
     publicationDate
+    rating
     synopsis
     bookReviews {
       id

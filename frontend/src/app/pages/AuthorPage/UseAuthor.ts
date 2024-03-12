@@ -2,6 +2,7 @@ import { useGetAuthorByIdQuery } from 'generated/graphql';
 import { DateTime } from 'luxon';
 
 interface Author {
+    rating: number | undefined;
     id: string;
     name: string;
     dateOfBirth?: DateTime;
@@ -24,6 +25,7 @@ export default function useAuthor(authorId: string = '') {
             dateOfDeath: baseAuthor.dateOfDeath ? DateTime.fromISO(baseAuthor.dateOfDeath) : undefined,
             hometown: baseAuthor.hometown ?? undefined,
             bio: baseAuthor.bio ?? undefined,
+            rating: baseAuthor.rating ?? undefined,
         };
     }
 

@@ -22,6 +22,9 @@ type Author {
 
   """Bio of author"""
   bio: String
+
+  """Average rating based on reviews"""
+  rating: Float
   books: [Book!]!
 }
 
@@ -53,6 +56,9 @@ type Book {
 
   """URL to a page where the book can be purchased"""
   purchaseUrl: String
+
+  """Average rating based on reviews"""
+  rating: Float
   authors: [Author!]!
   bookReviews: [BookReview!]!
 }
