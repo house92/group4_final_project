@@ -7,6 +7,7 @@ interface Book {
     coverImage: string;
     authors: { id: string; name: string }[];
     publicationDate?: DateTime;
+    rating?: number;
     synopsis?: string;
 
     bookReviews: {
@@ -36,6 +37,7 @@ export default function useBook(bookId: string = '') {
                 name: `${author.firstName} ${author.lastName}`,
             })),
             publicationDate: baseBook.publicationDate ? DateTime.fromISO(baseBook.publicationDate) : undefined,
+            rating: baseBook.rating ?? undefined,
             synopsis: baseBook.synopsis ?? undefined,
 
             bookReviews: baseBook.bookReviews.map((review) => ({

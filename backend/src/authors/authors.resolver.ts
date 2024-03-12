@@ -54,7 +54,7 @@ export class AuthorsResolver {
     removeAuthor(@Args('id', { type: () => String }) id: number) {
         return this.authorsService.remove(id);
     }
-
+  
     ////////////////////////////////
     // FIELD RESOLVERS
     ////////////////////////////////

@@ -18,3 +18,21 @@ query GetUserById($userId: String!) {
         }
     }
 }
+
+query GetMySentFriendInvites($userId: String!) {
+    sentFriendInvitations(userId: $userId) {
+        id        
+    }
+}
+
+query GetMyReceivedFriendInvites($userId: String!) {
+    pendingFriendInvitations(userId: $userId) {
+        id
+        firstName
+        lastName
+    }
+}
+
+mutation SendFriendInvite($userId: String!) {
+    inviteFriend(friendId: $userId)
+}

@@ -1,6 +1,6 @@
-query GetBooksList($first: Int!, $page: Int!) {
+query GetBooksList($titleSearchTerm: String, $first: Int!, $page: Int!) {
 
-    listBooks(first: $first, page: $page ) {
+    listBooks(filter: { title: $titleSearchTerm }, first: $first, page: $page ) {
         pageInfo {
             totalEdges
             hasNextPage
