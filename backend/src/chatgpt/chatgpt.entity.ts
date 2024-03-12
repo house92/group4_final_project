@@ -3,6 +3,4 @@ import { Entity } from 'typeorm';
 
 @ObjectType()
 @Entity()
-export class ChatGpt {
-
-}
+export class ChatGpt {}

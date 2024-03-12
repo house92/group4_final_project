@@ -10,6 +10,5 @@ import { User } from 'src/user/user.entity';
     imports: [TypeOrmModule.forFeature([BookReview, Book, User])], // Register TypeORM entity
     providers: [BookReviewsResolver, BookReviewsService],
     exports: [BookReviewsService],
-
 })
 export class BookReviewsModule {}

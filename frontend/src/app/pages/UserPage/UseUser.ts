@@ -1,4 +1,11 @@
-import { useGetUserByIdQuery } from 'generated/graphql';
+import {
+    useGetUserByIdQuery,
+    useGetUserSessionQuery,
+    useGetUserFriendsQuery,
+    useGetMyReceivedFriendInvitesQuery,
+    useGetMySentFriendInvitesQuery,
+    useSendFriendInviteMutation,
+} from 'generated/graphql';
 import { DateTime } from 'luxon';
 
 interface User {
@@ -19,6 +26,10 @@ interface Response {
     user?: User;
 }
 
+export interface InviteProps {
+    friendAlready: boolean;
+    pendingAlready: boolean;
+}
 export default function useUser(userId: string = ''): Response {
     const { data } = useGetUserByIdQuery({ variables: { userId } });
 
@@ -48,4 +59,47 @@ export default function useUser(userId: string = ''): Response {
     }
 
     return res;
+}
+
+export function useIsFriends(userId: string = '', myId: string): boolean {
+    const { data } = useGetUserFriendsQuery({ variables: { userId } });
+
+    if (data?.getUser.friends) {
+        for (let i = 0; i < data.getUser.friends.length; i++) {
+            if (data.getUser.friends[i].id === myId) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+export function useIsInviteSentAlready(userId: string = '', myId: string): boolean {
+    const { data } = useGetMyReceivedFriendInvitesQuery({ variables: { userId } });
+
+    if (data?.pendingFriendInvitations) {
+        for (let i = 0; i < data.pendingFriendInvitations.length; i++) {
+            if (data.pendingFriendInvitations[i].id === myId) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+export function useIsInviteReceivedAlready(userId: string = '', myId: string): boolean {
+    const { data } = useGetMySentFriendInvitesQuery({ variables: { userId } });
+
+    if (data?.sentFriendInvitations) {
+        for (let i = 0; i < data.sentFriendInvitations.length; i++) {
+            if (data.sentFriendInvitations[i].id === myId) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+export function useSendInvite(userId: string) {
+    useSendFriendInviteMutation({ variables: { userId } });
 }

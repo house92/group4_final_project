@@ -21,7 +21,7 @@ export default function useRegister() {
         lastName: string,
         dateOfBirth: string,
         email: string,
-        password: string
+        password: string,
     ) => {
         try {
             const { data } = await registerUserMutation({
@@ -48,5 +48,5 @@ export default function useRegister() {
         }
     };
 
-    return{ register, error };
+    return { register, error };
 }
