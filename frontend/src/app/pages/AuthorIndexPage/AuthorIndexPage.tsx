@@ -7,7 +7,7 @@ export default function AuthorIndexPage() {
     const [page, setPage] = useState(1);
     const pageLimit = 10;
 
-    const { authors } = useAuthors(pageLimit, page);
+    const { authors, pageInfo } = useAuthors(pageLimit, page);
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
@@ -20,7 +20,7 @@ export default function AuthorIndexPage() {
             </Typography>
 
             <AuthorIndex authors={authors} />
-            <Pagination count={Math.ceil(authors.length / pageLimit)} page={page} onChange={handleChange} />
+            <Pagination count={pageInfo ? pageInfo.totalPages : 1} page={page} onChange={handleChange} />
         </Box>
     );
 }

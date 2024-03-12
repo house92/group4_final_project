@@ -7,7 +7,7 @@ export default function BookIndexPage() {
     const [page, setPage] = useState(1);
     const pageLimit = 10;
 
-    const { books } = useBooks(pageLimit, page);
+    const { books, pageInfo } = useBooks(pageLimit, page);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
@@ -19,7 +19,7 @@ export default function BookIndexPage() {
             </Typography>
 
             <BookIndex books={books} />
-            <Pagination count={Math.ceil(books.length / pageLimit)} page={page} onChange={handleChange} />
+            <Pagination count={pageInfo ? pageInfo.totalPages : 1} page={page} onChange={handleChange} />
         </Box>
     );
 }

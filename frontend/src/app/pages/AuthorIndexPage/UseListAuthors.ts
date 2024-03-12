@@ -24,5 +24,11 @@ export default function useAuthors(pageLimit: number, page: number) {
         }));
     }
 
-    return { authors };
+    const pageInfo = {
+        totalPages: Math.ceil((data?.listAuthors.pageInfo.totalEdges || 0) / pageLimit),
+        hasNextPage: data?.listAuthors.pageInfo.hasNextPage || false,
+        hasPreviousPage: data?.listAuthors.pageInfo.hasPreviousPage || false,
+    };
+
+    return { authors, pageInfo };
 }

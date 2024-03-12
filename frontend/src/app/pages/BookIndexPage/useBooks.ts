@@ -25,5 +25,11 @@ export default function useBooks(pageLimit: number, page: number) {
         }));
     }
 
-    return { books };
+    const pageInfo = {
+        totalPages: Math.ceil((data?.listBooks.pageInfo.totalEdges || 0) / pageLimit),
+        hasNextPage: data?.listBooks.pageInfo.hasNextPage || false,
+        hasPreviousPage: data?.listBooks.pageInfo.hasPreviousPage || false,
+    };
+
+    return { books, pageInfo };
 }
