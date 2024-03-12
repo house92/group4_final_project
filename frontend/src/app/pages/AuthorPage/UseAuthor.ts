@@ -34,7 +34,7 @@ export default function useAuthor(authorId: string = '') {
 
     }
     else {
-        console.log('no data');
+        console.log('no data for ' + authorId);
     }
 
     return { author };

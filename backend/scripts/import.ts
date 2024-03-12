@@ -229,7 +229,7 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     const authorMap: AuthorMap = {};
     const authorInputArr: CreateAuthorInput[] = [];
     const hashes: string[] = [];
-
+    let temp2 = [];
     authorInputArr.push;
 
     console.log('creating authors..');
@@ -238,12 +238,13 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
         for (const gutendexAuthor of book.authors) {
             const hashId = hash(gutendexAuthor);
 
-            if (!authorMap[hashId]) {
+            if (!authorMap[hashId] && !hashes.includes(hashId)) {
                 authorInputArr.push(transformGutendexPersonToAuthor(gutendexAuthor));
                 hashes.push(hashId);
             }
         }
     }
+    temp2 = authorInputArr;
 
     console.log('authors created');
 
@@ -275,7 +276,8 @@ async function importBooks({ limit: limitString }: ImportBooksArgs) {
     await app.close();
 
     console.log('finished');
-    console.log(temp1);
+    // console.log(temp1);
+    console.log(temp2);
 
 }
 
