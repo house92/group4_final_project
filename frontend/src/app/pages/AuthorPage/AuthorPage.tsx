@@ -27,6 +27,7 @@ export default function AuthorPage() {
                 deathYear={author.dateOfDeath?.get('year')}
                 hometown={author.hometown}
                 bio={author.bio}
+                rating={author.rating}
             />
         </Stack>
     );

@@ -9,6 +9,7 @@ query GetBookById($bookId: String!) {
             lastName
         }
         publicationDate
+        rating
         synopsis
 
         bookReviews {
