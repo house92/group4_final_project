@@ -17,7 +17,7 @@ interface Response {
     books: Book[];
 }
 
-export default function useBooks({ titleSearchTerm }: UseBooksArgs, pageLimit: number, page: number): Response {
+export default function useBooks({ titleSearchTerm }: UseBooksArgs, pageLimit: number, page: number) {
     const { data } = useGetBooksListQuery({ variables: { titleSearchTerm, first: pageLimit, page } });
 
     let books: Book[] = [];

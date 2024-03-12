@@ -453,7 +453,11 @@ export type GetAuthorByIdQueryVariables = Exact<{
 
 export type GetAuthorByIdQuery = { __typename?: 'Query', getAuthor: { __typename?: 'Author', id: string, firstName?: string | null, lastName: string, dateOfBirth?: string | null, dateOfDeath?: string | null, hometown?: string | null, bio?: string | null, rating?: number | null } };
 
-export type GetBooksListQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetBooksListQueryVariables = Exact<{
+  titleSearchTerm?: InputMaybe<Scalars['String']['input']>;
+  first: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+}>;
 
 
 export type GetBooksListQuery = { __typename?: 'Query', listBooks: { __typename?: 'BookConnection', pageInfo: { __typename?: 'PageInfo', totalEdges?: number | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename?: 'BookEdge', node: { __typename?: 'Book', id: string, coverImage: string, title: string, publicationDate?: string | null, authors: Array<{ __typename?: 'Author', firstName?: string | null, lastName: string }> } }> } };
@@ -701,8 +705,8 @@ export type GetAuthorByIdLazyQueryHookResult = ReturnType<typeof useGetAuthorByI
 export type GetAuthorByIdSuspenseQueryHookResult = ReturnType<typeof useGetAuthorByIdSuspenseQuery>;
 export type GetAuthorByIdQueryResult = Apollo.QueryResult<GetAuthorByIdQuery, GetAuthorByIdQueryVariables>;
 export const GetBooksListDocument = gql`
-    query GetBooksList {
-  listBooks {
+    query GetBooksList($titleSearchTerm: String, $first: Int!, $page: Int!) {
+  listBooks(filter: {title: $titleSearchTerm}, first: $first, page: $page) {
     pageInfo {
       totalEdges
       hasNextPage
@@ -736,6 +740,9 @@ export const GetBooksListDocument = gql`
  * @example
  * const { data, loading, error } = useGetBooksListQuery({
  *   variables: {
+ *      titleSearchTerm: // value for 'titleSearchTerm'
+ *      first: // value for 'first'
+ *      page: // value for 'page'
  *   },
  * });
  */
