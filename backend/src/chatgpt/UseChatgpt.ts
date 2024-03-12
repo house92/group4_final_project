@@ -13,6 +13,40 @@ interface ChatGptResponse {
     finish_reason: string;
 }
 
+export interface FetchedAuthorData {
+    name: string;
+    bio: string;
+    hometown: string;
+}
+
+export interface BulkAuthorsReturn {
+    authors: FetchedAuthorData[];
+}
+
+export async function getAuthorData(names: string[]): Promise<BulkAuthorsReturn> {
+    let s =
+        'Please create an array with one JSON for each of the authors in this list that contains their name as "name" (the name of the author EXACTLY how it appears in the list), a "bio" (one-paragraph biography of the author), and a "hometown" (the home town of the author). The array is: ';
+    s += names;
+    const completion = await openai.chat.completions.create({
+        messages: [
+            {
+                role: 'system',
+                content: 'You are a helpful assistant designed to output JSON.',
+            },
+            {
+                role: 'user',
+                content: s,
+            },
+        ],
+        model: 'gpt-3.5-turbo',
+        response_format: { type: 'json_object' },
+    });
+
+    const parsedObject: BulkAuthorsReturn = JSON.parse(completion.choices[0].message.content);
+
+    return parsedObject;
+}
+
 export async function runGpt(book: string, reviewer: number) {
     let setup = '';
 

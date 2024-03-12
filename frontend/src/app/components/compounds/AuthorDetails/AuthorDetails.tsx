@@ -3,8 +3,8 @@ import { Box, Paper, Rating, Stack, Typography } from '@mui/material';
 
 interface AuthorDetailsProps {
     name?: string;
-    birthYear?: number;
-    deathYear?: number;
+    birthYear?: string;
+    deathYear?: string;
     hometown?: string;
     bio?: string;
     rating?: number;
@@ -16,7 +16,7 @@ const AuthorDetails = ({ name, birthYear, deathYear, hometown, bio, rating }: Au
             {name && <Typography variant="h5">Author: {name}</Typography>}
 
             <Box display="flex" flexDirection="row" gap={2}>
-                <Typography variant="body1">Born: {birthYear ?? 'Unknown'}</Typography>
+                {birthYear && <Typography variant="body1">Born: {birthYear}</Typography>}
 
                 {deathYear && <Typography variant="body1">Died: {deathYear}</Typography>}
             </Box>

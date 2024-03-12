@@ -16,6 +16,7 @@ export default function useAuthor(authorId: string = '') {
 
     let author: Author | undefined;
     if (data?.getAuthor) {
+        console.log('there is data');
         const baseAuthor = data.getAuthor;
 
         author = {
@@ -27,6 +28,13 @@ export default function useAuthor(authorId: string = '') {
             bio: baseAuthor.bio ?? undefined,
             rating: baseAuthor.rating ?? undefined,
         };
+
+        console.log('Base DoB: ' + baseAuthor.dateOfBirth);
+        console.log('Base DoD: ' + baseAuthor.dateOfDeath);
+
+    }
+    else {
+        console.log('no data for ' + authorId);
     }
 
     return { author };
