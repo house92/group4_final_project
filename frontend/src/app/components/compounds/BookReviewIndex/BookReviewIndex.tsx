@@ -8,7 +8,7 @@ interface BookReviewIndexProps {
 
 export default function BookReviewIndex({ bookReviews }: BookReviewIndexProps) {
     return (
-        <Stack gap={2}>
+        <Stack gap={2} width="100%">
             {bookReviews.map((review) => (
                 <BookReview {...review} />
             ))}

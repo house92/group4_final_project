@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSignOutUserMutation } from 'generated/graphql';
 
 const useSignOut = () => {

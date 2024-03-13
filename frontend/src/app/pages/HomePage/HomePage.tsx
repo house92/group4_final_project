@@ -1,5 +1,5 @@
 import BookReviewIndex from 'app/components/compounds/BookReviewIndex';
-import { Container, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useUserSession } from 'app/core/Session';
 import useHomePageData from './useHomePageData';
 

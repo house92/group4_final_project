@@ -1,15 +1,11 @@
-import React from 'react';
-import { Stack, Typography, Box } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import BookDetails from 'app/components/compounds/BookDetails/BookDetails';
 import { useParams } from 'react-router-dom';
 import useBook from './useBook';
 import { BookReviewForm, BookReviewIndex } from 'app/components';
 import { useCreateBookReviewMutation, useGenerateReviewLazyQuery } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';
-import ReviewContainer, {
-    Reviewer,
-    ReviewContainerProps,
-} from 'app/components/compounds/ChatGptDetails/ReviewContainer';
+import ReviewContainer, { Reviewer } from 'app/components/compounds/ChatGptDetails/ReviewContainer';
 
 export default function BookPage() {
     const { bookId } = useParams();
@@ -58,11 +54,10 @@ export default function BookPage() {
                         }}
                     />
                 )}
+
                 <BookReviewIndex bookReviews={book.bookReviews} />
 
-                <Box marginLeft={4} marginBottom={4}>
-                    <ReviewContainer onReviewRequest={onReviewRequest} isLoading={isGeneratedReviewLoading} />
-                </Box>
+                <ReviewContainer onReviewRequest={onReviewRequest} isLoading={isGeneratedReviewLoading} />
             </Stack>
         </Stack>
     );

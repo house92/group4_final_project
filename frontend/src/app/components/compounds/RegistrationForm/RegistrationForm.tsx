@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 interface RegistrationCreds {
     firstName: string;
     lastName: string;
-    dateOfBirth: DateTime;
+    dateOfBirth: string;
     email: string;
     password: string;
 }
@@ -22,7 +22,7 @@ export default function RegistrationForm({ onSubmit }: RegistrationFormProps) {
         initialValues: {
             firstName: '',
             lastName: '',
-            dateOfBirth: DateTime.utc(2000, 1, 1),
+            dateOfBirth: DateTime.utc(2000, 1, 1).toISODate() ?? '',
             email: '',
             password: '',
         },

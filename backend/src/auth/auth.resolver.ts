@@ -73,7 +73,7 @@ export class AuthResolver {
             token,
         };
     }
-    @Public()
+
     @Mutation(() => UserSession)
     async signOutUser(@Context('res') res: Response): Promise<object> {
         res.cookie(AUTHENTICATION_COOKIE_NAME, null, {

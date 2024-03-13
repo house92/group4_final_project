@@ -14,7 +14,7 @@ export default function SearchBar({ initialValue = '', onSubmit }: SearchBarProp
             <TextField
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                sx={{ minWidth: 300 }}
+                sx={{ minWidth: 300, bgcolor: 'white' }}
             />
 
             <Button

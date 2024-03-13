@@ -1,12 +1,7 @@
-import React from 'react';
 import { Paper, Typography } from '@mui/material';
 
 interface Friend {
     name: string;
-}
-
-interface FriendsIndexItemProps {
-    friends: Friend[];
 }
 
 export default function FriendIndexItem({ name }: Friend) {

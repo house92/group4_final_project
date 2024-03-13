@@ -1,10 +1,4 @@
-import {
-    useGetUserFriendsQuery,
-    useGetUserSessionQuery,
-    useAcceptFriendInviteMutation,
-    useGetMyReceivedFriendInvitesQuery,
-    useListUsersQuery,
-} from 'generated/graphql';
+import { useGetUserFriendsQuery, useGetMyReceivedFriendInvitesQuery, useListUsersQuery } from 'generated/graphql';
 import { inviteProps } from 'app/components/compounds/InviteContainer/InviteItem';
 
 interface Friend {
