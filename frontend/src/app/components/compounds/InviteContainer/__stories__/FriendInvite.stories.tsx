@@ -1,5 +1,3 @@
-import React from 'react';
-import { Paper, Typography } from '@mui/material';
 import InviteContainer, { InviteContainerProps } from '../InviteContainer';
 import { inviteProps } from '../InviteItem';
 

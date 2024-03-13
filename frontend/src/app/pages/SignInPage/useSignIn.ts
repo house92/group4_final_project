@@ -12,14 +12,9 @@ export default function useSignIn() {
     const navigate = useNavigate();
     const [signInUserMutation] = useSignInUserMutation();
 
-    console.log('useSignIn() - starting..');
-
     const signIn = async (email: string, password: string) => {
-        console.log('signIn() - starting..');
         try {
             const { data } = await signInUserMutation({ variables: { email, password } });
-
-            console.log({ data });
 
             if (data?.signInUser) {
                 navigate('/');

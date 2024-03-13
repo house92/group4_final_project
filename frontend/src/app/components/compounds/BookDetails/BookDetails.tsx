@@ -11,7 +11,14 @@ interface BookDetailsProps {
     synopsis?: string;
 }
 
-export default function BookDetails({ title, coverImage, authors, publicationDate, rating, synopsis }: BookDetailsProps) {
+export default function BookDetails({
+    title,
+    coverImage,
+    authors,
+    publicationDate,
+    rating,
+    synopsis,
+}: BookDetailsProps) {
     return (
         <Box display="flex" flexDirection="row" gap={2}>
             <img src={coverImage} alt="Book Cover" style={{ maxWidth: '100%', marginBottom: 10 }} />
@@ -30,10 +37,7 @@ export default function BookDetails({ title, coverImage, authors, publicationDat
                     Publication Date: {publicationDate ? publicationDate.toLocaleString(DateTime.DATE_MED) : 'Unknown'}
                 </Typography>
                 {rating !== 0 ? (
-                    <>
-                        <Typography variant="body1">Rating: {rating?.toFixed(2)}</Typography>
-                        <Rating name="read-only" value={rating} readOnly />
-                    </>
+                    <Rating name="read-only" value={rating} readOnly />
                 ) : (
                     <Typography variant="body1">No Ratings</Typography>
                 )}

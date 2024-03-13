@@ -1,6 +1,6 @@
 import { Button, Stack } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import useUser, { useIsFriends, useIsInviteSentAlready, useIsInviteReceivedAlready, useSendInvite } from './UseUser';
+import useUser, { useIsFriends, useIsInviteSentAlready, useIsInviteReceivedAlready } from './UseUser';
 import { BookReviewIndex, UserDetails } from 'app/components';
 import { useSendFriendInviteMutation } from 'generated/graphql';
 import { useUserSession } from 'app/core/Session';

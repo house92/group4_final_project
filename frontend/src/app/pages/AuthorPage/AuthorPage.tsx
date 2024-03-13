@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import AuthorDetails from 'app/components/compounds/AuthorDetails/AuthorDetails';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthor from './UseAuthor';

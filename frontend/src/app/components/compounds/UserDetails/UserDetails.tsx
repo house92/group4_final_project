@@ -1,6 +1,4 @@
-import React from 'react';
 import { Paper, Typography } from '@mui/material';
-import { DateTime } from 'luxon';
 
 interface UserDetailsProps {
     name: string;

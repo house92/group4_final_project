@@ -52,22 +52,16 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
             component="form"
             onSubmit={formik.handleSubmit}
             variant="outlined"
-            style={{ padding: 20 }}
             sx={{
-                width: 400,
                 display: 'flex',
                 alignItems: 'center',
+                width: '100%',
             }}
             autoComplete="off"
         >
-            <Stack spacing={1}>
+            <Stack gap={2} width="100%" p={2}>
                 <Typography variant="h5">{title}</Typography>
-                <Box
-                    sx={{
-                        '& > legend': { mt: 2 },
-                    }}
-                >
-                    <Typography component="legend"></Typography>
+                <Box>
                     <Rating
                         name="simple-controlled"
                         value={value}
@@ -84,29 +78,21 @@ export default function BookReviewForm({ title, onSubmit }: BookReviewProps) {
                     />
                     {value !== null && <Box sx={{ ml: 0.5 }}>{labels[hover !== -1 ? hover : value]}</Box>}
                 </Box>
-                <Box
-                    sx={{
-                        '& > :not(style)': { m: 2, width: '35ch' },
-                    }}
-                >
-                    <TextField
-                        id="outlined-basic"
-                        name="body"
-                        variant="outlined"
-                        multiline
-                        maxRows={5}
-                        minRows={10}
-                        value={formik.values.body}
-                        onChange={formik.handleChange}
-                        error={formik.touched.body && Boolean(formik.errors.body)}
-                        helperText={formik.touched.body && formik.errors.body}
-                    />
-                </Box>
-                <Box
-                    sx={{
-                        '& > legend': { mt: 2 },
-                    }}
-                >
+
+                <TextField
+                    id="outlined-basic"
+                    name="body"
+                    variant="outlined"
+                    multiline
+                    maxRows={5}
+                    minRows={10}
+                    value={formik.values.body}
+                    onChange={formik.handleChange}
+                    error={formik.touched.body && Boolean(formik.errors.body)}
+                    helperText={formik.touched.body && formik.errors.body}
+                />
+
+                <Box>
                     <Button type="submit" variant="contained">
                         Save
                     </Button>

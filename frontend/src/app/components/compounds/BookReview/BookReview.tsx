@@ -17,17 +17,18 @@ export default function BookReview({ title, bookHref, body, rating, reviewerName
         <Paper variant="outlined" style={{ padding: 20 }}>
             {bookHref ? (
                 <Typography variant="h5">
-                    Title: <Link to={bookHref}>{title}</Link>
+                    <Link to={bookHref}>{title}</Link>
                 </Typography>
             ) : (
-                <Typography variant="h5">Title: {title}</Typography>
+                <Typography variant="h5">{title}</Typography>
             )}
 
-            <Typography variant="body1">Review: {body}</Typography>
-            <Rating name="read-only" value={rating} readOnly  />
+            <Rating name="read-only" value={rating} readOnly />
+
+            <Typography variant="body1">{body}</Typography>
 
             {reviewerName && (
-                <Typography variant="body1">
+                <Typography variant="body2">
                     Reviewed By: {reviewerHref ? <Link to={reviewerHref}>{reviewerName}</Link> : reviewerName}
                 </Typography>
             )}

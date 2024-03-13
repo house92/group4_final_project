@@ -50,14 +50,14 @@ export default function Layout() {
                             Sign out
                         </Button>
                     ) : (
-                        <>
+                        <Stack gap={1}>
                             <Button href="/sign-in" variant="contained">
                                 Sign in
                             </Button>
                             <Button href="/register" variant="contained">
                                 Register
                             </Button>
-                        </>
+                        </Stack>
                     )}
                 </Box>
             </Box>

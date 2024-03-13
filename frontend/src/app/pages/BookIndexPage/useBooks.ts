@@ -11,13 +11,16 @@ interface Book {
 
 interface UseBooksArgs {
     titleSearchTerm?: string;
+    pageLimit: number;
+    page: number;
 }
 
 interface Response {
     books: Book[];
+    totalPages: number;
 }
 
-export default function useBooks({ titleSearchTerm }: UseBooksArgs, pageLimit: number, page: number) {
+export default function useBooks({ titleSearchTerm, pageLimit, page }: UseBooksArgs): Response {
     const { data } = useGetBooksListQuery({ variables: { titleSearchTerm, first: pageLimit, page } });
 
     let books: Book[] = [];
@@ -31,11 +34,5 @@ export default function useBooks({ titleSearchTerm }: UseBooksArgs, pageLimit: n
         }));
     }
 
-    const pageInfo = {
-        totalPages: Math.ceil((data?.listBooks.pageInfo.totalEdges || 0) / pageLimit),
-        hasNextPage: data?.listBooks.pageInfo.hasNextPage || false,
-        hasPreviousPage: data?.listBooks.pageInfo.hasPreviousPage || false,
-    };
-
-    return { books, pageInfo };
+    return { books, totalPages: Math.ceil((data?.listBooks.pageInfo.totalEdges || pageLimit * page) / pageLimit) };
 }

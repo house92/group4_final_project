@@ -1,4 +1,4 @@
-import { Box, Stack, Pagination, Typography } from '@mui/material';
+import { Stack, Pagination, Typography } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { BookIndex, SearchBar } from 'app/components';
 import useBooks from './useBooks';
@@ -12,7 +12,7 @@ export default function BookIndexPage() {
     const pageLimit = 10;
     const [titleSearchTerm, setTitleSearchTerm] = useState(searchParams.get(TITLE_SEARCH_TERM_PARAM_NAME) ?? '');
 
-    const { books, pageInfo } = useBooks({titleSearchTerm}, pageLimit, page );
+    const { books, totalPages } = useBooks({ titleSearchTerm, pageLimit, page });
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
@@ -35,7 +35,7 @@ export default function BookIndexPage() {
             />
 
             <BookIndex books={books} />
-            <Pagination count={pageInfo ? pageInfo.totalPages : 1} page={page} onChange={handleChange} />
+            <Pagination count={totalPages} page={page} onChange={handleChange} />
         </Stack>
     );
 }

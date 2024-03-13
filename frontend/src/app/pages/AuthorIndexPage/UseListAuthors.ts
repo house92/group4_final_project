@@ -10,7 +10,7 @@ interface Author {
 
 export default function useAuthors(pageLimit: number, page: number) {
     const { data } = useGetAuthorsListQuery({
-        variables: { first: pageLimit, page }
+        variables: { first: pageLimit, page },
     });
 
     let authors: Author[] = [];

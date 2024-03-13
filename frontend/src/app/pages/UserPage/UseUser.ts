@@ -1,6 +1,5 @@
 import {
     useGetUserByIdQuery,
-    useGetUserSessionQuery,
     useGetUserFriendsQuery,
     useGetMyReceivedFriendInvitesQuery,
     useGetMySentFriendInvitesQuery,
