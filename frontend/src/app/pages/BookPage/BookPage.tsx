@@ -1,5 +1,4 @@
-import React from 'react';
-import { Stack, Typography, Box } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import BookDetails from 'app/components/compounds/BookDetails/BookDetails';
 import { useParams } from 'react-router-dom';
 import useBook from './useBook';
@@ -58,9 +57,7 @@ export default function BookPage() {
 
                 <BookReviewIndex bookReviews={book.bookReviews} />
 
-                <Box marginLeft={4} marginBottom={4}>
-                    <ReviewContainer onReviewRequest={onReviewRequest} isLoading={isGeneratedReviewLoading} />
-                </Box>
+                <ReviewContainer onReviewRequest={onReviewRequest} isLoading={isGeneratedReviewLoading} />
             </Stack>
         </Stack>
     );

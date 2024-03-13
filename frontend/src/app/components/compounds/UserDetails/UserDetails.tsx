@@ -1,7 +1,7 @@
 import { Paper, Typography } from '@mui/material';
 
 interface UserDetailsProps {
-    name: string;
+    name?: string;
     bio: string | null | undefined;
     age: number;
 }
@@ -9,9 +9,11 @@ interface UserDetailsProps {
 export default function UserDetails({ name, bio, age }: UserDetailsProps) {
     return (
         <Paper variant="outlined" style={{ padding: 20 }}>
-            <Typography variant="body1">Name: {name}</Typography>
-            <Typography variant="body1">Bio: {bio}</Typography>
+            {name && <Typography variant="body1">Name: {name}</Typography>}
+
             <Typography variant="body1">Age: {age}</Typography>
+
+            <Typography variant="body1">Bio: {bio}</Typography>
         </Paper>
     );
 }

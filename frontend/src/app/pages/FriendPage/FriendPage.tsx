@@ -23,6 +23,11 @@ export default function FriendPage() {
     const pending = useGetReceivedInvites(acceptInvite, myId);
     const users = useListUsers(myId);
 
+    if (!mySession) {
+        navigate(-1);
+        return null;
+    }
+
     if (userId !== myId) {
         if (friends.length === 0) {
             return <p>No friends found. Please make some.</p>;
@@ -43,7 +48,7 @@ export default function FriendPage() {
                 {pageTitle}
             </Typography>
 
-            <Stack gap={2}>
+            <Stack gap={2} maxWidth={400}>
                 <Autocomplete
                     disablePortal
                     options={users.map((user) => user.id)}

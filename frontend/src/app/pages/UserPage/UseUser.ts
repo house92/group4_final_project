@@ -60,7 +60,7 @@ export default function useUser(userId: string = ''): Response {
     return res;
 }
 
-export function useIsFriends(userId: string = '', myId: string): boolean {
+export function useIsFriends(userId: string = '', myId: string = ''): boolean {
     const { data } = useGetUserFriendsQuery({ variables: { userId } });
 
     if (data?.getUser.friends) {
@@ -73,7 +73,7 @@ export function useIsFriends(userId: string = '', myId: string): boolean {
     return false;
 }
 
-export function useIsInviteSentAlready(userId: string = '', myId: string): boolean {
+export function useIsInviteSentAlready(userId: string = '', myId: string = ''): boolean {
     const { data } = useGetMyReceivedFriendInvitesQuery({ variables: { userId } });
 
     if (data?.pendingFriendInvitations) {
@@ -86,7 +86,7 @@ export function useIsInviteSentAlready(userId: string = '', myId: string): boole
     return false;
 }
 
-export function useIsInviteReceivedAlready(userId: string = '', myId: string): boolean {
+export function useIsInviteReceivedAlready(userId: string = '', myId: string = ''): boolean {
     const { data } = useGetMySentFriendInvitesQuery({ variables: { userId } });
 
     if (data?.sentFriendInvitations) {

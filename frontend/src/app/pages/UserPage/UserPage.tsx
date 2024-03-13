@@ -1,5 +1,5 @@
-import { Button, Stack } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Button, Stack, Typography } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 import useUser, { useIsFriends, useIsInviteSentAlready, useIsInviteReceivedAlready } from './UseUser';
 import { BookReviewIndex, UserDetails } from 'app/components';
 import { useSendFriendInviteMutation } from 'generated/graphql';
@@ -22,13 +22,13 @@ function handleButton(sendInvite, acceptInvite, userId) {
 export default function UserPage() {
     const { userId } = useParams();
     const { user } = useUser(userId);
+    const navigate = useNavigate();
 
     const mySession = useUserSession();
+
     let myId;
     if (mySession) {
         myId = mySession.id;
-    } else {
-        myId = '';
     }
     const isFriends: boolean = useIsFriends(userId, myId);
 
@@ -40,6 +40,12 @@ export default function UserPage() {
 
     const [sendInvite] = useSendFriendInviteMutation();
     const [acceptInvite] = useAcceptFriendInviteMutation();
+
+    if (!mySession) {
+        // unauthenticated users may not view user pages
+        navigate(-1);
+        return null;
+    }
 
     if (!user) {
         return null;
@@ -69,8 +75,13 @@ export default function UserPage() {
     }
 
     return (
-        <Stack p={2} gap={4}>
-            <UserDetails name={user?.name} age={user?.age} bio={user?.bio} />
+        <Stack gap={4}>
+            <Typography variant="h3" component="h1">
+                {user.name}
+            </Typography>
+
+            <UserDetails age={user.age} bio={user.bio} />
+
             {putButton && (
                 <Button
                     type="submit"
@@ -83,6 +94,7 @@ export default function UserPage() {
                     {buttonText}
                 </Button>
             )}
+
             <BookReviewIndex bookReviews={user.bookReviews} />
         </Stack>
     );

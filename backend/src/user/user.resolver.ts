@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { UpdateUserInput } from './inputs/update-user.input';
-import { Public } from 'src/auth/decorators/public.decorator';
 import { CurrentRequestContext, RequestContext } from 'src/auth/decorators/current_request_context.decorator';
 
 @Resolver(() => User)
@@ -14,7 +13,6 @@ export class UserResolver {
         return this.userService.findAll();
     }
 
-    @Public()
     @Query(() => User)
     async getUser(@Args('id', { type: () => String }) id: string) {
         const user = await this.userService.findById(id, {
@@ -96,14 +94,4 @@ export class UserResolver {
             return false;
         }
     }
-
-    // @ResolveField(() => [User])
-    // async sentFriendInvitations(userId: string) {
-    //     return this.userService.sentFriendInvitations(userId);
-    // }
-
-    // @ResolveField(() => [User])
-    // async pendingFriendInvitations(userId: string) {
-    //     return this.userService.pendingFriendInvitations(userId);
-    // }
 }

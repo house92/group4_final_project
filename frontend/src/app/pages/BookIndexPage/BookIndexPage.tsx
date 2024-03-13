@@ -1,4 +1,4 @@
-import { Stack, Pagination, Typography } from '@mui/material';
+import { Stack, Pagination, Typography, Box } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { BookIndex, SearchBar } from 'app/components';
 import useBooks from './useBooks';
@@ -35,7 +35,10 @@ export default function BookIndexPage() {
             />
 
             <BookIndex books={books} />
-            <Pagination count={totalPages} page={page} onChange={handleChange} />
+
+            <Box display="flex" justifyContent="center" alignItems="center">
+                <Pagination count={totalPages} page={page} onChange={handleChange} />
+            </Box>
         </Stack>
     );
 }

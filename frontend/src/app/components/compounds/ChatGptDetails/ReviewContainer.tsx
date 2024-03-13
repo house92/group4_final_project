@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { Tab } from '@mui/material';
 import { TabContext, TabList } from '@mui/lab';
 import ReviewPanel from './ReviewPanel';
@@ -73,24 +73,26 @@ export default function ReviewContainer({
     }
 
     return (
-        <Box sx={{ width: 600, typography: 'body1', height: 500 }}>
-            <TabContext value={reviewerTab}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList onChange={handleChange} aria-label="Reviewer Changed">
-                        {TABS.map(({ label, value }) => (
-                            <Tab label={label} value={value} />
-                        ))}
-                    </TabList>
-                </Box>
+        <Paper variant="outlined" sx={{ p: 2 }}>
+            <Box sx={{ width: 600, typography: 'body1', height: 500 }}>
+                <TabContext value={reviewerTab}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <TabList onChange={handleChange} aria-label="Reviewer Changed">
+                            {TABS.map(({ label, value }) => (
+                                <Tab label={label} value={value} />
+                            ))}
+                        </TabList>
+                    </Box>
 
-                <ReviewPanel
-                    onReviewRequest={onReviewRequest}
-                    reviewer={reviewerTab}
-                    body={savedReviewMap[reviewerTab]}
-                    placeholder={isLoading ? placeholder : undefined}
-                    heading={heading}
-                ></ReviewPanel>
-            </TabContext>
-        </Box>
+                    <ReviewPanel
+                        onReviewRequest={onReviewRequest}
+                        reviewer={reviewerTab}
+                        body={savedReviewMap[reviewerTab]}
+                        placeholder={isLoading ? placeholder : undefined}
+                        heading={heading}
+                    ></ReviewPanel>
+                </TabContext>
+            </Box>
+        </Paper>
     );
 }

@@ -12,22 +12,27 @@ export default function Layout() {
     return (
         <Box display="flex" flexDirection="row">
             <Box
-                sx={{ display: { xs: 'none', md: 'flex' } }}
+                sx={(theme) => ({ display: { xs: 'none', md: 'flex' }, background: theme.palette.secondary.main })}
                 position="fixed"
                 minWidth={NAV_WIDTH}
                 width={NAV_WIDTH}
                 height="100vh"
-                bgcolor="#2E3B4E"
             >
                 <Box display="flex" flexDirection="column" justifyContent="space-between" p={6}>
                     <Stack gap={4}>
                         {userSession && (
                             <Link to={`/users/${userSession.id}`} style={{ textDecoration: 'none' }}>
-                                <Typography color="white">{userSession.fullName}</Typography>
+                                <Typography color="white" variant="h5" component="p">
+                                    {userSession.fullName}
+                                </Typography>
                             </Link>
                         )}
 
                         <Stack gap={1}>
+                            <Link to="/" style={{ textDecoration: 'none' }}>
+                                <Typography color="white">Home</Typography>
+                            </Link>
+
                             <Link to="/authors" style={{ textDecoration: 'none' }}>
                                 <Typography color="white">Authors</Typography>
                             </Link>
@@ -62,7 +67,13 @@ export default function Layout() {
                 </Box>
             </Box>
 
-            <Box ml={`${NAV_WIDTH}px`} p={4}>
+            <Box
+                ml={`${NAV_WIDTH}px`}
+                p={4}
+                width={`calc(100vw - ${NAV_WIDTH}px)`}
+                minHeight="100vh"
+                sx={(theme) => ({ bgcolor: theme.palette.background.default })}
+            >
                 <Outlet />
             </Box>
         </Box>
